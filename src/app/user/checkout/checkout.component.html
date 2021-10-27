@@ -1,0 +1,225 @@
+<app-header></app-header>
+<section class="hero hero-normal">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="hero__categories">
+          <div class="hero__categories__all">
+            <i class="fa fa-bars"></i>
+            <span>Thể loại</span>
+          </div>
+          <ul>
+            <li *ngFor="let category of listCategory"><a
+              [routerLink]="['../category',category.id]">{{category.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="hero__search">
+          <div class="hero__search__form">
+            <form [formGroup]="searchForm" (ngSubmit)="search()">
+              <div class="hero__search__categories">
+                Tất cả
+                <span class="arrow_carrot-down"></span>
+              </div>
+              <input type="text" placeholder="Bạn muốn thuê HomeStay ở đâu?" formControlName="name">
+              <button type="submit" class="site-btn">TÌM KIẾM</button>
+            </form>
+          </div>
+          <div class="hero__search__phone">
+            <div class="hero__search__phone__icon">
+              <i class="fa fa-phone"></i>
+            </div>
+            <div class="hero__search__phone__text">
+              <h5>0396355470</h5>
+              <span>Hỗ trợ 24/7</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="breadcrumb-section set-bg" [style.background]="'url(assets/static/img/anh1.jpg)'">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="breadcrumb__text">
+          <h2>Xác nhận thuê HomeStay</h2>
+          <div class="breadcrumb__option">
+            <a routerLink="/">Trang chủ</a>
+            <span>Xác nhận thuê HomeStay</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="checkout spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h6><span class="icon_tag_alt"></span>Bạn có mã giảm giá? <a routerLink="/">Ấn vào đây</a> và nhập mã của
+          bạn
+        </h6>
+      </div>
+    </div>
+    <div class="checkout__form">
+      <h4>Chi tiết đơn đặt</h4>
+      <form [formGroup]="billForm">
+        <div class="row">
+          <div class="col-lg-8 col-md-6">
+            <div class="checkout__input">
+              <p>Họ và tên<span>*</span></p>
+              <input disabled [value]="currentUser==null?'':currentUser.name" type="text" formControlName="nameUser"
+                     placeholder="Họ tên người đặt">
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="checkout__input">
+                  <p>Email<span>*</span></p>
+                  <input disabled [value]="currentUser==null?'':currentUser.email" type="text" formControlName="email"
+                         placeholder="Nhập email để xác nhận">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="checkout__input">
+                  <p>Số điện thoại<span>*</span></p>
+                  <input disabled [value]="currentUser==null?'':currentUser.telephoneNumber" type="text"
+                         formControlName="telephoneNumber" placeholder="Nhập số điện thoại người thuê">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Ngày nhận HomeStay</mat-label>
+                  <input matInput [matDatepicker]="startDate" [min]="minDate" [matDatepickerFilter]="myDateFilter"
+                         formControlName="startDate">
+                  <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                  <mat-datepicker #startDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-6">
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Ngày trả HomeStay</mat-label>
+                  <input matInput [matDatepicker]="endDate" [min]="minDate" [matDatepickerFilter]="myDateFilter"
+                         formControlName="endDate">
+                  <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                  <mat-datepicker #endDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-6" *ngIf="listService.length !== 0">
+                <div class="checkout__input">
+                  <p>Thêm dịch vụ trả phí<span>*</span></p>
+                  <select class="form-control select2 select2-primary" id="service" name="service"
+                          formControlName="service" data-dropdown-css-class="select2-primary"
+                          style="width: 100%; margin-left: 0px;
+    height: 46px;
+    border: 1px solid #ebebeb;
+    padding-left: 20px;
+    font-size: 16px;
+    color: #b2b2b2;
+    border-radius: 4px" (ngModelChange)="addServiceToHouse($event)">
+                    <option *ngFor="let service of listService"
+                            [value]="service.id">{{service.name}}, giá {{service.price |currency: 'VND'}}</option>
+                  </select>
+                </div>
+                <table style="width: 100%; margin-top: 15px" id="list-Utilitie">
+                  <tr *ngIf="listServiceOfHouse.length !== 0">
+                    <td><label>Danh sách các dịch vụ bạn muốn sử dụng</label></td>
+                  </tr>
+                  <tr
+                    *ngFor="
+                      let service of listServiceOfHouse  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
+                      let i = index
+                    ">
+                    <td><label>- {{service.name}}, giá {{service.price |currency: 'VND'}}</label></td>
+                    <td style="width: 30px">
+                      <a
+                        (click)="delete(service)">
+                        <i class="fas fa-times"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+                <div class="col-12"
+                     style="display: flex; justify-content: center;align-items: center; margin-top: 10px">
+                  <ngb-pagination *ngIf="listServiceOfHouse.length"
+                                  [ellipses]="true" [rotate]="true"
+                                  [boundaryLinks]="true" [(page)]="page"
+                                  [pageSize]="pageSize"
+                                  [collectionSize]="this.listServiceOfHouse.length"></ngb-pagination>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="checkout__input">
+                  <p>Nhập mã giảm giá<span>*</span></p>
+                  <div class="row">
+                    <input class="col-md-8" type="text" formControlName="voucher" placeholder="Nhập mã giảm giá">
+                    <button style="border-radius: 10px; width: 70px; margin-left: 20px"
+                            (click)="checkVoucher()"
+                            class="site-btn col-md-3">
+                      <i style="font-size :20px;margin-left: -8px" class="fas fa-gifts"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="checkout__order">
+              <h4>Đơn đặt của bạn</h4>
+              <div class="checkout__order__products">Giá thuê theo đêm
+                <span>{{currentHouse.price |currency: 'VND'}}</span></div>
+              <div class="checkout__order__subtotal">Giảm giá <span>{{currentHouse.discount}} %</span></div>
+              <div *ngIf="voucher">
+                <div class="checkout__order__products" *ngIf="voucher.typeVoucher == '0'">Voucher
+                  <span>{{voucher.discount |currency: 'VND'}} </span>
+                </div>
+                <div class="checkout__order__subtotal" *ngIf="voucher.typeVoucher == '1'">Voucher
+                  <span>{{voucher.discount}} %</span>
+                </div>
+              </div>
+              <div class="checkout__order__products">Tổng tiền dịch vụ
+                <span>{{priceService |currency: 'VND'}}</span>
+              </div>
+              <div class="checkout__order__subtotal">Tiền thuê HomeStay
+                <span>{{(priceHomStay * (100 - currentHouse.discount) / 100) |currency: 'VND'}}</span></div>
+              <div class="checkout__order__total" *ngIf="!voucher">Tổng tiền
+                <span>{{((priceService + priceHomStay * (100 - currentHouse.discount) / 100)|currency: 'VND')}}</span>
+              </div>
+              <div class="checkout__order__total" *ngIf="voucher">Tổng tiền
+                <span
+                  *ngIf="voucher.typeVoucher == '0'">{{((priceService + priceHomStay * (100 - currentHouse.discount) / 100) - voucher.discount)|currency: 'VND'}}</span>
+                <span
+                  *ngIf="voucher.typeVoucher == '1'">{{((priceService + priceHomStay * (100 - currentHouse.discount) / 100) * ((100 - voucher.discount) / 100))|currency: 'VND'}}</span>
+              </div>
+              <div class="checkout__input__checkbox">
+                <label for="paypal">
+                  Bạn cần đặt cọc 50% tổng đơn đặt
+                  <input type="checkbox" id="paypal" checked disabled>
+                  <span class="checkmark"></span>
+                </label>
+                <ngx-paypal
+                  [config]="payPalConfig">
+                </ngx-paypal>
+              </div>
+              <button type="submit" class="site-btn" (click)="submitCheckoutForm()">Xác nhận
+              </button>
+              <div style="text-align: center">
+                <div *ngIf="isLoading" class=" spinner-border" role="status"
+                     style="display: inline-block; margin-top: 40px">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<!--<script>paypal.Buttons().render('body');</script>-->
+<app-footer></app-footer>
