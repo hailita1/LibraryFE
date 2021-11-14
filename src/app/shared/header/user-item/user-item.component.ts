@@ -8,7 +8,6 @@ import {UserService} from '../../../service/user/user.service';
 import {User} from '../../../model/user';
 import {House} from '../../../model/house';
 import * as firebase from 'firebase';
-import {environment} from '../../../../environments/environment';
 
 declare var $: any;
 declare var Swal: any;

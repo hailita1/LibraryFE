@@ -5,16 +5,11 @@ import {CategoryService} from '../../service/category/category.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {AuthenticationService} from '../../service/auth/authentication.service';
-import {ItemService} from '../../service/item/item.service';
 import {UserToken} from '../../model/user-token';
-import {ReviewService} from '../../service/review/review.service';
 import {House} from '../../model/house';
-import {HouseService} from '../../service/house/house.service';
-import {BillService} from '../../service/bill/bill.service';
 import {Bill} from '../../model/bill';
 import {QuickviewComponent} from '../homepage/quickview/quickview.component';
 import {Service} from '../../model/service';
-import {ServiceService} from '../../service/service/service.service';
 
 declare var $: any;
 
@@ -45,25 +40,17 @@ export class ProductDetailComponent implements OnInit {
   link: string;
 
   constructor(private categoryService: CategoryService,
-              private houseService: HouseService,
-              private reviewService: ReviewService,
-              private serviceService: ServiceService,
               private activatedRoute: ActivatedRoute,
-              private  billService: BillService,
               private authenticationService: AuthenticationService,
-              private itemService: ItemService,
               private router: Router) {
     this.sub = this.activatedRoute.paramMap.subscribe(async (paramMap: ParamMap) => {
       this.id = +paramMap.get('id');
-      this.currentHouse = await this.getHouse(this.id);
-      this.getAllReview(this.id);
       for (var i = 0; i < this.currentHouse.images.length; i++) {
         this.imageObject[i] = {
           image: this.currentHouse.images[i].link,
           thumbImage: this.currentHouse.images[i].link
         };
       }
-      this.getAllService(this.id);
       this.getAllHouseRelated(this.currentHouse.category);
     });
     this.activatedRoute.params.subscribe(res => {
@@ -121,44 +108,10 @@ export class ProductDetailComponent implements OnInit {
     this.view.view(model);
   }
 
-  getAllService(idHouse: number) {
-    const house = {
-      id: idHouse
-    };
-    this.serviceService.getAllServiceStatusTrue(house).subscribe(listService => {
-      this.listService = listService;
-    });
-  }
-
-  getAllReview(id) {
-    this.listReview = [];
-    const bill = {
-      id: this.id
-    };
-    this.billService.getAllBillByHouse(bill).subscribe(listReview => {
-      this.listReview1 = listReview;
-      let sum = 0;
-      this.listReview1.map(review => {
-        if (review.evaluate != null && review.comment != null) {
-          this.listReview.push(review);
-        }
-      });
-      this.listReview.map(review => {
-        const evaluate = Number(review.evaluate);
-        sum += evaluate;
-      });
-      this.starAverage = sum / this.listReview.length;
-    });
-  }
-
   getAllCategories() {
     this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
       this.listCategory = listCategory;
     });
-  }
-
-  getHouse(id: number) {
-    return this.houseService.getHouse(id).toPromise();
   }
 
   getAllHouseRelated(category: Category) {
@@ -182,9 +135,4 @@ export class ProductDetailComponent implements OnInit {
     const address = this.searchForm.value.name;
     this.router.navigate(['../houses'], {queryParams: {address: address}});
   }
-
-  createMessage() {
-    this.houseService.changeMessage(this.id);
-  }
-
 }

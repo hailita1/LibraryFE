@@ -6,7 +6,6 @@ import {Category} from '../../model/category';
 import {UserToken} from '../../model/user-token';
 import {Item} from '../../model/item';
 import {UserService} from '../../service/user/user.service';
-import {NotificationService} from '../../service/notification/notification.service';
 import {User} from '../../model/user';
 import {NotificationUser} from '../../model/notificationUser';
 import {UserItemComponent} from './user-item/user-item.component';
@@ -37,7 +36,6 @@ export class HeaderComponent implements OnInit {
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,
               private userService: UserService,
-              private notificationService: NotificationService,
               private router: Router) {
     this.authenticationService.currentUser.subscribe(value => {
       this.currentUser = value;
@@ -63,13 +61,6 @@ export class HeaderComponent implements OnInit {
       });
     });
     this.getAllCategories();
-    if (this.currentUser != null) {
-      this.user.id = this.currentUser.id;
-      setInterval(() => {
-        this.getAllNotificationByUser();
-        this.loadFavorite();
-      }, 2000);
-    }
   }
 
   initModal(model: any, type = null): void {
@@ -86,11 +77,6 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  getAllNotificationByUser() {
-    this.notificationService.getAllNotificationByUser(this.user).subscribe(listNotification => {
-      this.listNotification = listNotification;
-    });
-  }
 
   logout() {
     this.authenticationService.logout();
@@ -124,19 +110,5 @@ export class HeaderComponent implements OnInit {
     }
     localStorage.setItem('heart-' + this.currentUser.id, JSON.stringify(heart));
     this.loadFavorite();
-  }
-
-  updateStatus(notification: any) {
-    // tslint:disable-next-line:prefer-const
-    let user: any;
-    user = {
-      id: notification
-    };
-    this.notificationService.updateNotification(user).subscribe();
-    window.location.reload();
-  }
-
-  getNotification(id: number) {
-    return this.notificationService.getNotification(id).toPromise();
   }
 }

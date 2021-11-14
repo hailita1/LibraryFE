@@ -20,11 +20,8 @@ import {HeaderComponent} from './shared/header/header.component';
 import {FooterComponent} from './shared/footer/footer.component';
 import {ContactComponent} from './user/contact/contact.component';
 import {ProductDetailComponent} from './user/product-detail/product-detail.component';
-import {ShoppingCartComponent} from './user/shopping-cart/shopping-cart.component';
-import {CheckoutComponent} from './user/checkout/checkout.component';
 import {CategoryDetailComponent} from './user/category-detail/category-detail.component';
 import {FavoriteComponent} from './user/favorite/favorite.component';
-import {UserOrderComponent} from './user/user-order/user-order.component';
 import {AdminComponent} from './admin/admin.component';
 import {LayoutHostComponent} from './layout/layout-host/layout-host.component';
 import {Login1Component} from './auth/login1/login1.component';
@@ -34,8 +31,6 @@ import {NgbModalModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {UserItemComponent} from './shared/header/user-item/user-item.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
-import {ItemUserOrderComponent} from './user/user-order/item-user-order/item-user-order.component';
-import {VoucherComponent} from './user/voucher/voucher.component';
 import {FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {ResetpassComponent} from './auth/resetpass/resetpass.component';
 import {ChagepasswordComponent} from './shared/header/chagepassword/chagepassword.component';
@@ -54,18 +49,13 @@ import {NgxPayPalModule} from 'ngx-paypal';
     FooterComponent,
     ContactComponent,
     ProductDetailComponent,
-    ShoppingCartComponent,
-    CheckoutComponent,
     CategoryDetailComponent,
     FavoriteComponent,
-    UserOrderComponent,
     AdminComponent,
     LayoutHostComponent,
     Login1Component,
     Register1Component,
     UserItemComponent,
-    ItemUserOrderComponent,
-    VoucherComponent,
     ResetpassComponent,
     ChagepasswordComponent,
     QuickviewComponent

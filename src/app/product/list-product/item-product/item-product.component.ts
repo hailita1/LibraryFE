@@ -2,10 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {ModalDirective} from 'ngx-bootstrap/modal';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {HouseService} from '../../../service/house/house.service';
 import {CategoryService} from '../../../service/category/category.service';
 import {Category} from '../../../model/category';
-import {UtilitieService} from '../../../service/utilitie/utilitie.service';
 import {Utilitie} from '../../../model/utilitie';
 import {AuthenticationService} from '../../../service/auth/authentication.service';
 import {UserToken} from '../../../model/user-token';
@@ -86,9 +84,7 @@ export class ItemProductComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
               private fb: FormBuilder,
-              private  houseService: HouseService,
               private categoryService: CategoryService,
-              private  utilitieService: UtilitieService,
               private authenticationService: AuthenticationService) {
     this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
     if (this.currentUser) {
@@ -135,7 +131,6 @@ export class ItemProductComponent implements OnInit {
   ngOnInit(): void {
     this.submitted = false;
     this.getAllCategory();
-    this.getAllUtilitie();
     this.idUser = JSON.parse(localStorage.getItem('user') || '{id}').id;
   }
 
@@ -267,76 +262,76 @@ export class ItemProductComponent implements OnInit {
         services: this.grid.rowData
       };
     }
-    if (this.isAdd) {
-      this.houseService.createHouse(house).subscribe(res => {
-          this.closeModalReloadData();
-          $(function() {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000
-            });
-
-            Toast.fire({
-              type: 'success',
-              title: 'Thêm mới thành công'
-            });
-          });
-          // this.grid.rowData = [];
-          this.modalReference.dismiss();
-        },
-        err => {
-          $(function() {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000
-            });
-
-            Toast.fire({
-              type: 'error',
-              title: 'Thêm mới thất bại'
-            });
-          });
-        });
-    }
-    if (this.isEdit) {
-      this.houseService.updateHouse(house.id, house).subscribe(res => {
-          this.closeModalReloadData();
-          $(function() {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000
-            });
-
-            Toast.fire({
-              type: 'success',
-              title: 'Cập nhật thành công'
-            });
-          });
-          this.modalReference.dismiss();
-          this.imageObject = [];
-        },
-        err => {
-          $(function() {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000
-            });
-
-            Toast.fire({
-              type: 'error',
-              title: 'Cập nhật thất bại'
-            });
-          });
-        });
-    }
+    // if (this.isAdd) {
+    //   this.houseService.createHouse(house).subscribe(res => {
+    //       this.closeModalReloadData();
+    //       $(function() {
+    //         const Toast = Swal.mixin({
+    //           toast: true,
+    //           position: 'top-end',
+    //           showConfirmButton: false,
+    //           timer: 3000
+    //         });
+    //
+    //         Toast.fire({
+    //           type: 'success',
+    //           title: 'Thêm mới thành công'
+    //         });
+    //       });
+    //       // this.grid.rowData = [];
+    //       this.modalReference.dismiss();
+    //     },
+    //     err => {
+    //       $(function() {
+    //         const Toast = Swal.mixin({
+    //           toast: true,
+    //           position: 'top-end',
+    //           showConfirmButton: false,
+    //           timer: 3000
+    //         });
+    //
+    //         Toast.fire({
+    //           type: 'error',
+    //           title: 'Thêm mới thất bại'
+    //         });
+    //       });
+    //     });
+    // }
+    // if (this.isEdit) {
+    //   this.houseService.updateHouse(house.id, house).subscribe(res => {
+    //       this.closeModalReloadData();
+    //       $(function() {
+    //         const Toast = Swal.mixin({
+    //           toast: true,
+    //           position: 'top-end',
+    //           showConfirmButton: false,
+    //           timer: 3000
+    //         });
+    //
+    //         Toast.fire({
+    //           type: 'success',
+    //           title: 'Cập nhật thành công'
+    //         });
+    //       });
+    //       this.modalReference.dismiss();
+    //       this.imageObject = [];
+    //     },
+    //     err => {
+    //       $(function() {
+    //         const Toast = Swal.mixin({
+    //           toast: true,
+    //           position: 'top-end',
+    //           showConfirmButton: false,
+    //           timer: 3000
+    //         });
+    //
+    //         Toast.fire({
+    //           type: 'error',
+    //           title: 'Cập nhật thất bại'
+    //         });
+    //       });
+    //     });
+    // }
   }
 
   private getDismissReason(reason: any): string {
@@ -361,13 +356,6 @@ export class ItemProductComponent implements OnInit {
   getAllCategory() {
     this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
       this.listCategory = listCategory;
-    });
-  }
-
-
-  getAllUtilitie() {
-    this.utilitieService.getAllUtilitieStatusTrue().subscribe(listUtilitie => {
-      this.listUtilitie = listUtilitie;
     });
   }
 

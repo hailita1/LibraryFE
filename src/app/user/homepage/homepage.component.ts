@@ -5,10 +5,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {UserToken} from '../../model/user-token';
-import {ShoppingCartService} from '../../service/shopping-cart/shopping-cart.service';
-import {ItemService} from '../../service/item/item.service';
 import {House} from '../../model/house';
-import {HouseService} from '../../service/house/house.service';
 import {QuickviewComponent} from './quickview/quickview.component';
 
 declare var $: any;
@@ -36,11 +33,8 @@ export class HomepageComponent implements OnInit {
   conditsion: boolean;
   isCheck = true;
 
-  constructor(private houseService: HouseService,
-              private categoryService: CategoryService,
+  constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,
-              private shoppingCartService: ShoppingCartService,
-              private itemService: ItemService,
               private router: Router) {
     this.authenticationService.currentUser.subscribe(value => {
       this.currentUser = value;
@@ -97,24 +91,6 @@ export class HomepageComponent implements OnInit {
         }
       });
     });
-    this.getAllHouseLatest();
-    this.getAllHouse();
-    this.getAllCategories();
-    this.getAllHouseDiscount();
-    this.getAllHouseNumberHiresDesc();
-  }
-
-  getAllHouse() {
-    this.houseService.getAllHouseStatusTrue().subscribe(listHouse => {
-      this.listHouseFilter = listHouse;
-      if (listHouse.length > 8) {
-        for (let i = 0; i < 8; i++) {
-          this.listHouse.push(listHouse[i]);
-        }
-      } else {
-        this.listHouse = listHouse;
-      }
-    });
   }
 
   getAllCategories() {
@@ -125,42 +101,6 @@ export class HomepageComponent implements OnInit {
 
   initModal(model: any): void {
     this.view.view(model);
-  }
-
-  getAllHouseLatest() {
-    this.houseService.getAllHouseStatusTrue().subscribe(listHouse => {
-      if (listHouse.length > 4) {
-        for (let i = 0; i < 4; i++) {
-          this.listHouseLatest.push(listHouse[i]);
-        }
-      } else {
-        this.listHouseLatest = listHouse;
-      }
-    });
-  }
-
-  getAllHouseDiscount() {
-    this.houseService.findByStatusTrueOrderByDiscountDesc().subscribe(listHouse => {
-      if (listHouse.length > 4) {
-        for (let i = 0; i < 4; i++) {
-          this.listHouseDiscount.push(listHouse[i]);
-        }
-      } else {
-        this.listHouseDiscount = listHouse;
-      }
-    });
-  }
-
-  getAllHouseNumberHiresDesc() {
-    this.houseService.findByOrderByNumberHiresDesc().subscribe(listHouse => {
-      if (listHouse.length > 4) {
-        for (let i = 0; i < 4; i++) {
-          this.listHouseNumberHire.push(listHouse[i]);
-        }
-      } else {
-        this.listHouseNumberHire = listHouse;
-      }
-    });
   }
 
   search() {

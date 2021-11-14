@@ -3,7 +3,6 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {UserService} from '../../service/user/user.service';
 import {Router} from '@angular/router';
 import {User} from '../../model/user';
-import {NotificationService} from '../../service/notification/notification.service';
 
 declare var $: any;
 declare var Swal: any;

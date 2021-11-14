@@ -3,7 +3,6 @@ import {UserToken} from '../../model/user-token';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {Category} from '../../model/category';
 import {CategoryService} from '../../service/category/category.service';
-import {CategoryItemComponent} from '../../host/category/category-item/category-item.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ItemCategoryComponent} from './item-category/item-category.component';
 

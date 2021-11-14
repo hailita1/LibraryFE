@@ -1,12 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {CategoryService} from '../../service/category/category.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ProductService} from '../../service/product/product.service';
 import {Category} from '../../model/category';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Item} from '../../model/item';
-import {Product} from '../../model/product';
-import {HouseService} from '../../service/house/house.service';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {UserToken} from '../../model/user-token';
 
@@ -27,8 +24,6 @@ export class FavoriteComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
               private activatedRoute: ActivatedRoute,
-              private productService: ProductService,
-              private houseService: HouseService,
               private authenticationService: AuthenticationService,
               private router: Router) {
     this.authenticationService.currentUser.subscribe(value => {
@@ -58,27 +53,27 @@ export class FavoriteComponent implements OnInit {
         $button.parent().find('input').val(newVal);
       });
     });
-    this.getAllCategories();
+
     this.loadFavorite();
-    this.activatedRoute.params.subscribe(async params => {
-      var id = params['id'];
-      if (id) {
-        const house = await this.getHouse(id);
-        var item: Item = {
-          product: house
-        };
-        if (localStorage.getItem('heart-' + this.currentUser.id) == null) {
-          let heart: any = [];
-          heart.push(JSON.stringify(item));
-          localStorage.setItem('heart-' + this.currentUser.id, JSON.stringify(heart));
-        } else {
-          this.addProductToFavorite(id, item);
-        }
-        this.loadFavorite();
-      } else {
-        this.loadFavorite();
-      }
-    });
+    // this.activatedRoute.params.subscribe(async params => {
+    //   var id = params['id'];
+    //   if (id) {
+    //     const house = await this.getHouse(id);
+    //     var item: Item = {
+    //       product: house
+    //     };
+    //     if (localStorage.getItem('heart-' + this.currentUser.id) == null) {
+    //       let heart: any = [];
+    //       heart.push(JSON.stringify(item));
+    //       localStorage.setItem('heart-' + this.currentUser.id, JSON.stringify(heart));
+    //     } else {
+    //       this.addProductToFavorite(id, item);
+    //     }
+    //     this.loadFavorite();
+    //   } else {
+    //     this.loadFavorite();
+    //   }
+    // });
   }
 
   remove(id: number): void {
@@ -112,15 +107,6 @@ export class FavoriteComponent implements OnInit {
     }
   }
 
-  getHouse(id: number) {
-    return this.houseService.getHouse(id).toPromise();
-  }
-
-  getAllCategories() {
-    this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
-      this.listCategory = listCategory;
-    });
-  }
 
 
   loadFavorite(): void {

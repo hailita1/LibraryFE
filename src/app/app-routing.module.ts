@@ -5,16 +5,11 @@ import {HomepageComponent} from './user/homepage/homepage.component';
 import {ShopComponent} from './user/shop/shop.component';
 import {ContactComponent} from './user/contact/contact.component';
 import {ProductDetailComponent} from './user/product-detail/product-detail.component';
-import {ShoppingCartComponent} from './user/shopping-cart/shopping-cart.component';
-import {CheckoutComponent} from './user/checkout/checkout.component';
 import {CategoryDetailComponent} from './user/category-detail/category-detail.component';
 import {FavoriteComponent} from './user/favorite/favorite.component';
-import {UserOrderComponent} from './user/user-order/user-order.component';
-import {LayoutHostComponent} from './layout/layout-host/layout-host.component';
 import {AuthGuard} from './helper/auth-guard';
 import {Login1Component} from './auth/login1/login1.component';
 import {Register1Component} from './auth/register1/register1.component';
-import {VoucherComponent} from './user/voucher/voucher.component';
 import {ResetpassComponent} from './auth/resetpass/resetpass.component';
 
 
@@ -36,33 +31,6 @@ const routes: Routes = [
       {
         path: 'category',
         loadChildren: () => import('./category/category.module').then(module => module.CategoryModule)
-      },
-      {
-        path: 'utilities',
-        loadChildren: () => import('./utilities/utilities.module').then(module => module.UtilitiesModule)
-      },
-      {
-        path: 'service',
-        loadChildren: () => import('./servicehouse/servicehouse.module').then(module => module.ServicehouseModule)
-      }
-      ,
-      {
-        path: 'user',
-        loadChildren: () => import('./users/users.module').then(module => module.UsersModule)
-      },
-      {
-        path: 'voucher',
-        loadChildren: () => import('./voucher/voucher.module').then(module => module.VoucherModule)
-      }
-    ],
-  }, {
-    path: 'host',
-    component: LayoutHostComponent,
-    canActivate: [AuthGuard],
-    children: [
-      {
-        path: '',
-        loadChildren: () => import('./host/host.module').then(module => module.HostModule)
       }
     ],
   },
@@ -83,16 +51,8 @@ const routes: Routes = [
     component: ProductDetailComponent
   },
   {
-    path: 'cart',
-    component: ShoppingCartComponent
-  },
-  {
     path: 'favorite',
     component: FavoriteComponent
-  },
-  {
-    path: 'checkout',
-    component: CheckoutComponent
   },
   {
     path: 'category/:id',
@@ -106,16 +66,8 @@ const routes: Routes = [
     component: ResetpassComponent
   },
   {
-    path: 'voucher',
-    component: VoucherComponent
-  },
-  {
     path: 'register',
     component: Register1Component
-  },
-  {
-    path: 'order',
-    component: UserOrderComponent
   },
   {
     path: '**',

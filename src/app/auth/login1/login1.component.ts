@@ -67,7 +67,6 @@ export class Login1Component implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          console.log(data);
           localStorage.setItem('ACCESS_TOKEN', data.accessToken);
           const roleList = data.roles;
           for (const role of roleList) {

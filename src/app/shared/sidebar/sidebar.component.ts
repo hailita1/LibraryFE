@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {UserToken} from "../../model/user-token";
-import {User} from "../../model/user";
-import {Router} from "@angular/router";
-import {AuthenticationService} from "../../service/auth/authentication.service";
+import {UserToken} from '../../model/user-token';
+import {User} from '../../model/user';
+import {Router} from '@angular/router';
+import {AuthenticationService} from '../../service/auth/authentication.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,6 +18,7 @@ export class SidebarComponent {
   constructor(private router: Router,
               private authenticationService: AuthenticationService) {
     this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
+    console.log(this.currentUser);
     if (this.currentUser) {
       const roleList = this.currentUser.roles;
       for (const role of roleList) {
