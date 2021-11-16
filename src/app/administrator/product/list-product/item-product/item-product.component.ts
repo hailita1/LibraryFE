@@ -2,12 +2,12 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {ModalDirective} from 'ngx-bootstrap/modal';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {CategoryService} from '../../../service/category/category.service';
-import {Category} from '../../../model/category';
-import {Utilitie} from '../../../model/utilitie';
-import {AuthenticationService} from '../../../service/auth/authentication.service';
-import {UserToken} from '../../../model/user-token';
-import {House} from '../../../model/house';
+import {CategoryService} from '../../../../service/category/category.service';
+import {Category} from '../../../../model/category';
+import {Utilitie} from '../../../../model/utilitie';
+import {AuthenticationService} from '../../../../service/auth/authentication.service';
+import {UserToken} from '../../../../model/user-token';
+import {House} from '../../../../model/house';
 import * as firebase from 'firebase';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 

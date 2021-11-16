@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {UserToken} from '../../model/user-token';
-import {AuthenticationService} from '../../service/auth/authentication.service';
-import {House} from '../../model/house';
+import {UserToken} from '../../../model/user-token';
+import {AuthenticationService} from '../../../service/auth/authentication.service';
+import {House} from '../../../model/house';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ItemProductComponent} from './item-product/item-product.component';

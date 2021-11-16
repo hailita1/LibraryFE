@@ -18,7 +18,6 @@ export class SidebarComponent {
   constructor(private router: Router,
               private authenticationService: AuthenticationService) {
     this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
-    console.log(this.currentUser);
     if (this.currentUser) {
       const roleList = this.currentUser.roles;
       for (const role of roleList) {

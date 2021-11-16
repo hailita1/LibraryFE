@@ -25,12 +25,12 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'house',
-        loadChildren: () => import('./product/product.module').then(module => module.ProductModule)
+        path: 'document',
+        loadChildren: () => import('./administrator/product/product.module').then(module => module.ProductModule)
       },
       {
         path: 'category',
-        loadChildren: () => import('./category/category.module').then(module => module.CategoryModule)
+        loadChildren: () => import('./administrator/category/category.module').then(module => module.CategoryModule)
       }
     ],
   },

@@ -21,10 +21,18 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item" *ngIf="hasRoleAdmin">
-          <a routerLink="/admin/house" class="nav-link">
+          <a routerLink="/admin/document" class="nav-link">
             <i class="nav-icon fas fa-house-user"></i>
             <p>
-              HomeStay
+              Tài liệu
+            </p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="hasRoleAdmin">
+          <a routerLink="/admin/utilities" class="nav-link">
+            <i class="nav-icon far fa-handshake"></i>
+            <p>
+              Đề tài
             </p>
           </a>
         </li>
@@ -37,10 +45,10 @@
           </a>
         </li>
         <li class="nav-item" *ngIf="hasRoleAdmin">
-          <a routerLink="/admin/utilities" class="nav-link">
-            <i class="nav-icon far fa-handshake"></i>
+          <a routerLink="/admin/voucher" class="nav-link">
+            <i class="nav-icon fas fa-comment-dollar"></i>
             <p>
-              Tiện ích
+              Tác giả
             </p>
           </a>
         </li>
@@ -48,7 +56,7 @@
           <a routerLink="/admin/voucher" class="nav-link">
             <i class="nav-icon fas fa-comment-dollar"></i>
             <p>
-              Voucher
+              Nhà xuất bản
             </p>
           </a>
         </li>
@@ -56,7 +64,7 @@
           <a routerLink="/admin/user" class="nav-link">
             <i class="nav-icon fas fa-users"></i>
             <p>
-              Tài khoản
+              Độc giả
             </p>
           </a>
         </li>

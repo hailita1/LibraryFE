@@ -139,6 +139,9 @@
                 <a class="nav-link" routerLink="#" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
               </div>
             </div>
+            <div class="header__top__right" *ngIf="hasRoleAdmin">
+              <a routerLink="/admin" class="primary-btn">Trang quản trị</a>
+            </div>
           </div>
         </div>
       </div>
