@@ -21,7 +21,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'reader',
+        redirectTo: 'chart',
         pathMatch: 'full'
       },
       {
@@ -47,6 +47,9 @@ const routes: Routes = [
       }, {
         path: 'author',
         loadChildren: () => import('./administrator/author/author.module').then(module => module.AuthorModule)
+      }, {
+        path: 'chart',
+        loadChildren: () => import('./administrator/chart/chart.module').then(module => module.ChartModule)
       }
     ],
   },

@@ -22,7 +22,7 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item" *ngIf="hasRoleAdmin">
           <a routerLink="/admin/document" class="nav-link">
-            <i class="nav-icon fas fa-house-user"></i>
+            <i class="nav-icon fas fa-file-pdf"></i>
             <p>
               Tài liệu
             </p>
@@ -30,7 +30,7 @@
         </li>
         <li class="nav-item" *ngIf="hasRoleAdmin">
           <a routerLink="/admin/topic" class="nav-link">
-            <i class="nav-icon far fa-handshake"></i>
+            <i class="nav-icon fas fa-window-restore"></i>
             <p>
               Đề tài
             </p>
@@ -46,7 +46,7 @@
         </li>
         <li class="nav-item" *ngIf="hasRoleAdmin">
           <a routerLink="/admin/author" class="nav-link">
-            <i class="nav-icon fas fa-comment-dollar"></i>
+            <i class="nav-icon fas fa-user-tie"></i>
             <p>
               Tác giả
             </p>
@@ -54,7 +54,7 @@
         </li>
         <li class="nav-item" *ngIf="hasRoleAdmin">
           <a routerLink="/admin/publishing-company" class="nav-link">
-            <i class="nav-icon fas fa-comment-dollar"></i>
+            <i class="nav-icon fas fa-building"></i>
             <p>
               Nhà xuất bản
             </p>
@@ -65,6 +65,14 @@
             <i class="nav-icon fas fa-users"></i>
             <p>
               Độc giả
+            </p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="hasRoleAdmin">
+          <a routerLink="/admin/chart" class="nav-link">
+            <i class="nav-icon fas fa-chart-bar"></i>
+            <p>
+              Thông kê
             </p>
           </a>
         </li>
