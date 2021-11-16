@@ -51,7 +51,7 @@ export class ProductDetailComponent implements OnInit {
           thumbImage: this.currentHouse.images[i].link
         };
       }
-      this.getAllHouseRelated(this.currentHouse.category);
+      // this.getAllHouseRelated(this.currentHouse.category);
     });
     this.activatedRoute.params.subscribe(res => {
       this.link = '/house/' + res.id;
@@ -114,22 +114,22 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  getAllHouseRelated(category: Category) {
-    this.categoryService.getHouseByCategory(category.id).subscribe(listHouse => {
-      listHouse.map((item, index) => {
-        if (item.id === this.id) {
-          listHouse.splice(index, 1);
-        }
-      });
-      if (listHouse.length > 4) {
-        for (let i = 0; i < 4; i++) {
-          this.relatedHouses.push(listHouse[i]);
-        }
-      } else {
-        this.relatedHouses = listHouse;
-      }
-    });
-  }
+  // getAllHouseRelated(category: Category) {
+  //   this.categoryService.getHouseByCategory(category.id).subscribe(listHouse => {
+  //     listHouse.map((item, index) => {
+  //       if (item.id === this.id) {
+  //         listHouse.splice(index, 1);
+  //       }
+  //     });
+  //     if (listHouse.length > 4) {
+  //       for (let i = 0; i < 4; i++) {
+  //         this.relatedHouses.push(listHouse[i]);
+  //       }
+  //     } else {
+  //       this.relatedHouses = listHouse;
+  //     }
+  //   });
+  // }
 
   search() {
     const address = this.searchForm.value.name;

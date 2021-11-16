@@ -21,7 +21,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'user',
+        redirectTo: 'reader',
         pathMatch: 'full'
       },
       {
@@ -31,6 +31,22 @@ const routes: Routes = [
       {
         path: 'category',
         loadChildren: () => import('./administrator/category/category.module').then(module => module.CategoryModule)
+      },
+      {
+        path: 'topic',
+        loadChildren: () => import('./administrator/topic/topic.module').then(module => module.TopicModule)
+      },
+      {
+        path: 'reader',
+        loadChildren: () => import('./administrator/reader/reader.module').then(module => module.ReaderModule)
+      },
+      {
+        path: 'publishing-company',
+        // tslint:disable-next-line:max-line-length
+        loadChildren: () => import('./administrator/publishing-company/publishing-company.module').then(module => module.PublishingCompanyModule)
+      }, {
+        path: 'author',
+        loadChildren: () => import('./administrator/author/author.module').then(module => module.AuthorModule)
       }
     ],
   },
@@ -39,7 +55,7 @@ const routes: Routes = [
     component: HomepageComponent
   },
   {
-    path: 'houses',
+    path: 'document',
     component: ShopComponent
   },
   {
@@ -47,7 +63,7 @@ const routes: Routes = [
     component: ContactComponent
   },
   {
-    path: 'house/:id',
+    path: 'document/:id',
     component: ProductDetailComponent
   },
   {

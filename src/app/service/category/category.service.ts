@@ -3,7 +3,6 @@ import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Category} from '../../model/category';
-import {House} from '../../model/house';
 
 
 const API_URL = `${environment.apiUrl}`;
@@ -40,9 +39,9 @@ export class CategoryService {
     return this.http.delete<Category>(API_URL + `/categories/${id}`);
   }
 
-  getHouseByCategory(id: number): Observable<House[]> {
-    return this.http.get<House[]>(API_URL + `/categories/${id}/houses`);
-  }
+  // getHouseByCategory(id: number): Observable<House[]> {
+  //   return this.http.get<House[]>(API_URL + `/categories/${id}/houses`);
+  // }
 
   deleteListCategory(id: number[]): Observable<Category> {
     return this.http.post<Category>(API_URL + '/categories/deleteList', id);

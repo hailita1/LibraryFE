@@ -4,7 +4,7 @@ import {AuthenticationService} from '../../../service/auth/authentication.servic
 import {Category} from '../../../model/category';
 import {CategoryService} from '../../../service/category/category.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ItemCategoryComponent} from './item-category/item-category.component';
+import {ItemCategoryComponent} from '../item-category/item-category.component';
 
 declare var $: any;
 declare var Swal: any;

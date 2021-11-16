@@ -6,7 +6,6 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {UserService} from '../../../service/user/user.service';
 import {AuthenticationService} from '../../../service/auth/authentication.service';
-import {House} from '../../../model/house';
 import * as firebase from 'firebase';
 
 declare var $: any;

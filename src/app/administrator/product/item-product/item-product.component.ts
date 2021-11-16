@@ -2,13 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {ModalDirective} from 'ngx-bootstrap/modal';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {CategoryService} from '../../../../service/category/category.service';
-import {Category} from '../../../../model/category';
-import {Utilitie} from '../../../../model/utilitie';
-import {AuthenticationService} from '../../../../service/auth/authentication.service';
-import {UserToken} from '../../../../model/user-token';
-import {House} from '../../../../model/house';
-import * as firebase from 'firebase';
+import {CategoryService} from '../../../service/category/category.service';
+import {Category} from '../../../model/category';
+import {AuthenticationService} from '../../../service/auth/authentication.service';
+import {UserToken} from '../../../model/user-token';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 declare const myTest: any;
@@ -34,7 +31,6 @@ export class ItemProductComponent implements OnInit {
   type: any;
   status;
   listCategory: Category[];
-  listUtilitie: Utilitie[];
   listUtilitieAddToHouse: any[] = [];
   myItems: File[] = [];
   arrayPicture: any[] = [];
@@ -359,70 +355,70 @@ export class ItemProductComponent implements OnInit {
     });
   }
 
-  addUtilitieToHouse(id) {
-    const utilitie1 = this.listUtilitie
-      .filter((utilitie) => utilitie.id == id);
-
-    const utilitie2 = this.listUtilitieAddToHouse
-      .filter((utilitie) => utilitie1[0].id == utilitie.id);
-    if (utilitie2.length == 0) {
-      this.listUtilitieAddToHouse.push(utilitie1[0]);
-    }
-  }
+  // addUtilitieToHouse(id) {
+  //   const utilitie1 = this.listUtilitie
+  //     .filter((utilitie) => utilitie.id == id);
+  //
+  //   const utilitie2 = this.listUtilitieAddToHouse
+  //     .filter((utilitie) => utilitie1[0].id == utilitie.id);
+  //   if (utilitie2.length == 0) {
+  //     this.listUtilitieAddToHouse.push(utilitie1[0]);
+  //   }
+  // }
 
   delete(id) {
     const indexOf = this.listUtilitieAddToHouse.indexOf(id);
     this.listUtilitieAddToHouse.splice(indexOf, 1);
   }
 
-  // Upload avt
-  uploadFile(event) {
-    this.myItems = [];
-    const files = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-      this.myItems.push(files[i]);
-    }
-    this.uploadAll(this.myItems);
-  }
+  // // Upload avt
+  // uploadFile(event) {
+  //   this.myItems = [];
+  //   const files = event.target.files;
+  //   for (let i = 0; i < files.length; i++) {
+  //     this.myItems.push(files[i]);
+  //   }
+  //   this.uploadAll(this.myItems);
+  // }
 
-  uploadAll(imge) {
-    this.isLoading = true;
-    Promise.all(
-      imge.map(file => this.putStorageItem(file))
-    )
-      .then((url) => {
-        this.arrayPicture = url;
-        for (var i = 0; i < this.arrayPicture.length; i++) {
-          this.urlPicture.push(this.arrayPicture[i]);
-          this.imageObject[i] = {
-            image: this.arrayPicture[i].link,
-            thumbImage: this.arrayPicture[i].link
-          };
-        }
-        this.isLoading = false;
-      })
-      .catch((error) => {
-        this.isLoading = false;
-      });
-  }
+  // uploadAll(imge) {
+  //   this.isLoading = true;
+  //   Promise.all(
+  //     imge.map(file => this.putStorageItem(file))
+  //   )
+  //     .then((url) => {
+  //       this.arrayPicture = url;
+  //       for (var i = 0; i < this.arrayPicture.length; i++) {
+  //         this.urlPicture.push(this.arrayPicture[i]);
+  //         this.imageObject[i] = {
+  //           image: this.arrayPicture[i].link,
+  //           thumbImage: this.arrayPicture[i].link
+  //         };
+  //       }
+  //       this.isLoading = false;
+  //     })
+  //     .catch((error) => {
+  //       this.isLoading = false;
+  //     });
+  // }
 
-  putStorageItem(file): Promise<House> {
-    // the return value will be a Promise
-    const metadata = {
-      contentType: 'image/jpeg',
-    };
-    return new Promise<House>((resolve, reject) => {
-      firebase.storage().ref('img/' + Date.now()).put(file, metadata)
-        .then(snapshot => {
-          snapshot.ref.getDownloadURL().then(downloadURL => {
-            const link = {link: downloadURL};
-            // @ts-ignore
-            resolve(link);
-          });
-        })
-        .catch(error => reject(error));
-    });
-  }
+  // putStorageItem(file): Promise<House> {
+  //   // the return value will be a Promise
+  //   const metadata = {
+  //     contentType: 'image/jpeg',
+  //   };
+  //   return new Promise<House>((resolve, reject) => {
+  //     firebase.storage().ref('img/' + Date.now()).put(file, metadata)
+  //       .then(snapshot => {
+  //         snapshot.ref.getDownloadURL().then(downloadURL => {
+  //           const link = {link: downloadURL};
+  //           // @ts-ignore
+  //           resolve(link);
+  //         });
+  //       })
+  //       .catch(error => reject(error));
+  //   });
+  // }
 
   pushDeleteImage(i) {
     const indexOf = this.urlPicture.indexOf(i);

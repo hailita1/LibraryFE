@@ -3,7 +3,6 @@ import {UserToken} from '../../model/user-token';
 import {User} from '../../model/user';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../service/auth/authentication.service';
-import {NotificationUser} from '../../model/notificationUser';
 
 @Component({
   selector: 'app-layout-host',
@@ -15,7 +14,6 @@ export class LayoutHostComponent implements OnInit {
   currentUser: UserToken;
   user: User = {id: 0};
   hasRoleAdmin = false;
-  listNotification: NotificationUser[] = [];
 
   constructor(private router: Router,
               private authenticationService: AuthenticationService) {

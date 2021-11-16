@@ -4,7 +4,7 @@ import {AuthenticationService} from '../../../service/auth/authentication.servic
 import {House} from '../../../model/house';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ItemProductComponent} from './item-product/item-product.component';
+import {ItemProductComponent} from '../item-product/item-product.component';
 
 declare var $: any;
 declare var Swal: any;

@@ -40,7 +40,7 @@ export class CategoryDetailComponent implements OnInit {
     this.sub = this.activatedRoute.paramMap.subscribe(async (paramMap: ParamMap) => {
       const id = +paramMap.get('id');
       this.currentCategory = await this.getCategory(id);
-      this.listHouse = await this.getAllHousetByCategory(this.currentCategory);
+      // this.listHouse = await this.getAllHousetByCategory(this.currentCategory);
     });
     this.authenticationService.currentUser.subscribe(value => {
       this.currentUser = value;
@@ -94,9 +94,9 @@ export class CategoryDetailComponent implements OnInit {
     });
   }
 
-  getAllHousetByCategory(category: Category) {
-    return this.categoryService.getHouseByCategory(category.id).toPromise();
-  }
+  // getAllHousetByCategory(category: Category) {
+  //   return this.categoryService.getHouseByCategory(category.id).toPromise();
+  // }
 
   getCategory(id: number) {
     return this.categoryService.getCategory(id).toPromise();

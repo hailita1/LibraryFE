@@ -6,7 +6,6 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserToken} from '../../model/user-token';
 import {AuthenticationService} from '../../service/auth/authentication.service';
-import {House} from '../../model/house';
 import {QuickviewComponent} from '../homepage/quickview/quickview.component';
 
 declare var $: any;
@@ -21,7 +20,6 @@ export class ShopComponent implements OnInit {
   // @ts-ignore
   @ViewChild(QuickviewComponent) view!: QuickviewComponent;
   listCategory: Category[] = [];
-  listHouse: House[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
   });
@@ -31,8 +29,6 @@ export class ShopComponent implements OnInit {
     upperBound: new FormControl(''),
     lowerBound: new FormControl(''),
   });
-  listHouseSaleOff: House[] = [];
-  listHouseLatest: House[] = [];
   sub: Subscription;
   query: string = '';
   currentUser: UserToken;
@@ -96,9 +92,9 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  initModal(model: any): void {
-    this.view.view(model);
-  }
+  // initModal(model: any): void {
+  //   this.view.view(model);
+  // }
 
   // search() {
   //   this.checkSerch = true;
