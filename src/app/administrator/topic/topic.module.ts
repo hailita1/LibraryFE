@@ -6,17 +6,20 @@ import { ListTopicComponent } from './list-topic/list-topic.component';
 import { ItemTopicComponent } from './item-topic/item-topic.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { MatCheckboxModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatInputModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [ListTopicComponent, ItemTopicComponent],
   imports: [
     CommonModule,
     TopicRoutingModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule 
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModalModule
+  ],
+  entryComponents: [
+    ItemTopicComponent
   ]
 })
 export class TopicModule { }

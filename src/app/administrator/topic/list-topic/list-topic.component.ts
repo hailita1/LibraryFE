@@ -1,14 +1,13 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatTableDataSource, MatSort, MatDialog, DialogPosition, MatDialogConfig } from '@angular/material';
 import {MatPaginator} from '@angular/material/paginator';
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthenticationService } from 'src/app/service/auth/authentication.service';
+import { TopicService } from 'src/app/service/topic/topic.service';
+import { ItemTopicComponent } from '../item-topic/item-topic.component';
+declare var $: any;
+declare var Swal: any;
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
   'blueberry',
@@ -46,79 +45,190 @@ const NAMES: string[] = [
   templateUrl: './list-topic.component.html',
   styleUrls: ['./list-topic.component.scss']
 })
-export class ListTopicComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['select','id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+export class ListTopicComponent implements OnInit {
+  @ViewChild(ItemTopicComponent, {static: false}) view!: ItemTopicComponent;
+  listCategory: any[];
+  currentUser: any;
+  hasRoleUser = false;
+  hasRoleAdmin = false;
+  isDelete = true;
+  id: number;
+  listFilterResult: any[] = [];
+  listDelete: number[] = [];
+  isSelected = true;
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
-
-  constructor() {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
-
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+  constructor(private categoryService: TopicService,
+              private modalService: NgbModal,
+              private authenticationService: AuthenticationService) {
+    this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
+    if (this.currentUser) {
+      const roleList = this.currentUser.roles;
+      for (const role of roleList) {
+        if (role.authority === 'ROLE_USER') {
+          this.hasRoleUser = true;
+        }
+        if (role.authority === 'ROLE_ADMIN') {
+          this.hasRoleAdmin = true;
+        }
+      }
+    }
   }
+
+
   ngOnInit() {
+    this.getAllCategory();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.paginator._intl.itemsPerPageLabel = 'Số bản ghi trên trang';
-    this.paginator._intl.getRangeLabel = this.getRangeDisplayText;
+  getCategoryId(id: number) {
+    this.id = id;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  initModal(model: any, type = null): void {
+    this.view.view(model, type);
+  }
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+  checkAllCheckBox(ev) {
+    this.listCategory.forEach((x) => (x.checked = ev.target.checked));
+    this.changeModel();
+  }
+
+  changeModel() {
+    const selectedCategory = [...this.listCategory]
+      .filter((category) => category.checked)
+      .map((p) => p.id);
+    if (selectedCategory.length > 0) {
+      this.isDelete = false;
+    } else {
+      this.isDelete = true;
     }
   }
-  getRangeDisplayText = (page: number, pageSize: number, length: number) => {
-    const initialText = `Hiển thị dữ liệu`;  // customize this line
-    if (length == 0 || pageSize == 0) {
-      return `${initialText} 0 của ${length}`;
+
+  deleteCategory() {
+    this.categoryService.deleteTopic(this.id).subscribe(() => {
+      this.categoryService.getAllTopic().subscribe(listCategory => {
+        this.listCategory = listCategory;
+      });
+      // tslint:disable-next-line:only-arrow-functions
+      $(function() {
+        $('#modal-delete').modal('hide');
+      });
+      // tslint:disable-next-line:only-arrow-functions
+      $(function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'success',
+          title: 'Xóa thành công'
+        });
+      });
+    }, () => {
+      // tslint:disable-next-line:only-arrow-functions
+      $(function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'error',
+          title: 'Xóa thất bại'
+        });
+      });
+    });
+  }
+
+  getAllCategory() {
+    this.categoryService.getAllTopic().subscribe(listCategory => {
+      this.listCategory = listCategory;
+      this.listFilterResult = this.listCategory;
+      // tslint:disable-next-line:only-arrow-functions
+      $(function() {
+        $('#table-topic').DataTable({
+          paging: true,
+          lengthChange: true,
+          retrieve: true,
+          searching: true,
+          ordering: false,
+          info: false,
+          autoWidth: false
+        });
+      });
+    });
+  }
+
+  deleteListCategory() {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.listCategory.length; i++) {
+      if (this.listCategory[i].checked === true) {
+        this.listDelete.push(this.listCategory[i].id);
+      }
     }
-    length = Math.max(length, 0);
-    const startIndex = page * pageSize;
-    const endIndex = startIndex < length 
-      ? Math.min(startIndex + pageSize, length) 
-      : startIndex + pageSize;
-    return `${initialText} ${startIndex + 1} tới ${endIndex} của ${length}`; // customize this line
-  };
-  selection = new SelectionModel<UserData>(true, []);
+    this.categoryService.deleteListTopic(this.listDelete).subscribe(res => {
+        this.getAllCategory();
+        // tslint:disable-next-line:only-arrow-functions
+        $(function() {
+          $('#modal-delete-list').modal('hide');
+        });
+        // tslint:disable-next-line:only-arrow-functions
+        $(function() {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+          Toast.fire({
+            type: 'success',
+            title: 'Xóa thành công'
+          });
+        });
+        this.listDelete = [];
+        this.isDelete = true;
+      },
+      err => {
+        // tslint:disable-next-line:only-arrow-functions
+        $(function() {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'error',
+            title: 'Xóa thất bại'
+          });
+        });
+      });
+    this.getAllCategory();
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+  changeStatus(event: any) {
+    let list = [];
+    // tslint:disable-next-line: radix
+    switch (parseInt(event)) {
+      case -1:
+        this.listCategory = [...this.listFilterResult];
+        break;
+      case 1:
+        list = [...this.listFilterResult];
+        this.listCategory = list.filter(item => item.status === true);
+        break;
+      case 0:
+        list = [...this.listFilterResult];
+        this.listCategory = list.filter(item => item.status === false);
+        break;
+      default:
+        break;
+    }
   }
-}
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
-    ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) +
-    '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))],
-  };
 }

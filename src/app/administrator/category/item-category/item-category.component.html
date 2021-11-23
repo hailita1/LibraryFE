@@ -30,7 +30,31 @@
           </div>
         </div>
       </div>
+      <div class="form-group">
+        <label>Topic</label>
+        <br>
+        <select formControlName="topicId" class="custom-select" style="width:50%">
+          <option *ngFor="let item of listTopic" [value]="item.id">
+            {{item.name}}
+          </option>
+        </select>
+        <div *ngIf="submitted && formGroup.controls['topicId'].errors?.required">
+          <div
+            *ngIf="formGroup.controls['topicId'].errors?.required"
+            style="color: red"
+          >
+            * Topic không được để trống
+          </div>
+        </div>
+      </div>
 
+      <div class="form-group">
+        <label for="exampleFormControlFile1">Ảnh</label>
+        <input type="file" class="form-control-file" (change)="upload($event.target.files)">
+      </div>
+      <div class="form-group">
+        <img width="100" height="100" [src]="isAdd?apiFileUrl+imageName:apiFileUrl+model.image" alt="Image">
+      </div>
       <div class="form-group" style="display:inline">
         <label for="status">Trạng thái: </label>
         <input type="checkbox" name="status" formControlName="status" id="status"/>
