@@ -79,25 +79,19 @@
           </td>
           <td>
             <div class="row">
-              <div class="col-4" *ngIf="hasRoleUser" style="margin-left: auto; margin-right: auto">
+              <div class="col-4" style="margin-left: auto; margin-right: auto">
                 <button (click)="initModal(category, 'edit')" class="btn btn-block btn-warning"
                         style="color: white">
                   <i class="fas fa-edit"></i>
                 </button>
               </div>
-              <div class="col-4" *ngIf="hasRoleAdmin" style="margin-left: auto; margin-right: auto">
-                <button (click)="initModal(category, 'edit')" class="btn btn-block btn-warning"
-                        style="color: white">
-                  <i class="fas fa-check"></i>
-                </button>
-              </div>
-              <div class="col-4" *ngIf="hasRoleUser" style="margin-left: auto; margin-right: auto">
+              <div class="col-4" style="margin-left: auto; margin-right: auto">
                 <button (click)="initModal(category, 'show')" class="btn btn-block btn-primary"
                         style="color: white">
                   <i class="fas fa-info"></i>
                 </button>
               </div>
-              <div class="col-4" *ngIf="hasRoleAdmin" style="margin-left: auto; margin-right: auto">
+              <div class="col-4" style="margin-left: auto; margin-right: auto">
                 <button type="button" class="btn btn-block btn-danger" style="color: white" data-toggle="modal"
                         data-target="#modal-delete" (click)="getCategoryId(category.id)">
                   <i class="fas fa-trash"></i>

@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:5000',
+  apiUploadUrl: 'http://localhost:5000/files/',
   // firebaseConfig: {
   //   apiKey: 'AIzaSyCeL3JzGaVoZcXpA6yT6AS45WsxXHgCkGs',
   //   authDomain: 'demoupload-d290c.firebaseapp.com',

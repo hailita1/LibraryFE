@@ -5,6 +5,7 @@ import {ListCategoryComponent} from './list-category/list-category.component';
 import {CategoryRoutingModule} from './category-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
+import { MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule } from '@angular/material';
 
 
 @NgModule({
@@ -17,7 +18,10 @@ import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
     CategoryRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    NgbModalModule
+    NgbModalModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
   ]
 })
 export class CategoryModule {
