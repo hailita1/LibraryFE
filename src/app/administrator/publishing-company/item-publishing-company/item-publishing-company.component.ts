@@ -74,7 +74,6 @@ export class ItemPublishingCompanyComponent implements OnInit {
   }
 
   view(model: any, type = null): void {
-    console.log(model);
     this.arrCheck = this.listPublishingCompany;
     this.open(this.childModal);
     this.type = type;

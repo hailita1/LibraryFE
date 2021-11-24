@@ -16,6 +16,11 @@ declare var Swal: any;
   styleUrls: ['./item-category.component.scss']
 })
 export class ItemCategoryComponent implements OnInit {
+
+  // tslint:disable-next-line:max-line-length
+  constructor(private modalService: NgbModal, private fb: FormBuilder, private categoryService: CategoryService, private topic: TopicService, private uploadSevice: UploadService) {
+  }
+
   @ViewChild('content', {static: false}) public childModal!: ModalDirective;
   @Input() listcategorys: Array<any>;
   @Output() eventEmit: EventEmitter<any> = new EventEmitter<any>();
@@ -36,10 +41,7 @@ export class ItemCategoryComponent implements OnInit {
   arrCheck = [];
   formGroup: FormGroup;
   formName = 'thể loại';
-
-  // tslint:disable-next-line:max-line-length
-  constructor(private modalService: NgbModal, private fb: FormBuilder, private categoryService: CategoryService, private topic: TopicService, private uploadSevice: UploadService) {
-  }
+  listTopic: any[] = [];
 
   updateFormType(type: any) {
     switch (type) {
@@ -74,12 +76,9 @@ export class ItemCategoryComponent implements OnInit {
     this.fetchListTopic();
   }
 
-  listTopic: any[] = [];
-
   fetchListTopic() {
     this.topic.getAllTopic().subscribe(res => {
       this.listTopic = res;
-      console.log(this.listTopic);
 
     });
   }
