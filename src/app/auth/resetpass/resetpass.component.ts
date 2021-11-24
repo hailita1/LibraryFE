@@ -65,7 +65,7 @@ export class ResetpassComponent implements OnInit {
       email: this.registerForm.value.email
     };
     if (user.email !== '') {
-      this.userService.resetpassword(user).subscribe(res => {
+      this.userService.resetPassword(user).subscribe(res => {
         this.router.navigate(['/login']).finally(() => {
         });
         this.registerForm.reset();

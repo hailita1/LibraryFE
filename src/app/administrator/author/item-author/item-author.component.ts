@@ -135,6 +135,8 @@ export class ItemAuthorComponent implements OnInit {
     if (this.isEdit) {
       author = {
         name: this.formGroup.get('name').value,
+        academicRank: this.formGroup.get('academicRank').value,
+        degree: this.formGroup.get('degree').value,
         status: this.formGroup.get('status').value,
         id: this.model.id,
       };
@@ -142,6 +144,8 @@ export class ItemAuthorComponent implements OnInit {
       author = {
         name: this.formGroup.get('name').value,
         status: this.formGroup.get('status').value,
+        academicRank: this.formGroup.get('academicRank').value,
+        degree: this.formGroup.get('degree').value,
       };
     }
     if (this.isAdd) {

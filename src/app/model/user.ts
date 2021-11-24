@@ -10,5 +10,6 @@ export interface User {
   telephoneNumber?: string;
   avt?: string;
   checked?: boolean;
+  status?: boolean;
   roles?: [Role];
 }

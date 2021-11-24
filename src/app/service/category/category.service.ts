@@ -19,10 +19,6 @@ export class CategoryService {
     return this.http.get<Category[]>(API_URL + '/categories');
   }
 
-  getAllCategoryStatusTrue(): Observable<Category[]> {
-    return this.http.get<Category[]>(API_URL + '/categories/statusTrue');
-  }
-
   createCategory(category: Category): Observable<Category> {
     return this.http.post<Category>(API_URL + '/categories', category);
   }

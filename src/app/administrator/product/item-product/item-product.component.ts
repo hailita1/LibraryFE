@@ -126,7 +126,7 @@ export class ItemProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.submitted = false;
-    this.getAllCategory();
+    // this.getAllCategory();
     this.idUser = JSON.parse(localStorage.getItem('user') || '{id}').id;
   }
 
@@ -349,11 +349,11 @@ export class ItemProductComponent implements OnInit {
     this.eventEmit.emit('success');
   }
 
-  getAllCategory() {
-    this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
-      this.listCategory = listCategory;
-    });
-  }
+  // getAllCategory() {
+  //   this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
+  //     this.listCategory = listCategory;
+  //   });
+  // }
 
   // addUtilitieToHouse(id) {
   //   const utilitie1 = this.listUtilitie

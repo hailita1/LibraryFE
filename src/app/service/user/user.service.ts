@@ -14,35 +14,35 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  register(user: User): Observable<User> {
+  register(user: any): Observable<any> {
     return this.http.post<User>(API_URL + '/register', user);
   }
 
-  resetpassword(user: User): Observable<User> {
-    return this.http.put<User>(API_URL + '/resetpassword', user);
+  resetPassword(user: any): Observable<any> {
+    return this.http.put<any>(API_URL + '/resetpassword', user);
   }
 
-  registerGoogle(user: User): Observable<User> {
-    return this.http.post<User>(API_URL + '/registerGoogle', user);
+  getAllUser(): Observable<any[]> {
+    return this.http.get<any[]>(API_URL + '/accounts');
   }
 
-  getAllUser(): Observable<User[]> {
-    return this.http.get<User[]>(API_URL + '/accounts');
+  getUser(id: number): Observable<any> {
+    return this.http.post<any>(API_URL + `/accounts`, id);
   }
 
-  getUser(id: number): Observable<User> {
-    return this.http.post<User>(API_URL + `/accounts`, id);
+  updateUser(user: any): Observable<any> {
+    return this.http.put<any>(API_URL + `/accounts`, user);
   }
 
-  updateUser(user: User): Observable<User> {
-    return this.http.put<User>(API_URL + `/accounts`, user);
+  updatePassword(user: any): Observable<any> {
+    return this.http.put<any>(API_URL + `/updatePassword`, user);
   }
 
-  updatePassword(user: User): Observable<User> {
-    return this.http.put<User>(API_URL + `/updatePassword`, user);
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete<any>(API_URL + `/accounts/${id}`);
   }
 
-  deleteUser(id: number): Observable<User> {
-    return this.http.delete<User>(API_URL + `/accounts/${id}`);
+  deleteListReader(id: number[]): Observable<any> {
+    return this.http.post<any>(API_URL + '/deleteList', id);
   }
 }

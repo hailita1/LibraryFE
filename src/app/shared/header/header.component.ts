@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit {
               private userService: UserService,
               private router: Router) {
     this.authenticationService.currentUser.subscribe(value => {
+      console.log(value);
       this.currentUser = value;
     });
     if (this.currentUser) {

@@ -81,18 +81,18 @@ export class CategoryDetailComponent implements OnInit {
       minamount.val('$' + rangeSlider.slider('values', 0));
       maxamount.val('$' + rangeSlider.slider('values', 1));
     });
-    this.getAllCategories();
+    // this.getAllCategories();
   }
 
   initModal(model: any): void {
     this.view.view(model);
   }
 
-  getAllCategories() {
-    this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
-      this.listCategory = listCategory;
-    });
-  }
+  // getAllCategories() {
+  //   this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
+  //     this.listCategory = listCategory;
+  //   });
+  // }
 
   // getAllHousetByCategory(category: Category) {
   //   return this.categoryService.getHouseByCategory(category.id).toPromise();

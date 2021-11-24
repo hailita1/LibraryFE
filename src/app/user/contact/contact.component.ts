@@ -29,14 +29,14 @@ export class ContactComponent implements OnInit {
     $('.hero__categories__all').on('click', function() {
       $('.hero__categories ul').slideToggle(400);
     });
-    this.getAllCategories();
+    // this.getAllCategories();
   }
 
-  getAllCategories() {
-    this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
-      this.listCategory = listCategory;
-    });
-  }
+  // getAllCategories() {
+  //   this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
+  //     this.listCategory = listCategory;
+  //   });
+  // }
 
   search() {
     const address = this.searchForm.value.name;

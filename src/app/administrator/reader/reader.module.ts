@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { ReaderRoutingModule } from './reader-routing.module';
-import { ListReaderComponent } from './list-reader/list-reader.component';
-import { ItemReaderComponent } from './item-reader/item-reader.component';
+import {ReaderRoutingModule} from './reader-routing.module';
+import {ListReaderComponent} from './list-reader/list-reader.component';
+import {ItemReaderComponent} from './item-reader/item-reader.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -12,7 +13,10 @@ import { ItemReaderComponent } from './item-reader/item-reader.component';
     ItemReaderComponent],
   imports: [
     CommonModule,
-    ReaderRoutingModule
+    ReaderRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
-export class ReaderModule { }
+export class ReaderModule {
+}

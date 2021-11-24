@@ -101,18 +101,18 @@ export class ProductDetailComponent implements OnInit {
         $button.parent().find('input').val(newVal);
       });
     });
-    this.getAllCategories();
+    // this.getAllCategories();
   }
 
   initModal(model: any): void {
     this.view.view(model);
   }
 
-  getAllCategories() {
-    this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
-      this.listCategory = listCategory;
-    });
-  }
+  // getAllCategories() {
+  //   this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
+  //     this.listCategory = listCategory;
+  //   });
+  // }
 
   // getAllHouseRelated(category: Category) {
   //   this.categoryService.getHouseByCategory(category.id).subscribe(listHouse => {

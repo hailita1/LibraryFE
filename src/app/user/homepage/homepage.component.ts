@@ -93,11 +93,11 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  getAllCategories() {
-    this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
-      this.listCategory = listCategory;
-    });
-  }
+  // getAllCategories() {
+  //   this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
+  //     this.listCategory = listCategory;
+  //   });
+  // }
 
   initModal(model: any): void {
     this.view.view(model);
