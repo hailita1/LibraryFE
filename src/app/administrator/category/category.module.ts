@@ -5,7 +5,7 @@ import {ListCategoryComponent} from './list-category/list-category.component';
 import {CategoryRoutingModule} from './category-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
-import { MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 
 
 @NgModule({

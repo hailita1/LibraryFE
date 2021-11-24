@@ -5,6 +5,7 @@ import {Category} from '../../../model/category';
 import {CategoryService} from '../../../service/category/category.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ItemCategoryComponent} from '../item-category/item-category.component';
+import {environment} from '../../../../environments/environment';
 
 declare var $: any;
 declare var Swal: any;
@@ -26,6 +27,10 @@ export class ListCategoryComponent implements OnInit {
   listFilterResult: Category[] = [];
   listDelete: number[] = [];
   isSelected = true;
+  apiUrl = environment.apiUrl;
+  apiFileUrl = environment.apiUploadUrl;
+  imageName = '';
+
 
   constructor(private categoryService: CategoryService,
               private modalService: NgbModal,

@@ -1,16 +1,22 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { PublishingCompanyRoutingModule } from './publishing-company-routing.module';
-import { ListPublishingCompanyComponent } from './list-publishing-company/list-publishing-company.component';
-import { ItemPublishingCompanyComponent } from './item-publishing-company/item-publishing-company.component';
+import {PublishingCompanyRoutingModule} from './publishing-company-routing.module';
+import {ListPublishingCompanyComponent} from './list-publishing-company/list-publishing-company.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ItemPublishingCompanyComponent} from './item-publishing-company/item-publishing-company.component';
 
 
 @NgModule({
-  declarations: [ListPublishingCompanyComponent, ItemPublishingCompanyComponent],
+  declarations: [
+    ListPublishingCompanyComponent,
+    ItemPublishingCompanyComponent],
   imports: [
     CommonModule,
-    PublishingCompanyRoutingModule
+    PublishingCompanyRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
-export class PublishingCompanyModule { }
+export class PublishingCompanyModule {
+}

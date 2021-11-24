@@ -45,7 +45,7 @@
               (change)="checkAllCheckBox($event)"
             />
           </th>
-          <th style="width: 10px">#</th>
+          <th style="text-align: center;width: 10px">#</th>
           <th style="text-align: center">Tên đề tài</th>
           <!-- <th style="text-align: center">Trạng thái</th> -->
           <th style="width: 200px; text-align: center" *ngIf="hasRoleAdmin">Thao tác</th>
@@ -79,7 +79,7 @@
           </td> -->
           <td>
             <div class="row">
-              <div class="col-4"  style="margin-left: auto; margin-right: auto">
+              <div class="col-4" style="margin-left: auto; margin-right: auto">
                 <button (click)="initModal(category, 'edit')" class="btn btn-block btn-warning"
                         style="color: white">
                   <i class="fas fa-edit"></i>

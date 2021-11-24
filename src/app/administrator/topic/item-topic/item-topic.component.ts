@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { CategoryService } from 'src/app/service/category/category.service';
 import { TopicService } from 'src/app/service/topic/topic.service';
 declare var $: any;
 declare var Swal: any;
@@ -15,7 +13,7 @@ declare var Swal: any;
 export class ItemTopicComponent implements OnInit {
 
   @ViewChild('content', {static: false}) public childModal!: ModalDirective;
-  @Input() listcategorys: Array<any>;
+  @Input() listtopics: Array<any>;
   @Output() eventEmit: EventEmitter<any> = new EventEmitter<any>();
   closeResult: string;
   checkButton = false;
@@ -33,7 +31,7 @@ export class ItemTopicComponent implements OnInit {
   formGroup: FormGroup;
   formName = 'đề tài';
 
-  constructor(private modalService: NgbModal, private fb: FormBuilder, private  categoryService: TopicService) {
+  constructor(private modalService: NgbModal, private fb: FormBuilder, private  topicService: TopicService) {
   }
 
   updateFormType(type: any) {
@@ -69,7 +67,7 @@ export class ItemTopicComponent implements OnInit {
   }
 
   view(model: any, type = null): void {
-    this.arrCheck = this.listcategorys;
+    this.arrCheck = this.listtopics;
     this.open(this.childModal);
     this.type = type;
     this.model = model;
@@ -106,7 +104,7 @@ export class ItemTopicComponent implements OnInit {
   }
 
   save() {
-    let category: any;
+    let topic: any;
     this.submitted = true;
     if (this.formGroup.invalid) {
       // tslint:disable-next-line:only-arrow-functions
@@ -126,19 +124,19 @@ export class ItemTopicComponent implements OnInit {
       return;
     }
     if (this.isEdit) {
-      category = {
+      topic = {
         name: this.formGroup.get('name').value,
         status: this.formGroup.get('status').value,
         id: this.model.id,
       };
     } else {
-      category = {
+      topic = {
         name: this.formGroup.get('name').value,
         status: this.formGroup.get('status').value,
       };
     }
     if (this.isAdd) {
-      this.categoryService.createTopic(category).subscribe(res => {
+      this.topicService.createTopic(topic).subscribe(res => {
           this.closeModalReloadData();
           // tslint:disable-next-line:only-arrow-functions
           $(function() {
@@ -174,7 +172,7 @@ export class ItemTopicComponent implements OnInit {
         });
     }
     if (this.isEdit) {
-      this.categoryService.updateTopic(category.id, category).subscribe(res => {
+      this.topicService.updateTopic(topic.id, topic).subscribe(res => {
           this.closeModalReloadData();
           // tslint:disable-next-line:only-arrow-functions
           $(function() {

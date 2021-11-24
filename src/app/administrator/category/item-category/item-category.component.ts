@@ -3,9 +3,9 @@ import {ModalDirective} from 'ngx-bootstrap/modal';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CategoryService} from '../../../service/category/category.service';
-import { TopicService } from 'src/app/service/topic/topic.service';
-import { UploadService } from 'src/app/service/upload/upload.service';
-import { environment } from 'src/environments/environment';
+import {TopicService} from 'src/app/service/topic/topic.service';
+import {UploadService} from 'src/app/service/upload/upload.service';
+import {environment} from 'src/environments/environment';
 
 declare var $: any;
 declare var Swal: any;
@@ -16,7 +16,6 @@ declare var Swal: any;
   styleUrls: ['./item-category.component.scss']
 })
 export class ItemCategoryComponent implements OnInit {
-
   @ViewChild('content', {static: false}) public childModal!: ModalDirective;
   @Input() listcategorys: Array<any>;
   @Output() eventEmit: EventEmitter<any> = new EventEmitter<any>();
@@ -29,7 +28,7 @@ export class ItemCategoryComponent implements OnInit {
   title = '';
   type: any;
   status;
-  imageName = "";
+  imageName = '';
   apiUrl = environment.apiUrl;
   apiFileUrl = environment.apiUploadUrl;
   model: any;
@@ -38,7 +37,8 @@ export class ItemCategoryComponent implements OnInit {
   formGroup: FormGroup;
   formName = 'thể loại';
 
-  constructor(private modalService: NgbModal, private fb: FormBuilder, private  categoryService: CategoryService, private topic: TopicService, private uploadSevice: UploadService) {
+  // tslint:disable-next-line:max-line-length
+  constructor(private modalService: NgbModal, private fb: FormBuilder, private categoryService: CategoryService, private topic: TopicService, private uploadSevice: UploadService) {
   }
 
   updateFormType(type: any) {
@@ -73,14 +73,17 @@ export class ItemCategoryComponent implements OnInit {
     this.submitted = false;
     this.fetchListTopic();
   }
+
   listTopic: any[] = [];
-  fetchListTopic(){
+
+  fetchListTopic() {
     this.topic.getAllTopic().subscribe(res => {
       this.listTopic = res;
       console.log(this.listTopic);
-      
+
     });
   }
+
   view(model: any, type = null): void {
     this.arrCheck = this.listcategorys;
     this.open(this.childModal);
@@ -92,29 +95,31 @@ export class ItemCategoryComponent implements OnInit {
       this.formGroup = this.fb.group({
         name: [{value: null, disabled: this.isInfo}, [Validators.required]],
         status: [{value: false, disabled: this.isInfo}],
-        topicId: [{value: null, disabled: this.isInfo},[Validators.required]],
+        topicId: [{value: null, disabled: this.isInfo}, [Validators.required]],
       });
     } else {
       this.formGroup = this.fb.group({
         name: [{value: this.model.name, disabled: true}, [Validators.required]],
         status: [{value: this.model.status, disabled: this.isInfo}],
-        topicId: [{value: this.model.topic.id, disabled: this.isInfo},[Validators.required]],
+        topicId: [{value: this.model.topic.id, disabled: this.isInfo}, [Validators.required]],
       });
     }
   }
-  upload(files: File[]){
-    //pick from one of the 4 styles of file uploads below
+
+  upload(files: File[]) {
+    // pick from one of the 4 styles of file uploads below
     this.basicUpload(files);
   }
-  basicUpload(files: File[]){
+
+  basicUpload(files: File[]) {
     var formData = new FormData();
-    Array.from(files).forEach(f => formData.append('file', f))
+    Array.from(files).forEach(f => formData.append('file', f));
     this.uploadSevice.uploadBasic(formData)
       .subscribe(event => {
-        
         this.imageName = event.message;
-      })
+      });
   }
+
   // tslint:disable-next-line:typedef
   open(content: any) {
     this.modalReference = this.modalService.open(content, {
@@ -156,7 +161,7 @@ export class ItemCategoryComponent implements OnInit {
       category = {
         name: this.formGroup.get('name').value,
         status: this.formGroup.get('status').value,
-        topic: this.listTopic.filter(x=> x.id == this.formGroup.get('topicId').value)[0],
+        topic: this.listTopic.filter(x => x.id == this.formGroup.get('topicId').value)[0],
         id: this.model.id,
         image: this.imageName
       };
@@ -164,7 +169,7 @@ export class ItemCategoryComponent implements OnInit {
       category = {
         name: this.formGroup.get('name').value,
         status: this.formGroup.get('status').value,
-        topic: this.listTopic.filter(x=> x.id == this.formGroup.get('topicId').value)[0],
+        topic: this.listTopic.filter(x => x.id == this.formGroup.get('topicId').value)[0],
         image: this.imageName
       };
     }
