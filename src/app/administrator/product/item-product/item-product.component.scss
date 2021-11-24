@@ -19,3 +19,17 @@ th {
 .error {
   color: red;
 }
+.long-text{
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  color: black;
+  font-weight: 400;
+  font-size: 15px;
+  text-transform: capitalize;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  transition: all 0.3s ease 0s;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical;
+}

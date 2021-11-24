@@ -13,10 +13,10 @@
   <div class="modal-body">
     <form [formGroup]="formGroup" (ngSubmit)="save()">
       <div class="row">
-        <div class="col-6">
+        <div class="col-12">
           <div class="row">
-            <div class="form-group col-9">
-              <label>Tên nhà</label>
+            <div class="form-group col-6">
+              <label>Tên tài liệu</label>
               <input
                 type="text"
                 name=""
@@ -34,23 +34,31 @@
               </div>
             </div>
             <div class="form-group col-3">
-              <label for="discount">Giảm giá (%)</label>
+              <label for="discount">Thể loại</label>
               <select class="form-control select2 select2-primary" id="discount" name="discount"
-                      formControlName="discount" data-dropdown-css-class="select2-primary"
+                      formControlName="category" data-dropdown-css-class="select2-primary"
                       style="width: 100%; margin-left: 0px">
-                <option value="0">0</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-                <option value="30">30</option>
-                <option value="35">35</option>
-                <option value="40">40</option>
+                <option *ngFor="let item of listCategory" [value]="item.id">{{item.name}}</option>
               </select>
-              <div *ngIf="submitted && formGroup.controls['discount'].errors?.required">
+              <div *ngIf="submitted && formGroup.controls['category'].errors?.required">
                 <div
-                  *ngIf="formGroup.controls['discount'].errors?.required"
+                  *ngIf="formGroup.controls['category'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-3">
+              <label for="discount">Nhà xuất bản</label>
+              <select class="form-control select2 select2-primary" id="discount" name="discount"
+                      formControlName="company" data-dropdown-css-class="select2-primary"
+                      style="width: 100%; margin-left: 0px">
+                <option *ngFor="let item of listPublishing" [value]="item.id">{{item.name}}</option>
+              </select>
+              <div *ngIf="submitted && formGroup.controls['company'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['company'].errors?.required"
                   style="color: red"
                 >
                   * Không để trống
@@ -58,26 +66,78 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <label>Địa chỉ</label>
-            <input
-              type="text"
-              name=""
-              class="form-control"
-              formControlName="address"
-              id="address"
-            />
-            <div *ngIf="submitted && formGroup.controls['address'].errors?.required">
-              <div
-                *ngIf="formGroup.controls['address'].errors?.required"
-                style="color: red"
-              >
-                * Không để trống
+          <div class="row">
+            <div class="form-group col-3">
+              <label>Năm xuất bản</label>
+              <input
+                type="text"
+                name=""
+                class="form-control"
+                formControlName="publishingYear"
+                id="name"
+              />
+              <div *ngIf="submitted && formGroup.controls['publishingYear'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['publishingYear'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-3">
+              <label>Số trang</label>
+              <input
+                type="number"
+                name=""
+                class="form-control"
+                formControlName="pageNumber"
+                id="name"
+              />
+              <div *ngIf="submitted && formGroup.controls['pageNumber'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['pageNumber'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-3">
+              <label for="discount">Tác giả</label>
+              <select class="form-control select2 select2-primary" id="discount" name="discount"
+                      formControlName="mainAuthor" data-dropdown-css-class="select2-primary"
+                      style="width: 100%; margin-left: 0px">
+                <option *ngFor="let item of listAuthor" [value]="item.id">{{item.name}}</option>
+              </select>
+              <div *ngIf="submitted && formGroup.controls['mainAuthor'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['mainAuthor'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-3">
+              <label for="discount">Đồng tác giả</label>
+              <select (change)="addUtilitieToHouse($event.target.value)" class="form-control select2 select2-primary" id="discount" name="discount"
+                      formControlName="mainAuthor" data-dropdown-css-class="select2-primary"
+                      style="width: 100%; margin-left: 0px">
+                <option *ngFor="let item of listAuthor" [value]="item.id">{{item.name}}</option>
+              </select>
+              <div *ngIf="submitted && formGroup.controls['mainAuthor'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['mainAuthor'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
               </div>
             </div>
           </div>
           <div class="row">
-            <label for="category">Tiện ích cho HomeStay</label>
+            <label for="category">Đồng tác giả</label>
             <table style="width: 100%;" id="list-Utilitie">
               <tr
                 *ngFor="
@@ -85,7 +145,7 @@
                       let i = index
                     ">
                 <td><label>- {{utilitieAddToHouse.name}}</label></td>
-                <td [hidden]="!isInfo" style="width: 30px">
+                <td style="width: 30px">
                   <button type="button" class="btn btn-block btn-danger" style="color: white"
                           (click)="delete(utilitieAddToHouse)">
                     <i class="fas fa-trash-alt"></i>
@@ -100,185 +160,15 @@
                               [pageSize]="pageSizeUtilitie"
                               [collectionSize]="this.listUtilitieAddToHouse.length"></ngb-pagination>
             </div>
-            <div *ngIf="submitted && formGroup.controls['utilitie'].errors?.required">
-              <div
-                *ngIf="formGroup.controls['utilitie'].errors?.required"
-                style="color: red"
-              >
-                * Không để trống
-              </div>
-            </div>
           </div>
         </div>
         <div class="col-6">
-          <div class="row">
-            <div class="form-group col-6">
-              <label>Giá thuê (VNĐ / ngày)</label>
-              <input
-                type="number"
-                name=""
-                class="form-control"
-                formControlName="price"
-                id="price"
-              />
-              <div *ngIf="submitted && formGroup.controls['price'].errors?.required">
-                <div
-                  *ngIf="formGroup.controls['price'].errors?.required"
-                  style="color: red"
-                >
-                  * Không để trống
-                </div>
-              </div>
-            </div>
-            <div class="form-group col-6">
-              <label>Số lượng phòng</label>
-              <input
-                type="number"
-                name=""
-                class="form-control"
-                formControlName="numberRoom"
-                id="numberRoom"
-              />
-              <div *ngIf="submitted && formGroup.controls['numberRoom'].errors?.required">
-                <div
-                  *ngIf="formGroup.controls['numberRoom'].errors?.required"
-                  style="color: red"
-                >
-                  * Không để trống
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-group col-6">
-              <label>Diện tích (m²)</label>
-              <input
-                type="number"
-                name=""
-                class="form-control"
-                formControlName="acreage"
-                id="acreage"
-              />
-              <div *ngIf="submitted && formGroup.controls['acreage'].errors?.required">
-                <div
-                  *ngIf="formGroup.controls['acreage'].errors?.required"
-                  style="color: red"
-                >
-                  * Không để trống
-                </div>
-              </div>
-            </div>
-            <div class="form-group col-6">
-              <label for="category">Thể loại</label>
-              <select class="form-control select2 select2-primary" id="category" name="category"
-                      formControlName="category" data-dropdown-css-class="select2-primary"
-                      style="width: 100%; margin-left: 0px">
-                <option *ngFor="let category of listCategory" [value]="category.id">{{category.name}}</option>
-              </select>
-              <div *ngIf="submitted && formGroup.controls['category'].errors?.required">
-                <div
-                  *ngIf="formGroup.controls['category'].errors?.required"
-                  style="color: red"
-                >
-                  * Không để trống
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="form-group">
-            <label for="category">Dịch vụ cho HomeStay</label>
-            <button
-              [hidden]="!isInfo"
-              type="button"
-              (click)="addMeta($event)"
-              style="float: right; margin-bottom: 10px; border-radius: 5px"
-              class="btn-success"
-            >
-              <i class="fas fa-plus"></i>
-            </button>
-            <table id="basicTable">
-              <tbody>
-              <tr
-                *ngFor="let data of grid.rowData | slice: (pageService - 1) * pageSizeService:(pageService - 1) * pageSizeService + pageSizeService; let i = index">
-                <td><input
-                  [disabled]="!isInfo"
-                  [ngModelOptions]="{ standalone: true }"
-                  type="text"
-                  [(ngModel)]="data.name"
-                  placeholder="Tên dịch vụ"
-                />
-                  <div *ngIf="submitted">
-                    <div
-                      *ngIf="data.validName"
-                      style="color: red"
-                    >
-                      * Không để trống
-                    </div>
-                  </div>
-                </td>
-                <td><input
-                  [disabled]="!isInfo"
-                  [ngModelOptions]="{ standalone: true }"
-                  type="number"
-                  [(ngModel)]="data.price"
-                  placeholder="Giá dịch vụ"
-                /> VNĐ
-                  <div *ngIf="submitted">
-                    <div
-                      *ngIf="data.validPrice"
-                      style="color: red"
-                    >
-                      * Không để trống
-                    </div>
-                  </div>
-                </td>
-                <td [hidden]="!isInfo">
-                  <button
-                    [disabled]="isInfo"
-                    type="button"
-                    class="btn btn-danger"
-                    (click)="btnDeleteClickedHandler(data)"
-                    title="Xóa"
-                    [hidden]="isInfo"
-                  >
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-            <div class="col-12" style="display: flex; justify-content: center;align-items: center; margin-top: 15px">
-              <ngb-pagination *ngIf="grid.rowData.length "
-                              [ellipses]="true" [rotate]="true"
-                              [boundaryLinks]="true" [(page)]="pageService"
-                              [pageSize]="pageSizeImage"
-                              [collectionSize]="grid.rowData.length"></ngb-pagination>
-            </div>
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="form-group pad">
-            <label for="description">Mô tả chi tiết</label>
-            <ckeditor [editor]="Editor" formControlName="description"
-                      id="description">>
-            </ckeditor>
-          </div>
-          <div *ngIf="submitted && formGroup.controls['description'].errors?.required">
-            <div
-              *ngIf="formGroup.controls['description'].errors?.required"
-              style="color: red"
-            >
-              * Không để trống
-            </div>
-          </div>
-        </div>
-        <div class="col-12" [hidden]="!isInfo">
-          <div class="form-group">
-            <label for="image">Chọn ảnh HomeStay</label>
+            <label for="image">Chọn ảnh tài liệu</label>
             <div class="input-group">
               <div class="custom-file">
-                <input [disabled]="isInfo" type="file" class="custom-file-input" (change)="uploadFile($event)"
-                       multiple="multiple" id="image" name="image">
+                <input [disabled]="isInfo" type="file" class="custom-file-input" (change)="upload($event.target.files, 0)"
+                       id="image" name="image">
                 <label class="custom-file-label">Choose file</label>
               </div>
               <div *ngIf="isLoading" class=" spinner-border" role="status">
@@ -287,13 +177,29 @@
             </div>
           </div>
         </div>
-        <div class="col-12" [hidden]="!isInfo">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="image">Chọn file đính kèm</label>
+            <div class="input-group">
+              <div class="custom-file">
+                <input [disabled]="isInfo" type="file" class="custom-file-input" (change)="upload($event.target.files, 1)"
+                       id="image" name="image">
+                <label class="custom-file-label">Choose file</label>
+              </div>
+              <div *ngIf="isLoading" class=" spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <h4 class="long-text">{{fileName}}</h4>
+          </div>
+        </div>
+        <div class="col-6">
           <div class=" clearfix col-lg-3 col-md-4 col-6 float-left"
                *ngFor="let image of urlPicture | slice: (pageImage-1) * pageSizeImage : (pageImage-1) * pageSizeImage + pageSizeImage index as i ">
             <div class="img-galary">
               <p class="d-block mb-4 h-100">
                 <span (click)="pushDeleteImage(image)" class="close">×</span>
-                <img class="img-fluid img-thumbnail" [src]="image.link" alt="" style="width: 200px; height: 200px">
+                <img class="img-fluid img-thumbnail" [src]="apiFileUrl+image" alt="" style="width: 200px; height: 200px">
               </p>
             </div>
           </div>
@@ -306,7 +212,7 @@
                           [pageSize]="pageSizeImage"
                           [collectionSize]="this.urlPicture.length"></ngb-pagination>
         </div>
-        <div class="col-12" [hidden]="isInfo">
+        <!-- <div class="col-12" [hidden]="isInfo">
           <div
             style="width: 1100px; text-align:center;margin:0; padding:0;">
             <ng-image-slider #nav
@@ -316,7 +222,7 @@
                              [imageSize]="{width: '25%', height: 200}"
                              slideImage="1"></ng-image-slider>
           </div>
-        </div>
+        </div> -->
         <div class="col-12" *ngIf="hasRoleAdmin">
           <div class="form-group" style="display:inline">
             <label for="status">Trạng thái: </label>

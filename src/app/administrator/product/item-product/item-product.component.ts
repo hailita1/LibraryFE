@@ -7,6 +7,11 @@ import {Category} from '../../../model/category';
 import {AuthenticationService} from '../../../service/auth/authentication.service';
 import {UserToken} from '../../../model/user-token';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { DocumentService } from 'src/app/service/document/document.service';
+import { PublishingCompanyService } from 'src/app/service/publishing-company/publishing-company.service';
+import { AuthorService } from 'src/app/service/author/author.service';
+import { UploadService } from 'src/app/service/upload/upload.service';
+import { environment } from 'src/environments/environment';
 
 declare const myTest: any;
 declare var $: any;
@@ -30,7 +35,10 @@ export class ItemProductComponent implements OnInit {
   title = '';
   type: any;
   status;
-  listCategory: Category[];
+  listCategory: any[];
+  listPublishing: any[];
+  listAuthor: any[];
+  fileName = '';
   listUtilitieAddToHouse: any[] = [];
   myItems: File[] = [];
   arrayPicture: any[] = [];
@@ -41,7 +49,7 @@ export class ItemProductComponent implements OnInit {
   submitted = false;
   arrCheck = [];
   formGroup: FormGroup;
-  formName = 'HomeStay';
+  formName = 'tài liệu';
   imageObject: Array<object> = [];
 
   currentUser: UserToken;
@@ -50,6 +58,7 @@ export class ItemProductComponent implements OnInit {
   grid: any = {
     rowData: []
   };
+  apiFileUrl = environment.apiUploadUrl;
   pageUtilitie = 1;
   pageSizeUtilitie = 2;
   pageImage = 1;
@@ -81,6 +90,10 @@ export class ItemProductComponent implements OnInit {
   constructor(private modalService: NgbModal,
               private fb: FormBuilder,
               private categoryService: CategoryService,
+              private documentService: DocumentService,
+              private authorService: AuthorService,
+              private uploadSevice: UploadService,
+              private publishingService: PublishingCompanyService,
               private authenticationService: AuthenticationService) {
     this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
     if (this.currentUser) {
@@ -126,10 +139,26 @@ export class ItemProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.submitted = false;
-    // this.getAllCategory();
     this.idUser = JSON.parse(localStorage.getItem('user') || '{id}').id;
+    this.fetchListAuthor();
+    this.fetchListCategory();
+    this.fetchListPublishing();
   }
-
+  fetchListCategory(){
+    this.categoryService.getAllCategory().subscribe(res => {
+      this.listCategory = res;
+    });
+  }
+  fetchListPublishing(){
+    this.publishingService.getAllPublishingCompany().subscribe(res => {
+      this.listPublishing = res;
+    });
+  }
+  fetchListAuthor(){
+    this.authorService.getAllAuthor().subscribe(res => {
+      this.listAuthor = res;
+    });
+  }
   view(model: any, type = null): void {
     console.log(model);
     this.open(this.childModal);
@@ -141,14 +170,12 @@ export class ItemProductComponent implements OnInit {
       this.grid.rowData = [];
       this.formGroup = this.fb.group({
         name: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        address: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        description: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        numberRoom: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        price: [{value: null, disabled: this.isInfo}, [Validators.required]],
         category: [{value: null, disabled: this.isInfo}, [Validators.required]],
         utilitie: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        discount: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        acreage: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        company: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        publishingYear: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        pageNumber: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        mainAuthor: [{value: null, disabled: this.isInfo}, [Validators.required]],
         status: [{value: false, disabled: true}],
       });
     } else {
@@ -164,20 +191,38 @@ export class ItemProductComponent implements OnInit {
         };
       }
       this.formGroup = this.fb.group({
-        name: [{value: this.model.name, disabled: true}, [Validators.required]],
-        address: [{value: this.model.address, disabled: true}, [Validators.required]],
-        description: [{value: this.model.description, disabled: true}, [Validators.required]],
-        numberRoom: [{value: this.model.numberRoom, disabled: true}, [Validators.required]],
-        price: [{value: this.model.price, disabled: true}, [Validators.required]],
-        discount: [{value: this.model.discount, disabled: true}, [Validators.required]],
-        category: [{value: this.model.category.id, disabled: true}, [Validators.required]],
-        utilitie: [{value: this.model.utilitie, disabled: true}, [Validators.required]],
-        acreage: [{value: this.model.acreage, disabled: true}, [Validators.required]],
+        name: [{value: this.model.name, disabled: this.isInfo}, [Validators.required]],
+        category: [{value: this.model.category.id, disabled: this.isInfo}, [Validators.required]],
+        utilitie: [{value: this.model.category.id, disabled: this.isInfo}, [Validators.required]],
+        company: [{value: this.model.publishingCompany.id, disabled: this.isInfo}, [Validators.required]],
+        publishingYear: [{value: this.model.publishingYear, disabled: this.isInfo}, [Validators.required]],
+        mainAuthor: [{value: this.model.mainAuthor, disabled: this.isInfo}, [Validators.required]],
+        pageNumber: [{value: this.model.pageNumber, disabled: this.isInfo}, [Validators.required]],
         status: [{value: this.model.status, disabled: false}]
       });
     }
   }
+  upload(files: File[], type:any) {
+    // pick from one of the 4 styles of file uploads below
+    this.basicUpload(files,  type);
+  }
 
+  basicUpload(files: File[],  type:any) {
+    var formData = new FormData();
+    Array.from(files).forEach(f => formData.append('file', f));
+    this.uploadSevice.uploadBasic(formData)
+      .subscribe(event => {
+        switch (type) {
+          case 0:
+            this.urlPicture.push(event.message);
+            break;
+          case 1:
+            this.fileName = event.message;
+          default:
+            break;
+        }
+      });
+  }
   // tslint:disable-next-line:typedef
   open(content: any) {
     this.modalReference = this.modalService.open(content, {
@@ -214,120 +259,128 @@ export class ItemProductComponent implements OnInit {
       });
       return;
     }
-    console.log(this.grid.rowData);
+    if (this.fileName === null || this.fileName == undefined || this.fileName === '') {
+      $(function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'error',
+          title: 'Kiểm tra thông tin các trường đã nhập'
+        });
+      });
+      return;
+    }
+    console.log(this.formGroup.get('company').value);
+    console.log(this.formGroup.get('mainAuthor').value);
     if (this.isEdit) {
       house = {
+        id: this.model.id,
         name: this.formGroup.get('name').value,
-        address: this.formGroup.get('address').value,
-        description: this.formGroup.get('description').value,
-        acreage: this.formGroup.get('acreage').value,
-        numberRoom: this.formGroup.get('numberRoom').value,
-        discount: this.formGroup.get('discount').value,
-        status: this.formGroup.get('status').value,
-        price: this.formGroup.get('price').value,
+        mainAuthor: this.formGroup.get('mainAuthor').value,
         category: {
           id: this.formGroup.get('category').value
         },
-        utilitie: this.listUtilitieAddToHouse,
-        user: {
-          id: this.idUser
+        publishingCompany: {
+          id: this.formGroup.get('company').value
         },
-        id: this.model.id,
-        images: this.urlPicture,
-        services: this.grid.rowData
+        author: this.listUtilitieAddToHouse,
+        images: this.urlPicture[0],
+        fileName: this.fileName,
+        publishingYear: this.formGroup.get('publishingYear').value,
+        pageNumber: this.formGroup.get('pageNumber').value
       };
     } else {
       house = {
         name: this.formGroup.get('name').value,
-        address: this.formGroup.get('address').value,
-        description: this.formGroup.get('description').value,
-        acreage: this.formGroup.get('acreage').value,
-        numberRoom: this.formGroup.get('numberRoom').value,
-        discount: this.formGroup.get('discount').value,
-        status: this.formGroup.get('status').value,
-        price: this.formGroup.get('price').value,
-        numberHires: 0,
+        mainAuthor: this.formGroup.get('mainAuthor').value,
         category: {
           id: this.formGroup.get('category').value
         },
-        utilitie: this.listUtilitieAddToHouse,
-        user: {
-          id: this.idUser
+        publishingCompany: {
+          id: this.formGroup.get('company').value
         },
-        images: this.urlPicture,
-        services: this.grid.rowData
+        author: this.listUtilitieAddToHouse,
+        images: this.urlPicture[0],
+        fileName: this.fileName,
+        publishingYear: this.formGroup.get('publishingYear').value,
+        pageNumber: this.formGroup.get('pageNumber').value
       };
     }
-    // if (this.isAdd) {
-    //   this.houseService.createHouse(house).subscribe(res => {
-    //       this.closeModalReloadData();
-    //       $(function() {
-    //         const Toast = Swal.mixin({
-    //           toast: true,
-    //           position: 'top-end',
-    //           showConfirmButton: false,
-    //           timer: 3000
-    //         });
-    //
-    //         Toast.fire({
-    //           type: 'success',
-    //           title: 'Thêm mới thành công'
-    //         });
-    //       });
-    //       // this.grid.rowData = [];
-    //       this.modalReference.dismiss();
-    //     },
-    //     err => {
-    //       $(function() {
-    //         const Toast = Swal.mixin({
-    //           toast: true,
-    //           position: 'top-end',
-    //           showConfirmButton: false,
-    //           timer: 3000
-    //         });
-    //
-    //         Toast.fire({
-    //           type: 'error',
-    //           title: 'Thêm mới thất bại'
-    //         });
-    //       });
-    //     });
-    // }
-    // if (this.isEdit) {
-    //   this.houseService.updateHouse(house.id, house).subscribe(res => {
-    //       this.closeModalReloadData();
-    //       $(function() {
-    //         const Toast = Swal.mixin({
-    //           toast: true,
-    //           position: 'top-end',
-    //           showConfirmButton: false,
-    //           timer: 3000
-    //         });
-    //
-    //         Toast.fire({
-    //           type: 'success',
-    //           title: 'Cập nhật thành công'
-    //         });
-    //       });
-    //       this.modalReference.dismiss();
-    //       this.imageObject = [];
-    //     },
-    //     err => {
-    //       $(function() {
-    //         const Toast = Swal.mixin({
-    //           toast: true,
-    //           position: 'top-end',
-    //           showConfirmButton: false,
-    //           timer: 3000
-    //         });
-    //
-    //         Toast.fire({
-    //           type: 'error',
-    //           title: 'Cập nhật thất bại'
-    //         });
-    //       });
-    //     });
-    // }
+    if (this.isAdd) {
+      this.documentService.create(house).subscribe(res => {
+          this.closeModalReloadData();
+          $(function() {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+    
+            Toast.fire({
+              type: 'success',
+              title: 'Thêm mới thành công'
+            });
+          });
+          // this.grid.rowData = [];
+          this.modalReference.dismiss();
+        },
+        err => {
+          $(function() {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+    
+            Toast.fire({
+              type: 'error',
+              title: 'Thêm mới thất bại'
+            });
+          });
+        });
+    }
+    if (this.isEdit) {
+      this.documentService.update(house.id, house).subscribe(res => {
+          this.closeModalReloadData();
+          $(function() {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+    
+            Toast.fire({
+              type: 'success',
+              title: 'Cập nhật thành công'
+            });
+          });
+          this.modalReference.dismiss();
+          this.imageObject = [];
+        },
+        err => {
+          $(function() {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+    
+            Toast.fire({
+              type: 'error',
+              title: 'Cập nhật thất bại'
+            });
+          });
+        });
+    }
   }
 
   private getDismissReason(reason: any): string {
@@ -346,6 +399,8 @@ export class ItemProductComponent implements OnInit {
 
   public closeModalReloadData(): void {
     this.submitted = false;
+    this.fileName = '';
+    this.urlPicture = [];
     this.eventEmit.emit('success');
   }
 
@@ -355,18 +410,22 @@ export class ItemProductComponent implements OnInit {
   //   });
   // }
 
-  // addUtilitieToHouse(id) {
-  //   const utilitie1 = this.listUtilitie
-  //     .filter((utilitie) => utilitie.id == id);
-  //
-  //   const utilitie2 = this.listUtilitieAddToHouse
-  //     .filter((utilitie) => utilitie1[0].id == utilitie.id);
-  //   if (utilitie2.length == 0) {
-  //     this.listUtilitieAddToHouse.push(utilitie1[0]);
-  //   }
-  // }
+  addUtilitieToHouse(id) {
+    console.log(id);
+    
+    const utilitie1 = this.listAuthor
+      .filter((utilitie) => utilitie.id == id);
+  
+    const utilitie2 = this.listUtilitieAddToHouse
+      .filter((utilitie) => utilitie1[0].id == utilitie.id);
+    if (utilitie2.length == 0) {
+      this.listUtilitieAddToHouse.push(utilitie1[0]);
+    }
+  }
 
   delete(id) {
+    console.log(id);
+    
     const indexOf = this.listUtilitieAddToHouse.indexOf(id);
     this.listUtilitieAddToHouse.splice(indexOf, 1);
   }
