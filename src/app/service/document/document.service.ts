@@ -17,16 +17,16 @@ export class DocumentService {
     return this.http.get<any[]>(API_URL + '/documents');
   }
 
-  create(Topic: any): Observable<any> {
-    return this.http.post<any>(API_URL + '/documents', Topic);
+  create(document: any): Observable<any> {
+    return this.http.post<any>(API_URL + '/documents', document);
   }
 
   get(id: number): Observable<any> {
     return this.http.get<any>(API_URL + `/documents/${id}`);
   }
 
-  update(id: number, Topic: any): Observable<any> {
-    return this.http.put<any>(API_URL + `/documents/${id}`, Topic);
+  update(id: number, document: any): Observable<any> {
+    return this.http.put<any>(API_URL + `/documents/${id}`, document);
   }
 
   delete(id: number): Observable<any> {

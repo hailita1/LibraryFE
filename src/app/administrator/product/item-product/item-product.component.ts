@@ -7,11 +7,12 @@ import {Category} from '../../../model/category';
 import {AuthenticationService} from '../../../service/auth/authentication.service';
 import {UserToken} from '../../../model/user-token';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { DocumentService } from 'src/app/service/document/document.service';
-import { PublishingCompanyService } from 'src/app/service/publishing-company/publishing-company.service';
-import { AuthorService } from 'src/app/service/author/author.service';
-import { UploadService } from 'src/app/service/upload/upload.service';
-import { environment } from 'src/environments/environment';
+import {DocumentService} from 'src/app/service/document/document.service';
+import {PublishingCompanyService} from 'src/app/service/publishing-company/publishing-company.service';
+import {AuthorService} from 'src/app/service/author/author.service';
+import {UploadService} from 'src/app/service/upload/upload.service';
+import {environment} from 'src/environments/environment';
+import {Author} from '../../../model/author';
 
 declare const myTest: any;
 declare var $: any;
@@ -39,7 +40,7 @@ export class ItemProductComponent implements OnInit {
   listPublishing: any[];
   listAuthor: any[];
   fileName = '';
-  listUtilitieAddToHouse: any[] = [];
+  listUtilitieAddToHouse: Author[] = [];
   myItems: File[] = [];
   arrayPicture: any[] = [];
   urlPicture: any[] = [];
@@ -144,23 +145,26 @@ export class ItemProductComponent implements OnInit {
     this.fetchListCategory();
     this.fetchListPublishing();
   }
-  fetchListCategory(){
+
+  fetchListCategory() {
     this.categoryService.getAllCategory().subscribe(res => {
       this.listCategory = res;
     });
   }
-  fetchListPublishing(){
+
+  fetchListPublishing() {
     this.publishingService.getAllPublishingCompany().subscribe(res => {
       this.listPublishing = res;
     });
   }
-  fetchListAuthor(){
+
+  fetchListAuthor() {
     this.authorService.getAllAuthor().subscribe(res => {
       this.listAuthor = res;
     });
   }
+
   view(model: any, type = null): void {
-    console.log(model);
     this.open(this.childModal);
     this.type = type;
     this.model = model;
@@ -171,7 +175,6 @@ export class ItemProductComponent implements OnInit {
       this.formGroup = this.fb.group({
         name: [{value: null, disabled: this.isInfo}, [Validators.required]],
         category: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        utilitie: [{value: null, disabled: this.isInfo}, [Validators.required]],
         company: [{value: null, disabled: this.isInfo}, [Validators.required]],
         publishingYear: [{value: null, disabled: this.isInfo}, [Validators.required]],
         pageNumber: [{value: null, disabled: this.isInfo}, [Validators.required]],
@@ -180,10 +183,9 @@ export class ItemProductComponent implements OnInit {
       });
     } else {
       this.imageObject = [];
-      this.listUtilitieAddToHouse = this.model.utilitie;
+      this.listUtilitieAddToHouse = this.model.author;
       this.grid.rowData = this.model.services;
       this.urlPicture = this.model.images;
-      this.listUtilitieAddToHouse = this.model.utilitie;
       for (var i = 0; i < this.urlPicture.length; i++) {
         this.imageObject[i] = {
           image: this.urlPicture[i].link,
@@ -193,7 +195,6 @@ export class ItemProductComponent implements OnInit {
       this.formGroup = this.fb.group({
         name: [{value: this.model.name, disabled: this.isInfo}, [Validators.required]],
         category: [{value: this.model.category.id, disabled: this.isInfo}, [Validators.required]],
-        utilitie: [{value: this.model.category.id, disabled: this.isInfo}, [Validators.required]],
         company: [{value: this.model.publishingCompany.id, disabled: this.isInfo}, [Validators.required]],
         publishingYear: [{value: this.model.publishingYear, disabled: this.isInfo}, [Validators.required]],
         mainAuthor: [{value: this.model.mainAuthor, disabled: this.isInfo}, [Validators.required]],
@@ -202,12 +203,13 @@ export class ItemProductComponent implements OnInit {
       });
     }
   }
-  upload(files: File[], type:any) {
+
+  upload(files: File[], type: any) {
     // pick from one of the 4 styles of file uploads below
-    this.basicUpload(files,  type);
+    this.basicUpload(files, type);
   }
 
-  basicUpload(files: File[],  type:any) {
+  basicUpload(files: File[], type: any) {
     var formData = new FormData();
     Array.from(files).forEach(f => formData.append('file', f));
     this.uploadSevice.uploadBasic(formData)
@@ -223,6 +225,7 @@ export class ItemProductComponent implements OnInit {
         }
       });
   }
+
   // tslint:disable-next-line:typedef
   open(content: any) {
     this.modalReference = this.modalService.open(content, {
@@ -241,7 +244,7 @@ export class ItemProductComponent implements OnInit {
   }
 
   save() {
-    let house: any;
+    let document: any;
     this.submitted = true;
     if (this.formGroup.invalid && this.validCategoryMeta() === false) {
       $(function() {
@@ -275,10 +278,8 @@ export class ItemProductComponent implements OnInit {
       });
       return;
     }
-    console.log(this.formGroup.get('company').value);
-    console.log(this.formGroup.get('mainAuthor').value);
     if (this.isEdit) {
-      house = {
+      document = {
         id: this.model.id,
         name: this.formGroup.get('name').value,
         mainAuthor: this.formGroup.get('mainAuthor').value,
@@ -289,30 +290,30 @@ export class ItemProductComponent implements OnInit {
           id: this.formGroup.get('company').value
         },
         author: this.listUtilitieAddToHouse,
-        images: this.urlPicture[0],
+        image: this.urlPicture[0],
         fileName: this.fileName,
         publishingYear: this.formGroup.get('publishingYear').value,
         pageNumber: this.formGroup.get('pageNumber').value
       };
     } else {
-      house = {
+      document = {
         name: this.formGroup.get('name').value,
-        mainAuthor: this.formGroup.get('mainAuthor').value,
         category: {
           id: this.formGroup.get('category').value
         },
         publishingCompany: {
           id: this.formGroup.get('company').value
         },
-        author: this.listUtilitieAddToHouse,
-        images: this.urlPicture[0],
-        fileName: this.fileName,
         publishingYear: this.formGroup.get('publishingYear').value,
-        pageNumber: this.formGroup.get('pageNumber').value
+        pageNumber: this.formGroup.get('pageNumber').value,
+        fileName: this.fileName,
+        image: this.urlPicture[0],
+        mainAuthor: this.formGroup.get('mainAuthor').value,
+        author: this.listUtilitieAddToHouse
       };
     }
     if (this.isAdd) {
-      this.documentService.create(house).subscribe(res => {
+      this.documentService.create(document).subscribe(res => {
           this.closeModalReloadData();
           $(function() {
             const Toast = Swal.mixin({
@@ -321,7 +322,7 @@ export class ItemProductComponent implements OnInit {
               showConfirmButton: false,
               timer: 3000
             });
-    
+
             Toast.fire({
               type: 'success',
               title: 'Thêm mới thành công'
@@ -338,7 +339,7 @@ export class ItemProductComponent implements OnInit {
               showConfirmButton: false,
               timer: 3000
             });
-    
+
             Toast.fire({
               type: 'error',
               title: 'Thêm mới thất bại'
@@ -347,7 +348,7 @@ export class ItemProductComponent implements OnInit {
         });
     }
     if (this.isEdit) {
-      this.documentService.update(house.id, house).subscribe(res => {
+      this.documentService.update(document.id, document).subscribe(res => {
           this.closeModalReloadData();
           $(function() {
             const Toast = Swal.mixin({
@@ -356,7 +357,7 @@ export class ItemProductComponent implements OnInit {
               showConfirmButton: false,
               timer: 3000
             });
-    
+
             Toast.fire({
               type: 'success',
               title: 'Cập nhật thành công'
@@ -373,7 +374,7 @@ export class ItemProductComponent implements OnInit {
               showConfirmButton: false,
               timer: 3000
             });
-    
+
             Toast.fire({
               type: 'error',
               title: 'Cập nhật thất bại'
@@ -411,11 +412,9 @@ export class ItemProductComponent implements OnInit {
   // }
 
   addUtilitieToHouse(id) {
-    console.log(id);
-    
     const utilitie1 = this.listAuthor
       .filter((utilitie) => utilitie.id == id);
-  
+
     const utilitie2 = this.listUtilitieAddToHouse
       .filter((utilitie) => utilitie1[0].id == utilitie.id);
     if (utilitie2.length == 0) {
@@ -424,60 +423,9 @@ export class ItemProductComponent implements OnInit {
   }
 
   delete(id) {
-    console.log(id);
-    
     const indexOf = this.listUtilitieAddToHouse.indexOf(id);
     this.listUtilitieAddToHouse.splice(indexOf, 1);
   }
-
-  // // Upload avt
-  // uploadFile(event) {
-  //   this.myItems = [];
-  //   const files = event.target.files;
-  //   for (let i = 0; i < files.length; i++) {
-  //     this.myItems.push(files[i]);
-  //   }
-  //   this.uploadAll(this.myItems);
-  // }
-
-  // uploadAll(imge) {
-  //   this.isLoading = true;
-  //   Promise.all(
-  //     imge.map(file => this.putStorageItem(file))
-  //   )
-  //     .then((url) => {
-  //       this.arrayPicture = url;
-  //       for (var i = 0; i < this.arrayPicture.length; i++) {
-  //         this.urlPicture.push(this.arrayPicture[i]);
-  //         this.imageObject[i] = {
-  //           image: this.arrayPicture[i].link,
-  //           thumbImage: this.arrayPicture[i].link
-  //         };
-  //       }
-  //       this.isLoading = false;
-  //     })
-  //     .catch((error) => {
-  //       this.isLoading = false;
-  //     });
-  // }
-
-  // putStorageItem(file): Promise<House> {
-  //   // the return value will be a Promise
-  //   const metadata = {
-  //     contentType: 'image/jpeg',
-  //   };
-  //   return new Promise<House>((resolve, reject) => {
-  //     firebase.storage().ref('img/' + Date.now()).put(file, metadata)
-  //       .then(snapshot => {
-  //         snapshot.ref.getDownloadURL().then(downloadURL => {
-  //           const link = {link: downloadURL};
-  //           // @ts-ignore
-  //           resolve(link);
-  //         });
-  //       })
-  //       .catch(error => reject(error));
-  //   });
-  // }
 
   pushDeleteImage(i) {
     const indexOf = this.urlPicture.indexOf(i);

@@ -36,7 +36,7 @@
       </button>
     </div>
     <div class="card-body">
-      <table class="table table-bordered" id="table-category">
+      <table class="table table-bordered" id="table-document">
         <thead>
         <tr>
           <th scope="col" style="text-align: center;width: 10px">
@@ -47,61 +47,63 @@
           </th>
           <th style="width: 10px">#</th>
           <th style="text-align: center">Tên tài liệu</th>
-          <th style="text-align: center">Thể loại</th>
           <th style="text-align: center">Ảnh</th>
+          <th style="text-align: center">Tác giả chính</th>
           <th style="text-align: center">Trạng thái</th>
           <th style="width: 200px; text-align: center">Thao tác</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let house of listHouse; index as i">
-          <td style="text-align: center" >
+        <tr *ngFor="let document of listDocument; index as i">
+          <td style="text-align: center">
             <input
               type="checkbox"
-              [(ngModel)]="listHouse[i].checked"
+              [(ngModel)]="listDocument[i].checked"
               (ngModelChange)="changeModel()"
-              value="{{ house.id }}"
+              value="{{ document.id }}"
             />
           </td>
           <td style="text-align: center">{{i + 1}}</td>
           <td style="text-align: center">
-            <p>{{house.name}}</p>
+            <p>{{document.name}}</p>
           </td>
           <td style="text-align: center">
-            <p>{{house.address}}</p>
+            <div class="form-group">
+              <img width="150px" height="150px" [src]="apiFileUrl+document.image" alt="Image">
+            </div>
           </td>
           <td style="text-align: center">
-            <p>{{house.numberRoom}}</p>
+            <p>{{document.mainAuthor}}</p>
           </td>
           <td style="text-align: center">
             <label class="status"
                    style="background-color: green; color: #fff;text-align: center;  padding-left: 10px;
   padding-right: 10px;
   border-radius: 5px;vertical-align: middle;"
-                   *ngIf="house.status === true">Đã xác nhận</label>
+                   *ngIf="document.status === true">Đã xác nhận</label>
             <label class="status"
                    style="background-color: red;color:#fff; ;text-align: center; padding-left: 10px;
   padding-right: 10px;
   border-radius: 5px;vertical-align: middle;"
-                   *ngIf="house.status === false">Chờ xác nhận</label>
+                   *ngIf="document.status === false">Chờ xác nhận</label>
           </td>
           <td>
             <div class="row">
               <div class="col-4" *ngIf="hasRoleAdmin" style="margin-left: auto; margin-right: auto">
-                <button (click)="initModal(house, 'edit')" class="btn btn-block btn-warning"
+                <button (click)="initModal(document, 'edit')" class="btn btn-block btn-warning"
                         style="color: white">
                   <i class="fas fa-check"></i>
                 </button>
               </div>
-              <div class="col-4" *ngIf="hasRoleUser" style="margin-left: auto; margin-right: auto">
-                <button (click)="initModal(house, 'show')" class="btn btn-block btn-primary"
+              <div class="col-4" *ngIf="hasRoleAdmin" style="margin-left: auto; margin-right: auto">
+                <button (click)="initModal(document, 'show')" class="btn btn-block btn-primary"
                         style="color: white">
                   <i class="fas fa-info"></i>
                 </button>
               </div>
               <div class="col-4" *ngIf="hasRoleAdmin" style="margin-left: auto; margin-right: auto">
                 <button type="button" class="btn btn-block btn-danger" style="color: white" data-toggle="modal"
-                        data-target="#modal-delete" (click)="getHouseId(house.id)">
+                        data-target="#modal-delete" (click)="getHouseId(document.id)">
                   <i class="fas fa-trash"></i>
                 </button>
               </div>
@@ -126,7 +128,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-          <button type="button" class="btn btn-danger" (click)="deleteCategory()">Xóa</button>
+          <button type="button" class="btn btn-danger" (click)="deleteDocument()">Xóa</button>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -148,7 +150,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-          <button type="button" class="btn btn-danger" (click)="deleteListCategory()">Xóa</button>
+          <button type="button" class="btn btn-danger" (click)="deleteDocument()">Xóa</button>
         </div>
       </div>
       <!-- /.modal-content -->

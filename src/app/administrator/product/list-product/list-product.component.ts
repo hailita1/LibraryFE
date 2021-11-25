@@ -5,7 +5,8 @@ import {House} from '../../../model/house';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ItemProductComponent} from '../item-product/item-product.component';
-import { DocumentService } from 'src/app/service/document/document.service';
+import {DocumentService} from 'src/app/service/document/document.service';
+import {environment} from '../../../../environments/environment';
 
 declare var $: any;
 declare var Swal: any;
@@ -18,7 +19,7 @@ declare var Swal: any;
 export class ListProductComponent implements OnInit {
   // @ts-ignore
   @ViewChild(ItemProductComponent) view!: ItemProductComponent;
-  listHouse: any[];
+  listDocument: any[];
   currentUser: UserToken;
   hasRoleUser = false;
   hasRoleAdmin = false;
@@ -27,9 +28,11 @@ export class ListProductComponent implements OnInit {
   listFilterResult: any[] = [];
   listDelete: number[] = [];
   isSelected = true;
+  apiUrl = environment.apiUrl;
+  apiFileUrl = environment.apiUploadUrl;
 
   constructor(private modalService: NgbModal,
-              private authenticationService: AuthenticationService, private service: DocumentService) {
+              private authenticationService: AuthenticationService, private documentService: DocumentService) {
     this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
     if (this.currentUser) {
       const roleList = this.currentUser.roles;
@@ -46,7 +49,7 @@ export class ListProductComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getAllCategory();
+    this.getAllDocument();
   }
 
   getHouseId(id: number) {
@@ -58,13 +61,13 @@ export class ListProductComponent implements OnInit {
   }
 
   checkAllCheckBox(ev) {
-    this.listHouse.forEach((x) => (x.checked = ev.target.checked));
+    this.listDocument.forEach((x) => (x.checked = ev.target.checked));
     this.changeModel();
   }
 
   changeModel() {
-    const selectedHouse = [...this.listHouse]
-      .filter((house) => house.checked)
+    const selectedHouse = [...this.listDocument]
+      .filter((house) => house.listDocument)
       .map((p) => p.id);
     if (selectedHouse.length > 0) {
       this.isDelete = false;
@@ -72,10 +75,11 @@ export class ListProductComponent implements OnInit {
       this.isDelete = true;
     }
   }
-  deleteCategory() {
-    this.service.delete(this.id).subscribe(() => {
-      this.service.getAll().subscribe(listHouse => {
-        this.listHouse = listHouse;
+
+  deleteDocument() {
+    this.documentService.delete(this.id).subscribe(() => {
+      this.documentService.getAll().subscribe(listHouse => {
+        this.listDocument = listHouse;
       });
       // tslint:disable-next-line:only-arrow-functions
       $(function() {
@@ -113,13 +117,13 @@ export class ListProductComponent implements OnInit {
     });
   }
 
-  getAllCategory() {
-    this.service.getAll().subscribe(listHouse => {
-      this.listHouse = listHouse;
-      this.listFilterResult = this.listHouse;
+  getAllDocument() {
+    this.documentService.getAll().subscribe(listDocument => {
+      this.listDocument = listDocument;
+      this.listFilterResult = this.listDocument;
       // tslint:disable-next-line:only-arrow-functions
       $(function() {
-        $('#table-category').DataTable({
+        $('#table-document').DataTable({
           paging: true,
           lengthChange: true,
           retrieve: true,
@@ -134,13 +138,13 @@ export class ListProductComponent implements OnInit {
 
   deletelistHouse() {
     // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.listHouse.length; i++) {
-      if (this.listHouse[i].checked === true) {
-        this.listDelete.push(this.listHouse[i].id);
+    for (let i = 0; i < this.listDocument.length; i++) {
+      if (this.listDocument[i].checked === true) {
+        this.listDelete.push(this.listDocument[i].id);
       }
     }
-    this.service.deleteList(this.listDelete).subscribe(res => {
-        this.getAllCategory();
+    this.documentService.deleteList(this.listDelete).subscribe(res => {
+        this.getAllDocument();
         // tslint:disable-next-line:only-arrow-functions
         $(function() {
           $('#modal-delete-list').modal('hide');
@@ -178,22 +182,23 @@ export class ListProductComponent implements OnInit {
           });
         });
       });
-    this.getAllCategory();
+    this.getAllDocument();
   }
+
   changeStatus(event: any) {
     let list = [];
     // tslint:disable-next-line: radix
     switch (parseInt(event)) {
       case -1:
-        this.listHouse = [...this.listFilterResult];
+        this.listDocument = [...this.listFilterResult];
         break;
       case 1:
         list = [...this.listFilterResult];
-        this.listHouse = list.filter(item => item.status === true);
+        this.listDocument = list.filter(item => item.status === true);
         break;
       case 0:
         list = [...this.listFilterResult];
-        this.listHouse = list.filter(item => item.status === false);
+        this.listDocument = list.filter(item => item.status === false);
         break;
       default:
         break;

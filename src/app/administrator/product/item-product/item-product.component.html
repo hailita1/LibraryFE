@@ -108,7 +108,7 @@
               <select class="form-control select2 select2-primary" id="discount" name="discount"
                       formControlName="mainAuthor" data-dropdown-css-class="select2-primary"
                       style="width: 100%; margin-left: 0px">
-                <option *ngFor="let item of listAuthor" [value]="item.id">{{item.name}}</option>
+                <option *ngFor="let item of listAuthor" [value]="item.name">{{item.name}}</option>
               </select>
               <div *ngIf="submitted && formGroup.controls['mainAuthor'].errors?.required">
                 <div
@@ -141,13 +141,13 @@
             <table style="width: 100%;" id="list-Utilitie">
               <tr
                 *ngFor="
-                      let utilitieAddToHouse of listUtilitieAddToHouse  | slice: (pageUtilitie-1) * pageSizeUtilitie : (pageUtilitie-1) * pageSizeUtilitie + pageSizeUtilitie;
+                      let author of listUtilitieAddToHouse  | slice: (pageUtilitie-1) * pageSizeUtilitie : (pageUtilitie-1) * pageSizeUtilitie + pageSizeUtilitie;
                       let i = index
                     ">
-                <td><label>- {{utilitieAddToHouse.name}}</label></td>
+                <td><label>- {{author.name}}</label></td>
                 <td style="width: 30px">
                   <button type="button" class="btn btn-block btn-danger" style="color: white"
-                          (click)="delete(utilitieAddToHouse)">
+                          (click)="delete(author)">
                     <i class="fas fa-trash-alt"></i>
                   </button>
                 </td>
