@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit {
-
+  src = "http://localhost:5000/files/VuQuangMinhCV.pdf";
   constructor() { }
 
   ngOnInit() {
