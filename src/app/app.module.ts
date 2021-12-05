@@ -30,13 +30,13 @@ import {NgImageSliderModule} from 'ng-image-slider';
 import {NgbModalModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {UserItemComponent} from './shared/header/user-item/user-item.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
+import {MatDatepickerModule, MatIconModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import {FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {ResetpassComponent} from './auth/resetpass/resetpass.component';
 import {ChagepasswordComponent} from './shared/header/chagepassword/chagepassword.component';
 import {QuickviewComponent} from './user/homepage/quickview/quickview.component';
 import {NgxPayPalModule} from 'ngx-paypal';
-
+import {MatTreeModule} from '@angular/material/tree';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +70,8 @@ import {NgxPayPalModule} from 'ngx-paypal';
     AngularFireDatabaseModule,
     NgxPayPalModule,
     NgImageSliderModule,
+    MatTreeModule,
+    MatIconModule,
     NgbPaginationModule,
     NgbModalModule,
     BrowserAnimationsModule,
