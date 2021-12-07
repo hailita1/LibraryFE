@@ -1,5 +1,7 @@
 .rated {
   color: orange;
 }
-
+pdf-viewer {
+  height: 100vh;
+}
 /*# sourceMappingURL=product-detail.component.css.map */

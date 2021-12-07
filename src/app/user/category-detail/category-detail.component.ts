@@ -8,6 +8,8 @@ import {AuthenticationService} from '../../service/auth/authentication.service';
 import {UserToken} from '../../model/user-token';
 import {House} from '../../model/house';
 import {QuickviewComponent} from '../homepage/quickview/quickview.component';
+import { environment } from 'src/environments/environment';
+import { DocumentService } from 'src/app/service/document/document.service';
 
 declare var $: any;
 
@@ -19,34 +21,45 @@ declare var $: any;
 export class CategoryDetailComponent implements OnInit {
   // @ts-ignore
   @ViewChild(QuickviewComponent) view!: QuickviewComponent;
-  listCategory: Category[] = [];
+  listCategory: any[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
   });
+  fileUrl = environment.apiUrl;
   currentCategory: Category;
-  listHouse: House[] = [];
-  listHouseSaleOff: House[] = [];
+  listHouse: any[] = [];
+  listHouseSaleOff: any[] = [];
   sub: Subscription;
   currentUser: UserToken;
   listHouseLatest: House[] = [];
   isSelected = true;
   page = 1;
-  pageSize = 9;
+  pageDocument = 1;
+  pageSize = 10;
+  pageSizeDocument = 10;
 
   constructor(private categoryService: CategoryService,
+              private documentService: DocumentService,
               private activatedRoute: ActivatedRoute,
               private authenticationService: AuthenticationService,
               private router: Router) {
     this.sub = this.activatedRoute.paramMap.subscribe(async (paramMap: ParamMap) => {
       const id = +paramMap.get('id');
-      this.currentCategory = await this.getCategory(id);
+      this.listCategory = await this.getCategory(id);
       // this.listHouse = await this.getAllHousetByCategory(this.currentCategory);
     });
     this.authenticationService.currentUser.subscribe(value => {
       this.currentUser = value;
     });
   }
-
+  getDocumentByCategory(id:any){
+      this.documentService.findCategories(id).subscribe(res => {
+        this.listHouseSaleOff = res;
+      });
+  }
+  viewDetail(id:any){
+    this.router.navigateByUrl("/document/" + id);
+  }
   ngOnInit() {
     $(document).ready(function() {
       $('.latest-product__slider').owlCarousel({
@@ -99,7 +112,7 @@ export class CategoryDetailComponent implements OnInit {
   // }
 
   getCategory(id: number) {
-    return this.categoryService.getCategory(id).toPromise();
+    return this.categoryService.getCategoryByTopicId(id).toPromise();
   }
 
   search() {
