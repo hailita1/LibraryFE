@@ -7,6 +7,7 @@ import {AuthenticationService} from '../../service/auth/authentication.service';
 import {UserToken} from '../../model/user-token';
 import {House} from '../../model/house';
 import {QuickviewComponent} from './quickview/quickview.component';
+import { TopicService } from 'src/app/service/topic/topic.service';
 
 declare var $: any;
 
@@ -20,7 +21,7 @@ export class HomepageComponent implements OnInit {
   @ViewChild(QuickviewComponent) view!: QuickviewComponent;
   listHouse: House[] = [];
   listHouseFilter: House[] = [];
-  listCategory: Category[] = [];
+  listTopic: any[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
   });
@@ -35,6 +36,7 @@ export class HomepageComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,
+              private topicService: TopicService,
               private router: Router) {
     this.authenticationService.currentUser.subscribe(value => {
       this.currentUser = value;
@@ -42,6 +44,7 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getAllCategories();
     // tslint:disable-next-line:only-arrow-functions
     $(document).ready(function() {
       $('.latest-product__slider').owlCarousel({
@@ -93,11 +96,11 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  // getAllCategories() {
-  //   this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
-  //     this.listCategory = listCategory;
-  //   });
-  // }
+  getAllCategories() {
+    this.topicService.getAllTopic().subscribe(listTopic => {
+      this.listTopic = listTopic;
+    });
+  }
 
   initModal(model: any): void {
     this.view.view(model);

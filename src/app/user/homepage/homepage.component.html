@@ -8,8 +8,31 @@
             <i class="fa fa-bars"></i>
             <span>Thể loại</span>
           </div>
-          <ul *ngFor="let category of listCategory">
-            <li><a [routerLink]="['category',category.id]">{{category.name}}</a></li>
+          <ul *ngFor="let category of listTopic">
+            <li>
+              <div id="accordion">
+                <div class="row">
+                  <div class="col-11">
+              <a [routerLink]="['category',category.id]">{{category.name}}</a>
+
+                  </div>
+                  <div class="col-1 mr-auto">
+                    <button class="btn btn-link" style="float: right;" data-toggle="collapse" data-target="#collapseOne" [attr.data-target]="'#collapse' + category.id" aria-expanded="true" aria-controls="collapseOne">
+                      <i *ngIf="category.categories.length > 0" style="color: black;" class="fa fa-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+                <div [attr.id]="'collapse' + category.id" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                  <div class="card-body">
+                      <div *ngFor="let item of category.categories">
+              <a [routerLink]="['category',category.id]">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                {{item.name}}</a>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </li>
           </ul>
         </div>
       </div>

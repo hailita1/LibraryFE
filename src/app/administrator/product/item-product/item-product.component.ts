@@ -163,8 +163,14 @@ export class ItemProductComponent implements OnInit {
       this.listAuthor = res;
     });
   }
-
+getDocumentById(id: any){
+  this.documentService.get(id).subscribe(res => {
+    this.model = res;
+    console.log(res);
+  });
+}
   view(model: any, type = null): void {
+    this.resetData();
     this.open(this.childModal);
     this.type = type;
     this.model = model;
@@ -179,19 +185,16 @@ export class ItemProductComponent implements OnInit {
         publishingYear: [{value: null, disabled: this.isInfo}, [Validators.required]],
         pageNumber: [{value: null, disabled: this.isInfo}, [Validators.required]],
         mainAuthor: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        author: [{value: null, disabled: this.isInfo}, [Validators.required]],
         status: [{value: false, disabled: true}],
       });
     } else {
       this.imageObject = [];
       this.listUtilitieAddToHouse = this.model.author;
       this.grid.rowData = this.model.services;
-      this.urlPicture = this.model.images;
-      for (var i = 0; i < this.urlPicture.length; i++) {
-        this.imageObject[i] = {
-          image: this.urlPicture[i].link,
-          thumbImage: this.urlPicture[i].link
-        };
-      }
+      this.urlPicture.push(this.model.image);
+      this.fileName = this.model.fileName;
+      this.listUtilitieAddToHouse = this.model.author;
       this.formGroup = this.fb.group({
         name: [{value: this.model.name, disabled: this.isInfo}, [Validators.required]],
         category: [{value: this.model.category.id, disabled: this.isInfo}, [Validators.required]],
@@ -199,6 +202,7 @@ export class ItemProductComponent implements OnInit {
         publishingYear: [{value: this.model.publishingYear, disabled: this.isInfo}, [Validators.required]],
         mainAuthor: [{value: this.model.mainAuthor, disabled: this.isInfo}, [Validators.required]],
         pageNumber: [{value: this.model.pageNumber, disabled: this.isInfo}, [Validators.required]],
+        author: [{value: this.listUtilitieAddToHouse[0].id, disabled: this.isInfo}, [Validators.required]],
         status: [{value: this.model.status, disabled: false}]
       });
     }
@@ -225,7 +229,10 @@ export class ItemProductComponent implements OnInit {
         }
       });
   }
-
+resetData(){
+  this.fileName = '';
+  this.urlPicture = [];
+};
   // tslint:disable-next-line:typedef
   open(content: any) {
     this.modalReference = this.modalService.open(content, {
@@ -273,7 +280,23 @@ export class ItemProductComponent implements OnInit {
 
         Toast.fire({
           type: 'error',
-          title: 'Kiểm tra thông tin các trường đã nhập'
+          title: 'File đính kèm không được để trống'
+        });
+      });
+      return;
+    }
+    if (this.urlPicture === null || this.urlPicture == undefined || this.urlPicture.length === 0) {
+      $(function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'error',
+          title: 'Ảnh không được để trống'
         });
       });
       return;

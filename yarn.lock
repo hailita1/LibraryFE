@@ -1700,6 +1700,11 @@
   "resolved" "https://registry.npmjs.org/@types/node/-/node-13.13.9.tgz"
   "version" "13.13.9"
 
+"@types/pdfjs-dist@~2.1.7":
+  "integrity" "sha512-nQIwcPUhkAIyn7x9NS0lR/qxYfd5unRtfGkMjvpgF4Sh28IXftRymaNmFKTTdejDNY25NDGSIyjwj/BRwAPexg=="
+  "resolved" "https://registry.npmjs.org/@types/pdfjs-dist/-/pdfjs-dist-2.1.7.tgz"
+  "version" "2.1.7"
+
 "@types/q@^0.0.32":
   "integrity" "sha1-vShOV8hPEyXacCur/IKlMoGQwMU="
   "resolved" "https://registry.npmjs.org/@types/q/-/q-0.0.32.tgz"
@@ -6326,6 +6331,15 @@
   dependencies:
     "tslib" "^2.0.0"
 
+"ng2-pdf-viewer@^6.4.1":
+  "integrity" "sha512-A8R9SGa2bu4n+mtagGX8DqBrVAbuROrEgcAOQwCdciYTLAq9EFGEB8TCQZpjvYVaFTNwjKWTMTjFQVEorjbLeQ=="
+  "resolved" "https://registry.npmjs.org/ng2-pdf-viewer/-/ng2-pdf-viewer-6.4.1.tgz"
+  "version" "6.4.1"
+  dependencies:
+    "@types/pdfjs-dist" "~2.1.7"
+    "pdfjs-dist" "~2.5.207"
+    "tslib" "^1.10.0"
+
 "ngx-bootstrap@^6.2.0":
   "integrity" "sha512-5WKHo6/ltkenw4UyXZwED8rODCgp2RGbWurzYzZsF/gH1JO5SN7TJ+AL6kXYk6XM42sDA2WhN9Db+ZPNjiyHnA=="
   "resolved" "https://registry.npmjs.org/ngx-bootstrap/-/ngx-bootstrap-6.2.0.tgz"
@@ -6970,6 +6984,11 @@
     "ripemd160" "^2.0.1"
     "safe-buffer" "^5.0.1"
     "sha.js" "^2.4.8"
+
+"pdfjs-dist@~2.5.207":
+  "integrity" "sha512-xGDUhnCYPfHy+unMXCLCJtlpZaaZ17Ew3WIL0tnSgKFUZXHAPD49GO9xScyszSsQMoutNDgRb+rfBXIaX/lJbw=="
+  "resolved" "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-2.5.207.tgz"
+  "version" "2.5.207"
 
 "performance-now@^2.1.0":
   "integrity" "sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns="
