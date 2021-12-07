@@ -11,8 +11,6 @@ import {AuthGuard} from './helper/auth-guard';
 import {Login1Component} from './auth/login1/login1.component';
 import {Register1Component} from './auth/register1/register1.component';
 import {ResetpassComponent} from './auth/resetpass/resetpass.component';
-
-
 const routes: Routes = [
   {
     path: 'admin',
@@ -74,7 +72,7 @@ const routes: Routes = [
     component: FavoriteComponent
   },
   {
-    path: 'category/:id',
+    path: 'topics/:id',
     component: CategoryDetailComponent
   },
   {

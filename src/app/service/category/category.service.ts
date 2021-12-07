@@ -35,9 +35,12 @@ export class CategoryService {
     return this.http.delete<Category>(API_URL + `/categories/${id}`);
   }
 
-  // getHouseByCategory(id: number): Observable<House[]> {
-  //   return this.http.get<House[]>(API_URL + `/categories/${id}/houses`);
-  // }
+  getCategoryByTopicId(id: number): Observable<any> {
+    var model = {
+      id
+    }
+    return this.http.post<any>(API_URL + `/categories/findTopics`, model);
+  }
 
   deleteListCategory(id: number[]): Observable<Category> {
     return this.http.post<Category>(API_URL + '/categories/deleteList', id);

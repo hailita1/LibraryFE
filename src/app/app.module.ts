@@ -37,6 +37,7 @@ import {ChagepasswordComponent} from './shared/header/chagepassword/chagepasswor
 import {QuickviewComponent} from './user/homepage/quickview/quickview.component';
 import {NgxPayPalModule} from 'ngx-paypal';
 import {MatTreeModule} from '@angular/material/tree';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 @NgModule({
   declarations: [
     AppComponent,
@@ -72,6 +73,7 @@ import {MatTreeModule} from '@angular/material/tree';
     NgImageSliderModule,
     MatTreeModule,
     MatIconModule,
+    PdfViewerModule,
     NgbPaginationModule,
     NgbModalModule,
     BrowserAnimationsModule,

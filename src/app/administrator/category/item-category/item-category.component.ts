@@ -82,7 +82,11 @@ export class ItemCategoryComponent implements OnInit {
 
     });
   }
-
+  getCategoryDetail(id: any){
+    this.categoryService.getCategory(id).subscribe(res => {
+      this.model = res;
+    });
+  }
   view(model: any, type = null): void {
     this.arrCheck = this.listcategorys;
     this.open(this.childModal);
@@ -90,6 +94,8 @@ export class ItemCategoryComponent implements OnInit {
     this.model = model;
     this.submitted = false;
     this.updateFormType(type);
+    console.log(this.model);
+    
     if (model.id === null || model.id === undefined) {
       this.formGroup = this.fb.group({
         name: [{value: null, disabled: this.isInfo}, [Validators.required]],
