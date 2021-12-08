@@ -10,6 +10,9 @@ import {House} from '../../model/house';
 import {Bill} from '../../model/bill';
 import {QuickviewComponent} from '../homepage/quickview/quickview.component';
 import {Service} from '../../model/service';
+import { DocumentService } from 'src/app/service/document/document.service';
+import { environment } from 'src/environments/environment';
+import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 
 declare var $: any;
 
@@ -34,6 +37,7 @@ export class ProductDetailComponent implements OnInit {
   starAverage: number = 0;
   imageObject: Array<object> = [];
   id: any;
+  pageVariable = 1;
   page = 1;
   pageSize = 10;
   listService: Service[] = [];
@@ -41,17 +45,12 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
               private activatedRoute: ActivatedRoute,
+              private documentService: DocumentService,
               private authenticationService: AuthenticationService,
               private router: Router) {
     this.sub = this.activatedRoute.paramMap.subscribe(async (paramMap: ParamMap) => {
       this.id = +paramMap.get('id');
-      for (var i = 0; i < this.currentHouse.images.length; i++) {
-        this.imageObject[i] = {
-          image: this.currentHouse.images[i].link,
-          thumbImage: this.currentHouse.images[i].link
-        };
-      }
-      // this.getAllHouseRelated(this.currentHouse.category);
+      this.getDetailDocument(this.id);
     });
     this.activatedRoute.params.subscribe(res => {
       this.link = '/house/' + res.id;
@@ -61,7 +60,6 @@ export class ProductDetailComponent implements OnInit {
       this.currentUser = value;
     });
   }
-
   ngOnInit() {
     $(document).ready(function() {
       $('.product__details__pic__slider').owlCarousel({
@@ -103,11 +101,21 @@ export class ProductDetailComponent implements OnInit {
     });
     // this.getAllCategories();
   }
-
+  fileUrl = environment.apiUrl;
+  documentDetail:any;
+  src;
+  getDetailDocument(id:any){
+    this.documentService.get(id).subscribe(res => {
+      this.documentDetail = res;
+      this.src = this.fileUrl + '/files/' + this.documentDetail.fileName;
+    });
+  }
   initModal(model: any): void {
     this.view.view(model);
   }
-
+  totalPages;
+  afterLoadComplete(pdf: PDFDocumentProxy) { this.totalPages = pdf.numPages;
+  }
   // getAllCategories() {
   //   this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
   //     this.listCategory = listCategory;
