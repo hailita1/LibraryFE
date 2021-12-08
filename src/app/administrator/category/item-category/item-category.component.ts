@@ -104,7 +104,7 @@ export class ItemCategoryComponent implements OnInit {
       });
     } else {
       this.formGroup = this.fb.group({
-        name: [{value: this.model.name, disabled: true}, [Validators.required]],
+        name: [{value: this.model.name, disabled: this.isInfo}, [Validators.required]],
         status: [{value: this.model.status, disabled: this.isInfo}],
         topicId: [{value: this.model.topic.id, disabled: this.isInfo}, [Validators.required]],
       });
