@@ -6,11 +6,11 @@
         <div class="hero__categories">
           <div class="hero__categories__all">
             <i class="fa fa-bars"></i>
-            <span>Thể loại</span>
+            <span>Danh sách khoa</span>
           </div>
           <ul>
-            <li *ngFor="let category of listCategory"><a
-              [routerLink]="['../../category',category.id]">{{category.name}}</a></li>
+            <li *ngFor="let topic of listTopic"><a
+              [routerLink]="['../../topics',topic.id]">{{topic.name}}</a></li>
           </ul>
         </div>
       </div>
@@ -125,16 +125,17 @@
           </div>
           <div class="row">
             <div style="cursor: pointer;" class="col-lg-3 col-md-3 col-sm-3"
-            *ngFor="let house of listCategory  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;" (click)="getDocumentByCategory(house.id)">
-         <div class="product__discount__item">
-           <div class="product__discount__item__pic set-bg" *ngIf="house.image != null">
-             <img width="100%" height="100%" [src]="fileUrl + '/files/' + house.image" alt="">
-           </div>
-           <div class="product__discount__item__text">
-             <h5>{{house.name}}</h5>
-           </div>
-         </div>
-       </div>
+                 *ngFor="let house of listCategory  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;"
+                 (click)="getDocumentByCategory(house.id)">
+              <div class="product__discount__item">
+                <div class="product__discount__item__pic set-bg" *ngIf="house.image != null">
+                  <img width="100%" height="100%" [src]="fileUrl + '/files/' + house.image" alt="">
+                </div>
+                <div class="product__discount__item__text">
+                  <h5>{{house.name}}</h5>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-12" style="display: flex; justify-content: center;align-items: center">
             <ngb-pagination *ngIf="listCategory.length > pageSize"
@@ -150,7 +151,8 @@
           </div>
           <div class="row">
             <div style="cursor: pointer;" class="col-lg-4 col-md-6 col-sm-6"
-                 *ngFor="let house of listHouseSaleOff  | slice: (pageDocument-1) * pageSizeDocument : ( pageDocument -1) * pageSizeDocument + pageSizeDocument;" (click)="viewDetail(house.id)">
+                 *ngFor="let house of listHouseSaleOff  | slice: (pageDocument-1) * pageSizeDocument : ( pageDocument -1) * pageSizeDocument + pageSizeDocument;"
+                 (click)="viewDetail(house.id)">
               <div class="product__discount__item">
                 <div class="product__discount__item__pic set-bg" *ngIf="house.image != null">
                   <img width="100%" height="100%" [src]="fileUrl + '/files/' + house.image" alt="">

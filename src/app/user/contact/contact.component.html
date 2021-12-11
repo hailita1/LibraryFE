@@ -6,11 +6,11 @@
         <div class="hero__categories">
           <div class="hero__categories__all">
             <i class="fa fa-bars"></i>
-            <span>Danh mục sản phẩm</span>
+            <span>Danh sách khoa</span>
           </div>
           <ul>
-            <li *ngFor="let category of listCategory"><a
-              [routerLink]="['../category',category.id]">{{category.name}}</a></li>
+            <li *ngFor="let topic of listTopic"><a
+              [routerLink]="['../topics',topic.id]">{{topic.name}}</a></li>
           </ul>
         </div>
       </div>
@@ -22,7 +22,7 @@
                 Tất cả
                 <span class="arrow_carrot-down"></span>
               </div>
-              <input type="text" placeholder="Bạn muốn thuê HomeStay ở đâu?" formControlName="name">
+              <input type="text" placeholder="Nhập tên tài liệu bạn muốn tìm ?" formControlName="name">
               <button type="submit" class="site-btn">TÌM KIẾM</button>
             </form>
           </div>

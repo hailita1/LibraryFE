@@ -182,7 +182,6 @@ export class ItemProductComponent implements OnInit {
   getDocumentById(id: any) {
     this.documentService.get(id).subscribe((res) => {
       this.model = res;
-      console.log(res);
     });
   }
   view(model: any, type = null): void {

@@ -7,7 +7,8 @@ import {AuthenticationService} from '../../service/auth/authentication.service';
 import {UserToken} from '../../model/user-token';
 import {House} from '../../model/house';
 import {QuickviewComponent} from './quickview/quickview.component';
-import { TopicService } from 'src/app/service/topic/topic.service';
+import {TopicService} from 'src/app/service/topic/topic.service';
+import {DocumentService} from "../../service/document/document.service";
 
 declare var $: any;
 
@@ -19,22 +20,21 @@ declare var $: any;
 export class HomepageComponent implements OnInit {
   // @ts-ignore
   @ViewChild(QuickviewComponent) view!: QuickviewComponent;
-  listHouse: House[] = [];
-  listHouseFilter: House[] = [];
+  listHouseFilter: any[] = [];
   listTopic: any[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
   });
-  listHouseLatest: House[] = [];
-  listFilterResult: House[] = [];
-  listHouseDiscount: House[] = [];
-  listHouseNumberHire: House[] = [];
+  listFilterResult: any[] = [];
+  listDocumentLatest: any[] = [];
+  listDocumentVisitNumber: any[] = [];
   currentUser: UserToken;
   searchKeyWord: any;
   conditsion: boolean;
   isCheck = true;
 
   constructor(private categoryService: CategoryService,
+              private documentService: DocumentService,
               private authenticationService: AuthenticationService,
               private topicService: TopicService,
               private router: Router) {
@@ -45,8 +45,10 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit() {
     this.getAllCategories();
+    this.getAllDocument();
+    this.getAllDocumentVisitNumber();
     // tslint:disable-next-line:only-arrow-functions
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('.latest-product__slider').owlCarousel({
         loop: true,
         margin: 0,
@@ -59,7 +61,7 @@ export class HomepageComponent implements OnInit {
         autoplay: true
       });
       // tslint:disable-next-line:only-arrow-functions
-      $('.hero__categories__all').on('click', function() {
+      $('.hero__categories__all').on('click', function () {
         $('.hero__categories ul').slideToggle(400);
       });
       $('.categories__slider').owlCarousel({
@@ -107,48 +109,48 @@ export class HomepageComponent implements OnInit {
   }
 
   search() {
-    const address = this.searchForm.value.name;
-    this.router.navigate(['../houses'], {queryParams: {address}});
+    const name = this.searchForm.value.name;
+    this.router.navigate(['../document'], {queryParams: {name}});
   }
 
   searchHN() {
     const address = 'Hà Nội';
-    this.router.navigate(['../houses'], {queryParams: {address}});
+    this.router.navigate(['../document'], {queryParams: {address}});
   }
 
   searchDN() {
     const address = 'Đà Nẵng';
-    this.router.navigate(['../houses'], {queryParams: {address}});
+    this.router.navigate(['../document'], {queryParams: {address}});
   }
 
   searchHCM() {
     const address = 'Hồ Chí Minh';
-    this.router.navigate(['../houses'], {queryParams: {address}});
+    this.router.navigate(['../document'], {queryParams: {address}});
   }
 
   searchQN() {
     const address = 'Quảng Ninh';
-    this.router.navigate(['../houses'], {queryParams: {address}});
+    this.router.navigate(['../document'], {queryParams: {address}});
   }
 
   searchVT() {
     const address = 'Vũng Tàu';
-    this.router.navigate(['../houses'], {queryParams: {address}});
+    this.router.navigate(['../document'], {queryParams: {address}});
   }
 
   searchDL() {
     const address = 'Đà Lạt';
-    this.router.navigate(['../houses'], {queryParams: {address}});
+    this.router.navigate(['../document'], {queryParams: {address}});
   }
 
   searchHA() {
     const address = 'Hội An';
-    this.router.navigate(['../houses'], {queryParams: {address}});
+    this.router.navigate(['../document'], {queryParams: {address}});
   }
 
   searchNT() {
     const address = 'Nha Trang';
-    this.router.navigate(['../houses'], {queryParams: {address}});
+    this.router.navigate(['../document'], {queryParams: {address}});
   }
 
   filterKeyWord() {
@@ -186,6 +188,18 @@ export class HomepageComponent implements OnInit {
         window.clearInterval(scrollToTop);
       }
     }, 16);
+  }
+
+  getAllDocument() {
+    this.documentService.getAll().subscribe(list => {
+      this.listDocumentLatest = list;
+    });
+  }
+
+  getAllDocumentVisitNumber() {
+    this.documentService.getAllByVisitNumber().subscribe(list => {
+      this.listDocumentVisitNumber = list;
+    });
   }
 
 }

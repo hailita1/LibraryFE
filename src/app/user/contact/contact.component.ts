@@ -3,6 +3,7 @@ import {Category} from '../../model/category';
 import {CategoryService} from '../../service/category/category.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
+import {TopicService} from "../../service/topic/topic.service";
 
 declare var $: any;
 
@@ -12,7 +13,7 @@ declare var $: any;
   styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent implements OnInit {
-  listCategory: Category[] = [];
+  listTopic: any[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
   });
@@ -21,7 +22,7 @@ export class ContactComponent implements OnInit {
     email: new FormControl('')
   });
 
-  constructor(private categoryService: CategoryService,
+  constructor(private topicService: TopicService,
               private router: Router) {
   }
 
@@ -29,17 +30,17 @@ export class ContactComponent implements OnInit {
     $('.hero__categories__all').on('click', function() {
       $('.hero__categories ul').slideToggle(400);
     });
-    // this.getAllCategories();
+    this.getAllTopic();
   }
 
-  // getAllCategories() {
-  //   this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
-  //     this.listCategory = listCategory;
-  //   });
-  // }
+  getAllTopic() {
+    this.topicService.getAllTopic().subscribe(listTopic => {
+      this.listTopic = listTopic;
+    });
+  }
 
   search() {
-    const address = this.searchForm.value.name;
-    this.router.navigate(['../houses'], {queryParams: {address: address}});
+    const name = this.searchForm.value.name;
+    this.router.navigate(['../document'], {queryParams: {name: name}});
   }
 }

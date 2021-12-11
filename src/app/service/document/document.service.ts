@@ -16,12 +16,18 @@ export class DocumentService {
   getAll(): Observable<any[]> {
     return this.http.get<any[]>(API_URL + '/documents');
   }
-  findCategories(id:any):Observable<any> {
+
+  getAllByVisitNumber(): Observable<any[]> {
+    return this.http.get<any[]>(API_URL + '/documents/visitNumber');
+  }
+
+  findCategories(id: any): Observable<any> {
     var model = {
       id
-    }
-    return this.http.post<any>(API_URL + '/documents/findCategories',model);
+    };
+    return this.http.post<any>(API_URL + '/documents/findCategories', model);
   }
+
   create(document: any): Observable<any> {
     return this.http.post<any>(API_URL + '/documents', document);
   }
@@ -41,4 +47,9 @@ export class DocumentService {
   deleteList(id: number[]): Observable<any> {
     return this.http.post<any>(API_URL + '/documents/deleteList', id);
   }
+
+  getAllDocumentByName(name: string): Observable<any[]> {
+    return this.http.get<any[]>(API_URL + '/documents/search?name=' + name);
+  }
+
 }

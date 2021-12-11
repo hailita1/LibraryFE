@@ -7,8 +7,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {UserToken} from '../../model/user-token';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {QuickviewComponent} from '../homepage/quickview/quickview.component';
-import { DocumentService } from 'src/app/service/document/document.service';
-import { environment } from 'src/environments/environment';
+import {DocumentService} from 'src/app/service/document/document.service';
+import {environment} from 'src/environments/environment';
+import {TopicService} from "../../service/topic/topic.service";
 
 declare var $: any;
 declare var Swal: any;
@@ -21,7 +22,7 @@ declare var Swal: any;
 export class ShopComponent implements OnInit {
   // @ts-ignore
   @ViewChild(QuickviewComponent) view!: QuickviewComponent;
-  listCategory: Category[] = [];
+  listTopic: any[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
   });
@@ -44,33 +45,38 @@ export class ShopComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private documentService: DocumentService,
               private authenticationService: AuthenticationService,
+              private topicService: TopicService,
               private router: Router) {
     this.sub = this.activatedRoute.queryParams.subscribe(params => {
-      this.query = params.address;
+      this.query = params.name;
       if (this.query != null) {
         this.searchForm.value.name = this.query;
-        this.searchFormAdvanced.value.address = this.query;
-        // this.search();
+        this.search();
       } else {
-        // this.getAllHouse();
+        // this.getAllDocument();
       }
     });
     this.authenticationService.currentUser.subscribe(value => {
       this.currentUser = value;
     });
   }
-  viewDetail(id:any){
+
+  viewDetail(id: any) {
     this.router.navigateByUrl("/document/" + id);
   }
+
   fileUrl = environment.apiUrl;
-  getAllDocument(){
+
+  getAllDocument() {
     this.documentService.getAll().subscribe(res => {
       this.listDocument = res;
     });
   }
+
   ngOnInit() {
     this.getAllDocument();
-    $(document).ready(function() {
+    this.getAllTopic();
+    $(document).ready(function () {
       $('.latest-product__slider').owlCarousel({
         loop: true,
         margin: 0,
@@ -82,7 +88,7 @@ export class ShopComponent implements OnInit {
         autoHeight: false,
         autoplay: true
       });
-      $('.hero__categories__all').on('click', function() {
+      $('.hero__categories__all').on('click', function () {
         $('.hero__categories ul').slideToggle(400);
       });
       var rangeSlider = $('.price-range'),
@@ -95,7 +101,7 @@ export class ShopComponent implements OnInit {
         min: minPrice,
         max: maxPrice,
         values: [minPrice, maxPrice],
-        slide: function(event, ui) {
+        slide: function (event, ui) {
           minamount.val('$' + ui.values[0]);
           maxamount.val('$' + ui.values[1]);
         }
@@ -105,120 +111,28 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  // initModal(model: any): void {
-  //   this.view.view(model);
-  // }
+  getAllTopic() {
+    this.topicService.getAllTopic().subscribe(listTopic => {
+      this.listTopic = listTopic;
+    });
+  }
 
-  // search() {
-  //   this.checkSerch = true;
-  //   const address = this.searchForm.value.name;
-  //   if (address != null) {
-  //     if (address == '') {
-  //       this.router.navigate(['/houses']);
-  //     } else {
-  //       this.houseService.getAllHousetByName(address).subscribe(listHouse => {
-  //         this.listHouse = listHouse;
-  //         this.router.navigate(['/houses'], {queryParams: {address: address}});
-  //       });
-  //     }
-  //   }
-  // }
-  //
-  // getAllHouse() {
-  //   this.houseService.getAllHouseStatusTrue().subscribe(listHouse => {
-  //     this.listHouse = listHouse;
-  //   });
-  // }
-  //
-  // getAllCategories() {
-  //   this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
-  //     this.listCategory = listCategory;
-  //   });
-  // }
-  //
-  // getAllHouseSaleOff() {
-  //   this.houseService.findByStatusTrueOrderByDiscountDesc().subscribe(listHouseFilter => {
-  //     this.listHouseSaleOff = listHouseFilter;
-  //     this.listHouseSaleOff.map(house => {
-  //       $(document).ready(function() {
-  //         $('.product__discount__slider').owlCarousel({
-  //           loop: true,
-  //           margin: 0,
-  //           items: 3,
-  //           dots: true,
-  //           smartSpeed: 1500,
-  //           autoHeight: false,
-  //           autoplay: true,
-  //           responsive: {
-  //             320: {
-  //               items: 1,
-  //             },
-  //
-  //             480: {
-  //               items: 2,
-  //             },
-  //             768: {
-  //               items: 3,
-  //             }
-  //           }
-  //         });
-  //       });
-  //     });
-  //   });
-  // }
-  //
-  // getAllHouseLatest() {
-  //   this.houseService.getAllHouseStatusTrue().subscribe(listProduct => {
-  //     if (listProduct.length > 4) {
-  //       for (let i = 0; i < 4; i++) {
-  //         this.listHouseLatest.push(listProduct[i]);
-  //       }
-  //     } else {
-  //       this.listHouseLatest = listProduct;
-  //     }
-  //   });
-  // }
-  //
-  //
-  // searchAdvanced() {
-  //   const address = this.searchFormAdvanced.value.address;
-  //   let numberRoom = this.searchFormAdvanced.value.numberRoom;
-  //   let upperBound = this.searchFormAdvanced.value.upperBound;
-  //   let lowerBound = this.searchFormAdvanced.value.lowerBound;
-  //   if (numberRoom == '' || numberRoom == null) {
-  //     numberRoom = 0;
-  //   }
-  //   if (upperBound == '' || upperBound == null) {
-  //     upperBound = 0;
-  //   }
-  //   if (lowerBound == '' || lowerBound == null) {
-  //     lowerBound = 0;
-  //   }
-  //   console.log(address);
-  //   console.log(numberRoom);
-  //   console.log(upperBound);
-  //   console.log(lowerBound);
-  //   if (address == '' || address == null) {
-  //     $(function() {
-  //       const Toast = Swal.mixin({
-  //         toast: true,
-  //         position: 'top-end',
-  //         showConfirmButton: false,
-  //         timer: 3000
-  //       });
-  //
-  //       Toast.fire({
-  //         type: 'error',
-  //         title: 'Địa chỉ không được để trống'
-  //       });
-  //     });
-  //   } else {
-  //     this.houseService.searchAdvanced(address, numberRoom, upperBound, lowerBound).subscribe(listHouse => {
-  //       this.listHouse = listHouse;
-  //     });
-  //   }
-  // }
-  //
+  search() {
+    this.checkSerch = true;
+    const name = this.searchForm.value.name;
+    if (name != null) {
+      if (name == '') {
+        this.router.navigate(['/document']);
+      } else {
+        console.log(name);
+        this.documentService.getAllDocumentByName(name).subscribe(listDocument => {
+          this.listDocument = listDocument;
+          this.router.navigate(['/document'], {queryParams: {name: name}});
+        });
+      }
+    }
+  }
+
   // changeStatus(event: any) {
   //   // tslint:disable-next-line: radix
   //   switch (parseInt(event)) {

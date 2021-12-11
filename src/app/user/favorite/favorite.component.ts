@@ -6,6 +6,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {Item} from '../../model/item';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {UserToken} from '../../model/user-token';
+import {TopicService} from '../../service/topic/topic.service';
 
 declare var $: any;
 
@@ -15,7 +16,7 @@ declare var $: any;
   styleUrls: ['./favorite.component.scss']
 })
 export class FavoriteComponent implements OnInit {
-  listCategory: Category[] = [];
+  listTopic: any[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
   });
@@ -25,6 +26,7 @@ export class FavoriteComponent implements OnInit {
   constructor(private categoryService: CategoryService,
               private activatedRoute: ActivatedRoute,
               private authenticationService: AuthenticationService,
+              private topicService: TopicService,
               private router: Router) {
     this.authenticationService.currentUser.subscribe(value => {
       this.currentUser = value;
@@ -32,12 +34,13 @@ export class FavoriteComponent implements OnInit {
   }
 
   ngOnInit() {
-    $(document).ready(function() {
-      $('.hero__categories__all').on('click', function() {
+    this.getAllTopic();
+    $(document).ready(function () {
+      $('.hero__categories__all').on('click', function () {
         $('.hero__categories ul').slideToggle(400);
       });
       var proQty = $('.pro-qty');
-      proQty.on('click', '.qtybtn', function() {
+      proQty.on('click', '.qtybtn', function () {
         var $button = $(this);
         var oldValue = $button.parent().find('input').val();
         if ($button.hasClass('inc')) {
@@ -76,6 +79,12 @@ export class FavoriteComponent implements OnInit {
     // });
   }
 
+  getAllTopic() {
+    this.topicService.getAllTopic().subscribe(listTopic => {
+      this.listTopic = listTopic;
+    });
+  }
+
   remove(id: number): void {
     let heart: any = JSON.parse(localStorage.getItem('heart-' + this.currentUser.id));
     let index: number = -1;
@@ -106,7 +115,6 @@ export class FavoriteComponent implements OnInit {
       this.loadFavorite();
     }
   }
-
 
 
   loadFavorite(): void {

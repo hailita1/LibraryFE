@@ -8,8 +8,9 @@ import {AuthenticationService} from '../../service/auth/authentication.service';
 import {UserToken} from '../../model/user-token';
 import {House} from '../../model/house';
 import {QuickviewComponent} from '../homepage/quickview/quickview.component';
-import { environment } from 'src/environments/environment';
-import { DocumentService } from 'src/app/service/document/document.service';
+import {environment} from 'src/environments/environment';
+import {DocumentService} from 'src/app/service/document/document.service';
+import {TopicService} from '../../service/topic/topic.service';
 
 declare var $: any;
 
@@ -37,12 +38,14 @@ export class CategoryDetailComponent implements OnInit {
   pageDocument = 1;
   pageSize = 10;
   pageSizeDocument = 10;
+  listTopic: any[] = [];
 
   constructor(private categoryService: CategoryService,
               private documentService: DocumentService,
               private activatedRoute: ActivatedRoute,
               private authenticationService: AuthenticationService,
-              private router: Router) {
+              private router: Router,
+              private topicService: TopicService) {
     this.sub = this.activatedRoute.paramMap.subscribe(async (paramMap: ParamMap) => {
       const id = +paramMap.get('id');
       this.listCategory = await this.getCategory(id);
@@ -52,16 +55,25 @@ export class CategoryDetailComponent implements OnInit {
       this.currentUser = value;
     });
   }
-  getDocumentByCategory(id:any){
-      this.documentService.findCategories(id).subscribe(res => {
-        this.listHouseSaleOff = res;
-      });
+
+  getDocumentByCategory(id: any) {
+    this.documentService.findCategories(id).subscribe(res => {
+      this.listHouseSaleOff = res;
+    });
   }
-  viewDetail(id:any){
+
+  getAllCategories() {
+    this.topicService.getAllTopic().subscribe(listTopic => {
+      this.listTopic = listTopic;
+    });
+  }
+
+  viewDetail(id: any) {
     this.router.navigateByUrl("/document/" + id);
   }
+
   ngOnInit() {
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('.latest-product__slider').owlCarousel({
         loop: true,
         margin: 0,
@@ -74,7 +86,7 @@ export class CategoryDetailComponent implements OnInit {
         autoplay: true
       });
       // tslint:disable-next-line:only-arrow-functions
-      $('.hero__categories__all').on('click', function() {
+      $('.hero__categories__all').on('click', function () {
         $('.hero__categories ul').slideToggle(400);
       });
       $('.categories__slider').owlCarousel({
@@ -109,19 +121,12 @@ export class CategoryDetailComponent implements OnInit {
         }
       });
     });
-    
-    // this.getAllCategories();
+    this.getAllCategories();
   }
 
   initModal(model: any): void {
     this.view.view(model);
   }
-
-  // getAllCategories() {
-  //   this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
-  //     this.listCategory = listCategory;
-  //   });
-  // }
 
   // getAllHousetByCategory(category: Category) {
   //   return this.categoryService.getHouseByCategory(category.id).toPromise();
@@ -132,8 +137,8 @@ export class CategoryDetailComponent implements OnInit {
   }
 
   search() {
-    const address = this.searchForm.value.name;
-    this.router.navigate(['../houses'], {queryParams: {address: address}});
+    const name = this.searchForm.value.name;
+    this.router.navigate(['../document'], {queryParams: {name: name}});
   }
 
   changeStatus(event: any) {
