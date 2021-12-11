@@ -105,10 +105,10 @@
             </div>
             <div class="form-group col-3">
               <label for="discount">Tác giả</label>
-              <select class="form-control select2 select2-primary" id="discount" name="discount"
+              <select (change)="CheckExistAuthor($event.target.value)" class="form-control select2 select2-primary" id="discount" name="discount"
                       formControlName="mainAuthor" data-dropdown-css-class="select2-primary"
                       style="width: 100%; margin-left: 0px">
-                <option *ngFor="let item of listAuthor" [value]="item.name">{{item.name}}</option>
+                <option *ngFor="let item of listMainAuthor" [value]="item.id">{{item.name}}</option>
               </select>
               <div *ngIf="submitted && formGroup.controls['mainAuthor'].errors?.required">
                 <div
@@ -121,7 +121,7 @@
             </div>
             <div class="form-group col-3">
               <label for="discount">Đồng tác giả</label>
-              <select (change)="addUtilitieToHouse($event.target.value)" class="form-control select2 select2-primary" id="discount" name="discount"
+              <select (change)="addUtilitieToHouse($event.target.value)" class="form-control select2 select2-primary" id="author" name="author"
                       formControlName="author" data-dropdown-css-class="select2-primary"
                       style="width: 100%; margin-left: 0px">
                 <option *ngFor="let item of listAuthor" [value]="item.id">{{item.name}}</option>

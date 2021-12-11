@@ -1,30 +1,38 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ModalDirective} from 'ngx-bootstrap/modal';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {CategoryService} from '../../../service/category/category.service';
-import {Category} from '../../../model/category';
-import {AuthenticationService} from '../../../service/auth/authentication.service';
-import {UserToken} from '../../../model/user-token';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import {DocumentService} from 'src/app/service/document/document.service';
-import {PublishingCompanyService} from 'src/app/service/publishing-company/publishing-company.service';
-import {AuthorService} from 'src/app/service/author/author.service';
-import {UploadService} from 'src/app/service/upload/upload.service';
-import {environment} from 'src/environments/environment';
-import {Author} from '../../../model/author';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
+import { ModalDirective } from "ngx-bootstrap/modal";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { CategoryService } from "../../../service/category/category.service";
+import { Category } from "../../../model/category";
+import { AuthenticationService } from "../../../service/auth/authentication.service";
+import { UserToken } from "../../../model/user-token";
+import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { DocumentService } from "src/app/service/document/document.service";
+import { PublishingCompanyService } from "src/app/service/publishing-company/publishing-company.service";
+import { AuthorService } from "src/app/service/author/author.service";
+import { UploadService } from "src/app/service/upload/upload.service";
+import { environment } from "src/environments/environment";
+import { Author } from "../../../model/author";
 
 declare const myTest: any;
 declare var $: any;
 declare var Swal: any;
 
 @Component({
-  selector: 'app-item-product',
-  templateUrl: './item-product.component.html',
-  styleUrls: ['./item-product.component.scss']
+  selector: "app-item-product",
+  templateUrl: "./item-product.component.html",
+  styleUrls: ["./item-product.component.scss"],
 })
 export class ItemProductComponent implements OnInit {
-  @ViewChild('content', {static: false}) public childModal!: ModalDirective;
+  @ViewChild("content", { static: false }) public childModal!: ModalDirective;
   @Input() listHouse: Array<any>;
   @Output() eventEmit: EventEmitter<any> = new EventEmitter<any>();
   closeResult: string;
@@ -33,13 +41,15 @@ export class ItemProductComponent implements OnInit {
   isAdd = false;
   isEdit = false;
   isInfo = false;
-  title = '';
+  title = "";
   type: any;
   status;
   listCategory: any[];
   listPublishing: any[];
   listAuthor: any[];
-  fileName = '';
+  listMainAuthor: any[];
+  listAuthorOrigin: any[];
+  fileName = "";
   listUtilitieAddToHouse: Author[] = [];
   myItems: File[] = [];
   arrayPicture: any[] = [];
@@ -50,14 +60,14 @@ export class ItemProductComponent implements OnInit {
   submitted = false;
   arrCheck = [];
   formGroup: FormGroup;
-  formName = 'tài liệu';
+  formName = "tài liệu";
   imageObject: Array<object> = [];
 
   currentUser: UserToken;
   hasRoleUser = false;
   hasRoleAdmin = false;
   grid: any = {
-    rowData: []
+    rowData: [],
   };
   apiFileUrl = environment.apiUploadUrl;
   pageUtilitie = 1;
@@ -69,41 +79,45 @@ export class ItemProductComponent implements OnInit {
   public Editor = ClassicEditor;
   config = {
     toolbar: [
-      'heading',
-      '|',
-      'bold',
-      'italic',
-      'Alignment',
-      'Autoformat',
-      'BlockQuote',
-      'CKFinder',
-      'CKFinderUploadAdapter',
-      'Image',
-      'Link',
-      'Table',
-      'TableToolbar',
-      'TextTransformation',
-      'MediaEmbed',
+      "heading",
+      "|",
+      "bold",
+      "italic",
+      "Alignment",
+      "Autoformat",
+      "BlockQuote",
+      "CKFinder",
+      "CKFinderUploadAdapter",
+      "Image",
+      "Link",
+      "Table",
+      "TableToolbar",
+      "TextTransformation",
+      "MediaEmbed",
     ],
   };
 
-
-  constructor(private modalService: NgbModal,
-              private fb: FormBuilder,
-              private categoryService: CategoryService,
-              private documentService: DocumentService,
-              private authorService: AuthorService,
-              private uploadSevice: UploadService,
-              private publishingService: PublishingCompanyService,
-              private authenticationService: AuthenticationService) {
-    this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
+  constructor(
+    private modalService: NgbModal,
+    private fb: FormBuilder,
+    private categoryService: CategoryService,
+    private documentService: DocumentService,
+    private authorService: AuthorService,
+    private uploadSevice: UploadService,
+    private cdf: ChangeDetectorRef,
+    private publishingService: PublishingCompanyService,
+    private authenticationService: AuthenticationService
+  ) {
+    this.authenticationService.currentUser.subscribe(
+      (value) => (this.currentUser = value)
+    );
     if (this.currentUser) {
       const roleList = this.currentUser.roles;
       for (const role of roleList) {
-        if (role.authority === 'ROLE_USER') {
+        if (role.authority === "ROLE_USER") {
           this.hasRoleUser = true;
         }
-        if (role.authority === 'ROLE_ADMIN') {
+        if (role.authority === "ROLE_ADMIN") {
           this.hasRoleAdmin = true;
         }
       }
@@ -112,19 +126,19 @@ export class ItemProductComponent implements OnInit {
 
   updateFormType(type: any) {
     switch (type) {
-      case 'add':
+      case "add":
         this.isInfo = false;
         this.isEdit = false;
         this.isAdd = true;
         this.title = `Thêm mới thông tin ${this.formName}`;
         break;
-      case 'show':
+      case "show":
         this.isInfo = true;
         this.isEdit = false;
         this.isAdd = false;
         this.title = `Xem chi tiết thông tin ${this.formName}`;
         break;
-      case 'edit':
+      case "edit":
         this.isInfo = false;
         this.isEdit = true;
         this.isAdd = false;
@@ -140,35 +154,37 @@ export class ItemProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.submitted = false;
-    this.idUser = JSON.parse(localStorage.getItem('user') || '{id}').id;
+    this.idUser = JSON.parse(localStorage.getItem("user") || "{id}").id;
     this.fetchListAuthor();
     this.fetchListCategory();
     this.fetchListPublishing();
   }
 
   fetchListCategory() {
-    this.categoryService.getAllCategory().subscribe(res => {
+    this.categoryService.getAllCategory().subscribe((res) => {
       this.listCategory = res;
     });
   }
 
   fetchListPublishing() {
-    this.publishingService.getAllPublishingCompany().subscribe(res => {
+    this.publishingService.getAllPublishingCompany().subscribe((res) => {
       this.listPublishing = res;
     });
   }
 
   fetchListAuthor() {
-    this.authorService.getAllAuthor().subscribe(res => {
-      this.listAuthor = res;
+    this.authorService.getAllAuthor().subscribe((res) => {
+      this.listAuthorOrigin = res;
+      this.listAuthor = [...this.listAuthorOrigin];
+      this.listMainAuthor = [...this.listAuthorOrigin];
     });
   }
-getDocumentById(id: any){
-  this.documentService.get(id).subscribe(res => {
-    this.model = res;
-    console.log(res);
-  });
-}
+  getDocumentById(id: any) {
+    this.documentService.get(id).subscribe((res) => {
+      this.model = res;
+      console.log(res);
+    });
+  }
   view(model: any, type = null): void {
     this.resetData();
     this.open(this.childModal);
@@ -179,14 +195,29 @@ getDocumentById(id: any){
     if (model.id === null || model.id === undefined) {
       this.grid.rowData = [];
       this.formGroup = this.fb.group({
-        name: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        category: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        company: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        publishingYear: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        pageNumber: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        mainAuthor: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        author: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        status: [{value: false, disabled: true}],
+        name: [{ value: null, disabled: this.isInfo }, [Validators.required]],
+        category: [
+          { value: null, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        company: [
+          { value: null, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        publishingYear: [
+          { value: null, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        pageNumber: [
+          { value: null, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        mainAuthor: [
+          { value: null, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        author: [{ value: null, disabled: this.isInfo }, [Validators.required]],
+        status: [{ value: false, disabled: true }],
       });
     } else {
       this.imageObject = [];
@@ -196,14 +227,35 @@ getDocumentById(id: any){
       this.fileName = this.model.fileName;
       this.listUtilitieAddToHouse = this.model.author;
       this.formGroup = this.fb.group({
-        name: [{value: this.model.name, disabled: this.isInfo}, [Validators.required]],
-        category: [{value: this.model.category.id, disabled: this.isInfo}, [Validators.required]],
-        company: [{value: this.model.publishingCompany.id, disabled: this.isInfo}, [Validators.required]],
-        publishingYear: [{value: this.model.publishingYear, disabled: this.isInfo}, [Validators.required]],
-        mainAuthor: [{value: this.model.mainAuthor, disabled: this.isInfo}, [Validators.required]],
-        pageNumber: [{value: this.model.pageNumber, disabled: this.isInfo}, [Validators.required]],
-        author: [{value: this.listUtilitieAddToHouse[0].id, disabled: this.isInfo}, [Validators.required]],
-        status: [{value: this.model.status, disabled: false}]
+        name: [
+          { value: this.model.name, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        category: [
+          { value: this.model.category.id, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        company: [
+          { value: this.model.publishingCompany.id, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        publishingYear: [
+          { value: this.model.publishingYear, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        mainAuthor: [
+          { value: this.model.mainAuthor, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        pageNumber: [
+          { value: this.model.pageNumber, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        author: [
+          { value: this.listUtilitieAddToHouse[0].id, disabled: this.isInfo },
+          [Validators.required],
+        ],
+        status: [{ value: this.model.status, disabled: false }],
       });
     }
   }
@@ -215,30 +267,29 @@ getDocumentById(id: any){
 
   basicUpload(files: File[], type: any) {
     var formData = new FormData();
-    Array.from(files).forEach(f => formData.append('file', f));
-    this.uploadSevice.uploadBasic(formData)
-      .subscribe(event => {
-        switch (type) {
-          case 0:
-            this.urlPicture.push(event.message);
-            break;
-          case 1:
-            this.fileName = event.message;
-          default:
-            break;
-        }
-      });
+    Array.from(files).forEach((f) => formData.append("file", f));
+    this.uploadSevice.uploadBasic(formData).subscribe((event) => {
+      switch (type) {
+        case 0:
+          this.urlPicture.push(event.message);
+          break;
+        case 1:
+          this.fileName = event.message;
+        default:
+          break;
+      }
+    });
   }
-resetData(){
-  this.fileName = '';
-  this.urlPicture = [];
-};
+  resetData() {
+    this.fileName = "";
+    this.urlPicture = [];
+  }
   // tslint:disable-next-line:typedef
   open(content: any) {
     this.modalReference = this.modalService.open(content, {
-      ariaLabelledBy: 'modal-basic-title',
+      ariaLabelledBy: "modal-basic-title",
       centered: true,
-      size: 'xl',
+      size: "xl",
     });
     this.modalReference.result.then(
       (result: any) => {
@@ -254,49 +305,57 @@ resetData(){
     let document: any;
     this.submitted = true;
     if (this.formGroup.invalid && this.validCategoryMeta() === false) {
-      $(function() {
+      $(function () {
         const Toast = Swal.mixin({
           toast: true,
-          position: 'top-end',
+          position: "top-end",
           showConfirmButton: false,
-          timer: 3000
+          timer: 3000,
         });
 
         Toast.fire({
-          type: 'error',
-          title: 'Kiểm tra thông tin các trường đã nhập'
+          type: "error",
+          title: "Kiểm tra thông tin các trường đã nhập",
         });
       });
       return;
     }
-    if (this.fileName === null || this.fileName == undefined || this.fileName === '') {
-      $(function() {
+    if (
+      this.fileName === null ||
+      this.fileName == undefined ||
+      this.fileName === ""
+    ) {
+      $(function () {
         const Toast = Swal.mixin({
           toast: true,
-          position: 'top-end',
+          position: "top-end",
           showConfirmButton: false,
-          timer: 3000
+          timer: 3000,
         });
 
         Toast.fire({
-          type: 'error',
-          title: 'File đính kèm không được để trống'
+          type: "error",
+          title: "File đính kèm không được để trống",
         });
       });
       return;
     }
-    if (this.urlPicture === null || this.urlPicture == undefined || this.urlPicture.length === 0) {
-      $(function() {
+    if (
+      this.urlPicture === null ||
+      this.urlPicture == undefined ||
+      this.urlPicture.length === 0
+    ) {
+      $(function () {
         const Toast = Swal.mixin({
           toast: true,
-          position: 'top-end',
+          position: "top-end",
           showConfirmButton: false,
-          timer: 3000
+          timer: 3000,
         });
 
         Toast.fire({
-          type: 'error',
-          title: 'Ảnh không được để trống'
+          type: "error",
+          title: "Ảnh không được để trống",
         });
       });
       return;
@@ -304,116 +363,120 @@ resetData(){
     if (this.isEdit) {
       document = {
         id: this.model.id,
-        name: this.formGroup.get('name').value,
-        mainAuthor: this.formGroup.get('mainAuthor').value,
+        name: this.formGroup.get("name").value,
+        mainAuthor: this.formGroup.get("mainAuthor").value,
         category: {
-          id: this.formGroup.get('category').value
+          id: this.formGroup.get("category").value,
         },
         publishingCompany: {
-          id: this.formGroup.get('company').value
+          id: this.formGroup.get("company").value,
         },
         author: this.listUtilitieAddToHouse,
         image: this.urlPicture[0],
         fileName: this.fileName,
-        publishingYear: this.formGroup.get('publishingYear').value,
-        pageNumber: this.formGroup.get('pageNumber').value
+        publishingYear: this.formGroup.get("publishingYear").value,
+        pageNumber: this.formGroup.get("pageNumber").value,
       };
     } else {
       document = {
-        name: this.formGroup.get('name').value,
+        name: this.formGroup.get("name").value,
         category: {
-          id: this.formGroup.get('category').value
+          id: this.formGroup.get("category").value,
         },
         publishingCompany: {
-          id: this.formGroup.get('company').value
+          id: this.formGroup.get("company").value,
         },
-        publishingYear: this.formGroup.get('publishingYear').value,
-        pageNumber: this.formGroup.get('pageNumber').value,
+        publishingYear: this.formGroup.get("publishingYear").value,
+        pageNumber: this.formGroup.get("pageNumber").value,
         fileName: this.fileName,
         image: this.urlPicture[0],
-        mainAuthor: this.formGroup.get('mainAuthor').value,
-        author: this.listUtilitieAddToHouse
+        mainAuthor: this.formGroup.get("mainAuthor").value,
+        author: this.listUtilitieAddToHouse,
       };
     }
     if (this.isAdd) {
-      this.documentService.create(document).subscribe(res => {
+      this.documentService.create(document).subscribe(
+        (res) => {
           this.closeModalReloadData();
-          $(function() {
+          $(function () {
             const Toast = Swal.mixin({
               toast: true,
-              position: 'top-end',
+              position: "top-end",
               showConfirmButton: false,
-              timer: 3000
+              timer: 3000,
             });
 
             Toast.fire({
-              type: 'success',
-              title: 'Thêm mới thành công'
+              type: "success",
+              title: "Thêm mới thành công",
             });
           });
           // this.grid.rowData = [];
           this.modalReference.dismiss();
         },
-        err => {
-          $(function() {
+        (err) => {
+          $(function () {
             const Toast = Swal.mixin({
               toast: true,
-              position: 'top-end',
+              position: "top-end",
               showConfirmButton: false,
-              timer: 3000
+              timer: 3000,
             });
 
             Toast.fire({
-              type: 'error',
-              title: 'Thêm mới thất bại'
+              type: "error",
+              title: "Thêm mới thất bại",
             });
           });
-        });
+        }
+      );
     }
     if (this.isEdit) {
-      this.documentService.update(document.id, document).subscribe(res => {
+      this.documentService.update(document.id, document).subscribe(
+        (res) => {
           this.closeModalReloadData();
-          $(function() {
+          $(function () {
             const Toast = Swal.mixin({
               toast: true,
-              position: 'top-end',
+              position: "top-end",
               showConfirmButton: false,
-              timer: 3000
+              timer: 3000,
             });
 
             Toast.fire({
-              type: 'success',
-              title: 'Cập nhật thành công'
+              type: "success",
+              title: "Cập nhật thành công",
             });
           });
           this.modalReference.dismiss();
           this.imageObject = [];
         },
-        err => {
-          $(function() {
+        (err) => {
+          $(function () {
             const Toast = Swal.mixin({
               toast: true,
-              position: 'top-end',
+              position: "top-end",
               showConfirmButton: false,
-              timer: 3000
+              timer: 3000,
             });
 
             Toast.fire({
-              type: 'error',
-              title: 'Cập nhật thất bại'
+              type: "error",
+              title: "Cập nhật thất bại",
             });
           });
-        });
+        }
+      );
     }
   }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       this.listUtilitieAddToHouse = [];
       this.urlPicture = [];
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       this.listUtilitieAddToHouse = [];
       this.urlPicture = [];
@@ -423,9 +486,9 @@ resetData(){
 
   public closeModalReloadData(): void {
     this.submitted = false;
-    this.fileName = '';
+    this.fileName = "";
     this.urlPicture = [];
-    this.eventEmit.emit('success');
+    this.eventEmit.emit("success");
   }
 
   // getAllCategory() {
@@ -433,15 +496,29 @@ resetData(){
   //     this.listCategory = listCategory;
   //   });
   // }
-
+  CheckExistAuthor(id: any) {
+    var listAuthorClone = [...this.listAuthorOrigin];
+    this.listAuthor = listAuthorClone.filter(
+      (x) => x.id != this.formGroup.controls.mainAuthor.value
+    );
+    this.listAuthor.unshift({});
+  }
   addUtilitieToHouse(id) {
-    const utilitie1 = this.listAuthor
-      .filter((utilitie) => utilitie.id == id);
+    var utilitie2 = [];
+    if (id !== null && typeof  id !== 'undefined' && id !== '') {
+      const utilitie1 = this.listAuthor.filter((utilitie) => utilitie.id == id);
 
-    const utilitie2 = this.listUtilitieAddToHouse
-      .filter((utilitie) => utilitie1[0].id == utilitie.id);
-    if (utilitie2.length == 0) {
-      this.listUtilitieAddToHouse.push(utilitie1[0]);
+      if (utilitie1.length > 0) {
+        utilitie2 = this.listUtilitieAddToHouse.filter(
+          (utilitie) => utilitie1[0].id == utilitie.id      );
+      }
+      if (utilitie2 !== null) {
+        if (utilitie2.length == 0) {
+          if (utilitie1.length > 0) {
+            this.listUtilitieAddToHouse.push(utilitie1[0]);
+          }
+        }
+      }
     }
   }
 
@@ -461,8 +538,8 @@ resetData(){
 
   addMeta(event: any) {
     const model = {
-      name: '',
-      price: '',
+      name: "",
+      price: "",
       status: true,
       validName: false,
       validPrice: false,
@@ -478,7 +555,7 @@ resetData(){
   validCategoryMeta() {
     let flag = false;
     this.grid.rowData.forEach((item) => {
-      if (item.name === '' || item.name === null || item.name === undefined) {
+      if (item.name === "" || item.name === null || item.name === undefined) {
         item.validName = true;
         flag = true;
       } else {
@@ -486,7 +563,11 @@ resetData(){
         flag = false;
       }
 
-      if (item.price === '' || item.price === null || item.price === undefined) {
+      if (
+        item.price === "" ||
+        item.price === null ||
+        item.price === undefined
+      ) {
         item.validPrice = true;
         flag = true;
       } else {
