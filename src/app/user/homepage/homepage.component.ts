@@ -9,6 +9,7 @@ import {House} from '../../model/house';
 import {QuickviewComponent} from './quickview/quickview.component';
 import {TopicService} from 'src/app/service/topic/topic.service';
 import {DocumentService} from "../../service/document/document.service";
+import {environment} from "../../../environments/environment";
 
 declare var $: any;
 
@@ -32,6 +33,7 @@ export class HomepageComponent implements OnInit {
   searchKeyWord: any;
   conditsion: boolean;
   isCheck = true;
+  fileUrl = environment.apiUrl;
 
   constructor(private categoryService: CategoryService,
               private documentService: DocumentService,
@@ -193,12 +195,14 @@ export class HomepageComponent implements OnInit {
   getAllDocument() {
     this.documentService.getAll().subscribe(list => {
       this.listDocumentLatest = list;
+      console.log(this.listDocumentLatest);
     });
   }
 
   getAllDocumentVisitNumber() {
     this.documentService.getAllByVisitNumber().subscribe(list => {
       this.listDocumentVisitNumber = list;
+      console.log(this.listDocumentVisitNumber);
     });
   }
 

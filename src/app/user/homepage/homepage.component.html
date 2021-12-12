@@ -43,22 +43,22 @@
               </div>
               <div style="display: block" class="autocomplete-suggestions" [hidden]="isCheck">
                 <p [hidden]="conditsion">Không tìm thấy tài liệu phù hợp !</p>
-                <div [routerLink]="['../house',house.id]" class="row" style="width: 100%"
-                     *ngFor="let house of listFilterResult">
+                <div [routerLink]="['../document',document.id]" class="row" style="width: 100%"
+                     *ngFor="let document of listFilterResult">
                   <div class="col-4">
-                    <img [src]="house.images[0].link" *ngIf="house.images != null" alt="">
+                    <img [src]="document.images[0].link" *ngIf="document.images != null" alt="">
                   </div>
                   <div class="col-8" style="margin-top: 15px">
                     <div style="display: inline-grid; position: relative">
                       <div class="product__discount__item__text" style="text-align: left; padding-top: 0px">
-                        <h5>{{house.name}}</h5>
-                        <h5>{{house.address}}</h5>
-                        <span>{{house.category.name}}</span>
+                        <h5>{{document.name}}</h5>
+                        <h5>{{document.address}}</h5>
+                        <span>{{document.category.name}}</span>
                         <div class="product__item__price">
                           <h5
-                            style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)) | currency: 'VND'}}
+                            style="font-weight: bold; color: red">{{(document.price - document.price * (document.discount / 100)) | currency: 'VND'}}
                             / đêm </h5>
-                          <span *ngIf="house.discount!=0">{{house.price | currency: 'VND'}} / đêm</span>
+                          <span *ngIf="document.discount!=0">{{document.price | currency: 'VND'}} / đêm</span>
                         </div>
                       </div>
                     </div>
@@ -186,32 +186,33 @@
       </div>
     </div>
     <div class="row featured__filter">
-      <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" *ngFor="let house of listDocumentVisitNumber">
+      <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" *ngFor="let document of listDocumentVisitNumber">
         <div class="product__discount__item">
-          <div class="product__discount__item__pic set-bg" *ngIf="house.images != null"
-               [style.background]="'url('+house.images[0].link+')'" style="background-size: 270px 270px">
-            <div *ngIf="house.discount!=0" class="product__discount__percent">-{{house.discount}}%</div>
+          <div class="product__discount__item__pic set-bg" *ngIf="document.images != null"
+               [style.background]="'url('+document.images[0].link+')'" style="background-size: 270px 270px">
+            <div *ngIf="document.discount!=0" class="product__discount__percent">-{{document.discount}}%</div>
 
             <ul class="product__item__pic__hover">
-              <li *ngIf="currentUser"><a [routerLink]="['/favorite', { id:house.id }]"><i class="fa fa-heart"></i></a>
+              <li *ngIf="currentUser"><a [routerLink]="['/favorite', { id:document.id }]"><i
+                class="fa fa-heart"></i></a>
               </li>
               <li *ngIf="!currentUser"><a [routerLink]="['/login']"><i class="fa fa-heart"></i></a></li>
-              <li><a (click)="initModal(house)"><i class="fa fa-eye"></i></a></li>
+              <li><a (click)="initModal(document)"><i class="fa fa-eye"></i></a></li>
               <li>
-                <a [routerLink]="['../house',house.id]"><i class="fa fa-info-circle"></i></a>
+                <a [routerLink]="['../document',document.id]"><i class="fa fa-info-circle"></i></a>
               </li>
             </ul>
           </div>
           <div class="product__discount__item__text">
-            <span>{{house.name}}</span>
-            <h5>{{house.name}}</h5>
-            <h5>{{house.address}}</h5>
+            <span>{{document.name}}</span>
+            <h5>{{document.name}}</h5>
+            <h5>{{document.address}}</h5>
             <div
               class="product__item__price">
               <h5
-                style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)) | currency: 'VND'}}
+                style="font-weight: bold; color: red">{{(document.price - document.price * (document.discount / 100)) | currency: 'VND'}}
                 / đêm</h5>
-              <span *ngIf="house.discount!=0">{{house.price | currency: 'VND'}} / đêm</span></div>
+              <span *ngIf="document.discount!=0">{{document.price | currency: 'VND'}} / đêm</span></div>
           </div>
         </div>
       </div>
@@ -228,32 +229,30 @@
       </div>
     </div>
     <div class="row featured__filter">
-      <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" *ngFor="let house of listDocumentLatest">
+      <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" *ngFor="let document of listDocumentLatest">
         <div class="product__discount__item">
-          <div class="product__discount__item__pic set-bg" *ngIf="house.images != null"
-               [style.background]="'url('+house.images[0].link+')'" style="background-size: 270px 270px">
-            <div *ngIf="house.discount!=0" class="product__discount__percent">-{{house.discount}}%</div>
-
+          <div class="product__discount__item__pic set-bg" *ngIf="document.image != null"
+               [style.background]="'url('+fileUrl + '/files/' + document.image+')'"
+               style="background-size: 270px 270px">
             <ul class="product__item__pic__hover">
-              <li *ngIf="currentUser"><a [routerLink]="['/favorite', { id:house.id }]"><i class="fa fa-heart"></i></a>
+              <li *ngIf="currentUser"><a [routerLink]="['/favorite', { id:document.id }]"><i
+                class="fa fa-heart"></i></a>
               </li>
-              <li *ngIf="!currentUser"><a [routerLink]="['/login']"><i class="fa fa-heart"></i></a></li>
-              <li><a (click)="initModal(house)"><i class="fa fa-eye"></i></a></li>
               <li>
-                <a [routerLink]="['../house',house.id]"><i class="fa fa-info-circle"></i></a>
+                <a [routerLink]="['../document',document.id]"><i class="fa fa-info-circle"></i></a>
               </li>
             </ul>
           </div>
           <div class="product__discount__item__text">
-            <span>{{house.category.name}}</span>
-            <h5>{{house.name}}</h5>
-            <h5>{{house.address}}</h5>
+            <span>{{document.name}}</span>
+            <h5>{{document.name}}</h5>
+            <h5>{{document.address}}</h5>
             <div
               class="product__item__price">
               <h5
-                style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)) | currency: 'VND'}}
+                style="font-weight: bold; color: red">{{(document.price - document.price * (document.discount / 100)) | currency: 'VND'}}
                 / đêm</h5>
-              <span *ngIf="house.discount!=0">{{house.price | currency: 'VND'}} / đêm</span></div>
+              <span *ngIf="document.discount!=0">{{document.price | currency: 'VND'}} / đêm</span></div>
           </div>
         </div>
       </div>
