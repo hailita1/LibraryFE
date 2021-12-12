@@ -49,11 +49,16 @@ export class ShopComponent implements OnInit {
               private router: Router) {
     this.sub = this.activatedRoute.queryParams.subscribe(params => {
       this.query = params.name;
-      if (this.query != null) {
+      console.log(this.query);
+      
+      if (this.query !== null && this.query !== undefined && this.query !== '') {
         this.searchForm.value.name = this.query;
-        this.search();
+        this.documentService.getAllDocumentByName(this.query).subscribe(res => {
+          this.listDocument = res;
+          //this.router.navigate(['/document'], {queryParams: {name: name}});
+        });
       } else {
-        // this.getAllDocument();
+        this.getAllDocument();
       }
     });
     this.authenticationService.currentUser.subscribe(value => {
@@ -74,8 +79,7 @@ export class ShopComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllDocument();
-    this.getAllTopic();
+this.getAllTopic();
     $(document).ready(function () {
       $('.latest-product__slider').owlCarousel({
         loop: true,
@@ -123,10 +127,10 @@ export class ShopComponent implements OnInit {
     if (name != null) {
       if (name == '') {
         this.router.navigate(['/document']);
+        this.getAllDocument();
       } else {
-        console.log(name);
-        this.documentService.getAllDocumentByName(name).subscribe(listDocument => {
-          this.listDocument = listDocument;
+        this.documentService.getAllDocumentByName(name).subscribe(res => {
+          this.listDocument = res;
           this.router.navigate(['/document'], {queryParams: {name: name}});
         });
       }
