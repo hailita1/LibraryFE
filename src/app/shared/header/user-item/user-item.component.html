@@ -57,12 +57,12 @@
           type="text"
           name=""
           class="form-control"
-          formControlName="telephoneNumber"
-          id="telephoneNumber"
+          formControlName="phone"
+          id="phone"
         />
-        <div *ngIf="submitted && form.controls['telephoneNumber'].errors?.required">
+        <div *ngIf="submitted && form.controls['phone'].errors?.required">
           <div
-            *ngIf="form.controls['telephoneNumber'].errors?.required"
+            *ngIf="form.controls['phone'].errors?.required"
             style="color: red"
           >
             * Số điện thoại
@@ -71,7 +71,7 @@
       </div>
       <div class="col-12" *ngIf="!isInfo">
         <div class="form-group">
-          <label for="image">Chọn ảnh HomeStay</label>
+          <label for="image">Chọn avt</label>
           <div class="input-group">
             <div class="custom-file">
               <input [disabled]="isInfo" type="file" class="custom-file-input" (change)="uploadFile($event)"

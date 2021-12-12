@@ -7,7 +7,7 @@ export interface User {
   password?: string;
   provider?: string;
   fullName?: string;
-  telephoneNumber?: string;
+  phone?: string;
   avt?: string;
   checked?: boolean;
   status?: boolean;

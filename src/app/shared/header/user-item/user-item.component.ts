@@ -99,6 +99,7 @@ export class UserItemComponent implements OnInit {
   }
 
   view(model: any, type = null): void {
+    console.log(this.user);
     this.arrCheck = this.listcategorys;
     this.open(this.childModal);
     this.type = type;
@@ -114,7 +115,7 @@ export class UserItemComponent implements OnInit {
       this.form = this.fb.group({
         email: [{value: this.user.email, disabled: this.isInfo}, [Validators.required]],
         fullName: [{value: this.user.fullName, disabled: this.isInfo}, [Validators.required]],
-        telephoneNumber: [{value: this.user.telephoneNumber, disabled: this.isInfo}, [Validators.required]]
+        phone: [{value: this.user.phone, disabled: this.isInfo}, [Validators.required]]
       });
     }
   }
@@ -170,7 +171,7 @@ export class UserItemComponent implements OnInit {
       user = {
         email: this.form.get('email').value,
         fullName: this.form.get('fullName').value,
-        telephoneNumber: this.form.get('telephoneNumber').value,
+        phone: this.form.get('phone').value,
         avt: this.avt,
         id: this.model.id,
       };

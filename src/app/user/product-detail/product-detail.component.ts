@@ -123,7 +123,6 @@ export class ProductDetailComponent implements OnInit {
   getAllTopic() {
     this.topicService.getAllTopic().subscribe(listTopic => {
       this.listTopic = listTopic;
-      console.log(listTopic);
     });
   }
 

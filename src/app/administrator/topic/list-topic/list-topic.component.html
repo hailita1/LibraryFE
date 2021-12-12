@@ -2,12 +2,12 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Danh sách đề tài</h1>
+        <h1>Danh sách khoa</h1>
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a routerLink="/">Trang chủ</a></li>
-          <li class="breadcrumb-item active">Danh sách đề tài</li>
+          <li class="breadcrumb-item active">Danh sách khoa</li>
         </ol>
       </div>
     </div>
@@ -18,14 +18,14 @@
   <div class="card">
     <div class="card-header">
       <h3 class="card-title"></h3>
-      <label>Lọc theo trạng thái: </label>
-      <select (change)="changeStatus($event.target.value)" class="custom-select"
-              style="margin-right: 10px; width: 200px">
-        <option [selected]="isSelected" disabled>--- Chọn trạng thái ---</option>
-        <option value="-1">Tất cả</option>
-        <option value="1">Hoạt động</option>
-        <option value="0">Không hoạt động</option>
-      </select>
+<!--      <label>Lọc theo trạng thái: </label>-->
+      <!--      <select (change)="changeStatus($event.target.value)" class="custom-select"-->
+      <!--              style="margin-right: 10px; width: 200px">-->
+      <!--        <option [selected]="isSelected" disabled>-&#45;&#45; Chọn trạng thái -&#45;&#45;</option>-->
+      <!--        <option value="-1">Tất cả</option>-->
+      <!--        <option value="1">Hoạt động</option>-->
+      <!--        <option value="0">Không hoạt động</option>-->
+      <!--      </select>-->
       <button (click)="initModal({}, 'add')" *ngIf="hasRoleAdmin" class="btn btn-success" style="width: 100px">
         Tạo mới
       </button>
@@ -46,7 +46,7 @@
             />
           </th>
           <th style="text-align: center;width: 10px">#</th>
-          <th style="text-align: center">Tên đề tài</th>
+          <th style="text-align: center">Tên khoa</th>
           <!-- <th style="text-align: center">Trạng thái</th> -->
           <th style="width: 200px; text-align: center" *ngIf="hasRoleAdmin">Thao tác</th>
         </tr>
@@ -108,13 +108,13 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Xóa đề tài</h4>
+          <h4 class="modal-title">Xóa khoa</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Bạn có chắc muốn xóa đề tài này</p>
+          <p>Bạn có chắc muốn xóa khoa này</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
@@ -129,13 +129,13 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Xóa danh sách đề tài</h4>
+          <h4 class="modal-title">Xóa danh sách khoa</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Bạn có chắc muốn xóa danh sách đề tài này ?</p>
+          <p>Bạn có chắc muốn xóa danh sách khoa này ?</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>

@@ -105,10 +105,11 @@
             </div>
             <div class="form-group col-3">
               <label for="discount">Tác giả</label>
-              <select (change)="CheckExistAuthor($event.target.value)" class="form-control select2 select2-primary" id="discount" name="discount"
+              <select (change)="CheckExistAuthor($event.target.value)" class="form-control select2 select2-primary"
+                      id="discount" name="discount"
                       formControlName="mainAuthor" data-dropdown-css-class="select2-primary"
                       style="width: 100%; margin-left: 0px">
-                <option *ngFor="let item of listMainAuthor" [value]="item.id">{{item.name}}</option>
+                <option *ngFor="let item of listMainAuthor" [value]="item.name">{{item.name}}</option>
               </select>
               <div *ngIf="submitted && formGroup.controls['mainAuthor'].errors?.required">
                 <div
@@ -121,7 +122,8 @@
             </div>
             <div class="form-group col-3">
               <label for="discount">Đồng tác giả</label>
-              <select (change)="addUtilitieToHouse($event.target.value)" class="form-control select2 select2-primary" id="author" name="author"
+              <select (change)="addUtilitieToHouse($event.target.value)" class="form-control select2 select2-primary"
+                      id="author" name="author"
                       formControlName="author" data-dropdown-css-class="select2-primary"
                       style="width: 100%; margin-left: 0px">
                 <option *ngFor="let item of listAuthor" [value]="item.id">{{item.name}}</option>
@@ -167,7 +169,8 @@
             <label for="image">Chọn ảnh tài liệu</label>
             <div class="input-group">
               <div class="custom-file">
-                <input [disabled]="isInfo" type="file" class="custom-file-input" (change)="upload($event.target.files, 0)"
+                <input [disabled]="isInfo" type="file" class="custom-file-input"
+                       (change)="upload($event.target.files, 0)"
                        id="image" name="image">
                 <label class="custom-file-label">Choose file</label>
               </div>
@@ -182,7 +185,8 @@
             <label for="image">Chọn file đính kèm</label>
             <div class="input-group">
               <div class="custom-file">
-                <input [disabled]="isInfo" type="file" class="custom-file-input" (change)="upload($event.target.files, 1)"
+                <input [disabled]="isInfo" type="file" class="custom-file-input"
+                       (change)="upload($event.target.files, 1)"
                        id="image" name="image">
                 <label class="custom-file-label">Choose file</label>
               </div>
@@ -199,7 +203,8 @@
             <div class="img-galary">
               <p class="d-block mb-4 h-100">
                 <span (click)="pushDeleteImage(image)" class="close">×</span>
-                <img class="img-fluid img-thumbnail" [src]="apiFileUrl+image" alt="" style="width: 200px; height: 200px">
+                <img class="img-fluid img-thumbnail" [src]="apiFileUrl+image" alt=""
+                     style="width: 200px; height: 200px">
               </p>
             </div>
           </div>
@@ -223,22 +228,22 @@
                              slideImage="1"></ng-image-slider>
           </div>
         </div> -->
-        <div class="col-12" *ngIf="hasRoleAdmin">
-          <div class="form-group" style="display:inline">
-            <label for="status">Trạng thái: </label>
-            <input type="checkbox" name="status" formControlName="status" id="status"/>
-            <label class="status"
-                   style="background-color: green; color: #fff;text-align: center;  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 5px;vertical-align: middle;"
-                   for="status" *ngIf="formGroup.controls.status.value">Xác nhận</label>
-            <label class="status"
-                   style="background-color: red; color: #fff;text-align: center;  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 5px;vertical-align: middle;"
-                   for="status" *ngIf="!formGroup.controls.status.value">Không xác nhận</label>
-          </div>
-        </div>
+        <!--        <div class="col-12" *ngIf="hasRoleAdmin">-->
+        <!--          <div class="form-group" style="display:inline">-->
+        <!--            <label for="status">Trạng thái: </label>-->
+        <!--            <input type="checkbox" name="status" formControlName="status" id="status"/>-->
+        <!--            <label class="status"-->
+        <!--                   style="background-color: green; color: #fff;text-align: center;  padding-left: 10px;-->
+        <!--  padding-right: 10px;-->
+        <!--  border-radius: 5px;vertical-align: middle;"-->
+        <!--                   for="status" *ngIf="formGroup.controls.status.value">Xác nhận</label>-->
+        <!--            <label class="status"-->
+        <!--                   style="background-color: red; color: #fff;text-align: center;  padding-left: 10px;-->
+        <!--  padding-right: 10px;-->
+        <!--  border-radius: 5px;vertical-align: middle;"-->
+        <!--                   for="status" *ngIf="!formGroup.controls.status.value">Không xác nhận</label>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
       <div class="form-group" align="center">
         <button
