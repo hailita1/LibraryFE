@@ -78,9 +78,9 @@ export class Register1Component implements OnInit {
       userName: this.registerForm.value.userName,
       password: this.registerForm.value.password,
       fullName: this.registerForm.value.fullName,
-      telephoneNumber: this.registerForm.value.telephoneNumber
+      phone: this.registerForm.value.telephoneNumber
     };
-    if (user.userName !== '' && user.password !== '' && user.fullName !== '' && user.telephoneNumber !== '') {
+    if (user.userName !== '' && user.password !== '' && user.fullName !== '' && user.phone !== '') {
       this.userService.register(user).subscribe(() => {
         this.registerForm.reset();
         this.router.navigate(['/login']).finally(() => {
