@@ -251,7 +251,7 @@ export class ItemProductComponent implements OnInit {
           [Validators.required],
         ],
         author: [
-          { value: this.listUtilitieAddToHouse[0].id, disabled: this.isInfo },
+          { value:this.listUtilitieAddToHouse.length > 0 ? this.listUtilitieAddToHouse[0].id:null, disabled: this.isInfo },
           [Validators.required],
         ],
         status: [{ value: this.model.status, disabled: false }],
@@ -498,7 +498,7 @@ export class ItemProductComponent implements OnInit {
   CheckExistAuthor(id: any) {
     var listAuthorClone = [...this.listAuthorOrigin];
     this.listAuthor = listAuthorClone.filter(
-      (x) => x.id != this.formGroup.controls.mainAuthor.value
+      (x) => x.name !== this.formGroup.controls.mainAuthor.value
     );
     this.listAuthor.unshift({});
   }

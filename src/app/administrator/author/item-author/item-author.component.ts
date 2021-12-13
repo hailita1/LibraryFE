@@ -87,9 +87,9 @@ export class ItemAuthorComponent implements OnInit {
       });
     } else {
       this.formGroup = this.fb.group({
-        name: [{value: this.model.name, disabled: true}, [Validators.required]],
-        degree: [{value: this.model.degree, disabled: true}, [Validators.required]],
-        academicRank: [{value: this.model.academicRank, disabled: true}, [Validators.required]],
+        name: [{value: this.model.name, disabled: this.isInfo}, [Validators.required]],
+        degree: [{value: this.model.degree, disabled: this.isInfo}, [Validators.required]],
+        academicRank: [{value: this.model.academicRank, disabled: this.isInfo}, [Validators.required]],
         status: [{value: this.model.status, disabled: this.isInfo}],
       });
     }

@@ -108,7 +108,7 @@
               <select (change)="CheckExistAuthor($event.target.value)" class="form-control select2 select2-primary" id="discount" name="discount"
                       formControlName="mainAuthor" data-dropdown-css-class="select2-primary"
                       style="width: 100%; margin-left: 0px">
-                <option *ngFor="let item of listMainAuthor" [value]="item.id">{{item.name}}</option>
+                <option *ngFor="let item of listMainAuthor" [value]="item.name">{{item.name}}</option>
               </select>
               <div *ngIf="submitted && formGroup.controls['mainAuthor'].errors?.required">
                 <div

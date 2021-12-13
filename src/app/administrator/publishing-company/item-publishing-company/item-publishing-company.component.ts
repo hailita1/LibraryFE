@@ -90,10 +90,10 @@ export class ItemPublishingCompanyComponent implements OnInit {
       });
     } else {
       this.formGroup = this.fb.group({
-        name: [{value: this.model.name, disabled: true}, [Validators.required]],
-        phone: [{value: this.model.phone, disabled: true}, [Validators.required]],
-        email: [{value: this.model.email, disabled: true}, [Validators.required]],
-        address: [{value: this.model.address, disabled: true}, [Validators.required]],
+        name: [{value: this.model.name, disabled: this.isInfo}, [Validators.required]],
+        phone: [{value: this.model.phone, disabled: this.isInfo}, [Validators.required]],
+        email: [{value: this.model.email, disabled: this.isInfo}, [Validators.required]],
+        address: [{value: this.model.address, disabled: this.isInfo}, [Validators.required]],
         status: [{value: this.model.status, disabled: this.isInfo}],
       });
     }
