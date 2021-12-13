@@ -70,13 +70,10 @@
         </div>
       </div>
       <div class="col-12" *ngIf="!isInfo">
-        <div class="form-group">
-          <label for="image">Chọn avt</label>
-          <div class="input-group">
-            <div class="form-group col-6">
-              <label for="exampleFormControlFile1">Ảnh</label>
-              <input type="file" class="form-control-file" (change)="upload($event.target.files)">
-            </div>
+        <div class="input-group">
+          <div class="form-group col-6">
+            <label for="exampleFormControlFile1">Ảnh</label>
+            <input type="file" class="form-control-file" (change)="upload($event.target.files)">
           </div>
         </div>
       </div>
