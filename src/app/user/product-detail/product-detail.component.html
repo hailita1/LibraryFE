@@ -83,7 +83,7 @@
     <div class="row">
       <div class="col-12">
         <div id="outerContainer">
-          <div class="pdf-container" *ngIf="hasRoleUser">
+          <div class="pdf-container" *ngIf="currentUser">
             <div style="display: flex;justify-content: center;">
             </div>
             <pdf-viewer
@@ -104,7 +104,7 @@
             <div style="display: flex;justify-content: center;">
             </div>
           </div>
-          <div *ngIf="!hasRoleUser">
+          <div *ngIf="!currentUser">
             <p style="text-align: center">Bạn cần đăng nhập để có thể đọc tài liệu</p>
           </div>
         </div>

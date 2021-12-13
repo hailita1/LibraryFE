@@ -12,7 +12,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <img *ngIf="!isAdd" [src]="user.avt" alt=""
+    <img *ngIf="!isAdd" [src]="isAdd?apiFileUrl+imageName:apiFileUrl+user.avt" alt=""
          style="width: 250px; height: 250px; margin-left: 113px; margin-bottom: 40px; border-radius: 50%">
     <form [formGroup]="form" (ngSubmit)="save()">
       <div class="form-group" *ngIf="!isAdd">
@@ -73,13 +73,9 @@
         <div class="form-group">
           <label for="image">Chọn avt</label>
           <div class="input-group">
-            <div class="custom-file">
-              <input [disabled]="isInfo" type="file" class="custom-file-input" (change)="uploadFile($event)"
-                     multiple="multiple" id="image" name="image">
-              <label class="custom-file-label">Choose file</label>
-            </div>
-            <div *ngIf="isLoading" class=" spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
+            <div class="form-group col-6">
+              <label for="exampleFormControlFile1">Ảnh</label>
+              <input type="file" class="form-control-file" (change)="upload($event.target.files)">
             </div>
           </div>
         </div>

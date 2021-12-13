@@ -54,7 +54,6 @@ export class HeaderComponent implements OnInit {
       }
     }
     this.loadFavorite();
-    console.log(this.favoriteProduct);
   }
 
   ngOnInit() {
@@ -64,6 +63,12 @@ export class HeaderComponent implements OnInit {
       });
     });
     this.getAllCategories();
+    if (this.currentUser != null) {
+      this.user.id = this.currentUser.id;
+      setInterval(() => {
+        this.loadFavorite();
+      }, 2000);
+    }
   }
 
   initModal(model: any, type = null): void {

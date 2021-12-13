@@ -115,36 +115,6 @@ export class HomepageComponent implements OnInit {
     this.router.navigate(['../document'], {queryParams: {name}});
   }
 
-  searchHN() {
-    const name = 'Hà Nội';
-    this.router.navigate(['../document'], {queryParams: {name}});
-  }
-
-  searchDN() {
-    const name = 'Đà Nẵng';
-    this.router.navigate(['../document'], {queryParams: {name}});
-  }
-
-  searchHCM() {
-    const name = 'Hồ Chí Minh';
-    this.router.navigate(['../document'], {queryParams: {name}});
-  }
-
-  searchQN() {
-    const name = 'Quảng Ninh';
-    this.router.navigate(['../document'], {queryParams: {name}});
-  }
-
-  searchVT() {
-    const name = 'Vũng Tàu';
-    this.router.navigate(['../document'], {queryParams: {name}});
-  }
-
-  searchDL() {
-    const name = 'Đà Lạt';
-    this.router.navigate(['../document'], {queryParams: {name}});
-  }
-
   filterKeyWord() {
     var filterResult = [];
     this.conditsion = true;

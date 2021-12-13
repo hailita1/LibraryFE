@@ -63,9 +63,9 @@ export class FavoriteComponent implements OnInit {
     this.activatedRoute.params.subscribe(async params => {
       var id = params['id'];
       if (id) {
-        const house = await this.getHouse(id);
+        const document = await this.getDocument(id);
         var item: Item = {
-          product: house
+          product: document
         };
         if (localStorage.getItem('heart-' + this.currentUser.id) == null) {
           let heart: any = [];
@@ -137,7 +137,7 @@ export class FavoriteComponent implements OnInit {
     this.router.navigate(['../document'], {queryParams: {name: name}});
   }
 
-  getHouse(id: number) {
+  getDocument(id: number) {
     return this.documentService.get(id).toPromise();
   }
 }

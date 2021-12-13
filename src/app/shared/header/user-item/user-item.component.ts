@@ -6,8 +6,8 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthenticationService} from '../../../service/auth/authentication.service';
 import {UserService} from '../../../service/user/user.service';
 import {User} from '../../../model/user';
-import {House} from '../../../model/house';
-import * as firebase from 'firebase';
+import {environment} from '../../../../environments/environment';
+import {UploadService} from '../../../service/upload/upload.service';
 
 declare var $: any;
 declare var Swal: any;
@@ -37,18 +37,21 @@ export class UserItemComponent implements OnInit {
   myItems: File[] = [];
   hasRoleUser = false;
   hasRoleAdmin = false;
-  picture: any;
   avt: any;
   model: any;
   submitted = false;
   arrCheck = [];
   form: FormGroup;
   formName = 'cá nhân';
+  apiUrl = environment.apiUrl;
+  apiFileUrl = environment.apiUploadUrl;
+  imageName = '';
 
   constructor(private modalService: NgbModal,
               private fb: FormBuilder,
               private userService: UserService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private uploadSevice: UploadService) {
     this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
     if (this.currentUser) {
       const roleList = this.currentUser.roles;
@@ -99,7 +102,6 @@ export class UserItemComponent implements OnInit {
   }
 
   view(model: any, type = null): void {
-    console.log(this.user);
     this.arrCheck = this.listcategorys;
     this.open(this.childModal);
     this.type = type;
@@ -143,6 +145,20 @@ export class UserItemComponent implements OnInit {
     });
   }
 
+  upload(files: File[]) {
+    // pick from one of the 4 styles of file uploads below
+    this.basicUpload(files);
+  }
+
+  basicUpload(files: File[]) {
+    var formData = new FormData();
+    Array.from(files).forEach(f => formData.append('file', f));
+    this.uploadSevice.uploadBasic(formData)
+      .subscribe(event => {
+        this.imageName = event.message;
+      });
+  }
+
   save() {
     let user: any;
     this.submitted = true;
@@ -163,10 +179,10 @@ export class UserItemComponent implements OnInit {
       return;
     }
     if (this.isEdit) {
-      if (this.picture == null) {
+      if (this.imageName == null || this.imageName === '') {
         this.avt = this.user.avt;
       } else {
-        this.avt = this.picture[0].avt;
+        this.avt = this.imageName;
       }
       user = {
         email: this.form.get('email').value,
@@ -226,51 +242,6 @@ export class UserItemComponent implements OnInit {
   public closeModalReloadData(): void {
     this.submitted = false;
     this.eventEmit.emit('success');
-  }
-
-  // Upload avt
-  uploadFile(event) {
-    this.myItems = [];
-    const files = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-      this.myItems.push(files[i]);
-    }
-    this.uploadAll();
-  }
-
-  uploadAll() {
-    this.isLoading = true;
-    Promise.all(
-      this.myItems.map(file => this.putStorageItem(file))
-    )
-      .then((url) => {
-        console.log(`All success`, url);
-        this.picture = url;
-        this.user.avt = this.picture[0].avt;
-        this.isLoading = false;
-      })
-      .catch((error) => {
-        console.log(`Some failed: `, error.message);
-        this.isLoading = false;
-      });
-  }
-
-  putStorageItem(file): Promise<House> {
-    // the return value will be a Promise
-    const metadata = {
-      contentType: 'image/jpeg',
-    };
-    return new Promise<House>((resolve, reject) => {
-      firebase.storage().ref('img/' + Date.now()).put(file, metadata)
-        .then(snapshot => {
-          snapshot.ref.getDownloadURL().then(downloadURL => {
-            const link = {avt: downloadURL};
-            // @ts-ignore
-            resolve(link);
-          });
-        })
-        .catch(error => reject(error));
-    });
   }
 
   onClick() {

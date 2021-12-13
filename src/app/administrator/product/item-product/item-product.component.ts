@@ -252,7 +252,7 @@ export class ItemProductComponent implements OnInit {
           [Validators.required],
         ],
         author: [
-          { value:this.listUtilitieAddToHouse.length > 0 ? this.listUtilitieAddToHouse[0].id:null, disabled: this.isInfo },
+          {value: this.listUtilitieAddToHouse.length > 0 ? this.listUtilitieAddToHouse[0].id : null, disabled: this.isInfo},
           [Validators.required],
         ],
         status: [{value: this.model.status, disabled: false}],
@@ -378,6 +378,7 @@ export class ItemProductComponent implements OnInit {
         fileName: this.fileName,
         publishingYear: this.formGroup.get('publishingYear').value,
         pageNumber: this.formGroup.get('pageNumber').value,
+        visitNumber: this.model.visitNumber
       };
     } else {
       document = {
