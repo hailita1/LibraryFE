@@ -21,39 +21,20 @@
       <button (click)="initModal({}, 'add')" *ngIf="hasRoleAdmin" class="btn btn-success" style="width: 100px">
         Tạo mới
       </button>
-      <button [hidden]="isDelete" *ngIf="hasRoleAdmin"
-              class="btn btn-danger" style="margin-left: 15px; width: 100px" data-toggle="modal"
-              data-target="#modal-delete-list">
-        Xóa
-      </button>
     </div>
     <div class="card-body">
       <table class="table table-bordered" id="table-author">
         <thead>
         <tr>
-          <th scope="col" style="text-align: center;width: 10px" *ngIf="hasRoleAdmin">
-            <input
-              type="checkbox"
-              (change)="checkAllCheckBox($event)"
-            />
-          </th>
           <th style="width: 10px">#</th>
           <th style="text-align: center">Tên độc giả</th>
-          <th style="text-align: center">Ảnh</th>
+          <th style="text-align: center">Ảnh đại diện</th>
           <th style="text-align: center">Email</th>
           <th style="width: 200px; text-align: center" *ngIf="hasRoleAdmin">Thao tác</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let reader of listReader; index as i">
-          <td style="text-align: center" *ngIf="hasRoleAdmin">
-            <input
-              type="checkbox"
-              [(ngModel)]="listReader[i].checked"
-              (ngModelChange)="changeModel()"
-              value="{{ reader.id }}"
-            />
-          </td>
           <td style="text-align: center">{{i + 1}}</td>
           <td style="text-align: center">
             <p>{{reader.fullName}}</p>

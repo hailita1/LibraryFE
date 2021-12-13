@@ -15,7 +15,7 @@
     <img *ngIf="!isAdd" [src]="isAdd?apiFileUrl+imageName:apiFileUrl+user.avt" alt=""
          style="width: 250px; height: 250px; margin-left: 113px; margin-bottom: 40px; border-radius: 50%">
     <form [formGroup]="form" (ngSubmit)="save()">
-      <div class="form-group" *ngIf="!isAdd">
+      <div class="form-group" *ngIf="!isAdd" [hidden]="isEdit">
         <label>Họ và tên chủ tài khoản</label>
         <input
           type="text"
