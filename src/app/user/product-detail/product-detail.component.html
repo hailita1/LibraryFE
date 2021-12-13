@@ -66,6 +66,21 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-5">
+        <img [src]="fileUrl + '/files/' + documentDetail.image" *ngIf="documentDetail.image != null" alt="">
+      </div>
+      <div class="col-4">
+        <h4>Thể loại : {{documentDetail.category.name}}</h4>
+        <h4>Nhà xuất bản : {{documentDetail.publishingCompany.name}}</h4>
+        <h4>Năm xuất bản : {{documentDetail.publishingYear}}</h4>
+        <h4>Tác giả chính : {{documentDetail.mainAuthor}}</h4>
+        <h4>Số lượt xem : {{documentDetail.visitNumber}}</h4>
+      </div>
+      <div class="col-3">
+      </div>
+    </div>
+    <h3 style="margin-bottom: 15px; margin-top: 15px; font-weight: bold">Nội dung tài liệu: </h3>
+    <div class="row">
       <div class="col-12">
         <div id="outerContainer">
           <div class="pdf-container" *ngIf="hasRoleUser">
@@ -106,14 +121,14 @@
         </div>
         <div class="row">
           <div style="cursor: pointer;" class="col-lg-3 col-md-4 col-sm-6"
-               *ngFor="let house of listTopics  | slice: (pageDocument-1) * pageSizeDocument : ( pageDocument -1) * pageSizeDocument + pageSizeDocument;"
-               (click)="getDetailDocument(house.id)">
+               *ngFor="let document of listTopics  | slice: (pageDocument-1) * pageSizeDocument : ( pageDocument -1) * pageSizeDocument + pageSizeDocument;"
+               (click)="getDetailDocument(document.id)">
             <div class="product__discount__item">
-              <div class="product__discount__item__pic set-bg" *ngIf="house.image != null">
-                <img width="100%" height="100%" [src]="fileUrl + '/files/' + house.image" alt="">
+              <div class="product__discount__item__pic set-bg" *ngIf="document.image != null">
+                <img width="100%" height="100%" [src]="fileUrl + '/files/' + document.image" alt="">
               </div>
               <div class="product__discount__item__text">
-                <h5>{{house.name}}</h5>
+                <h5>{{document.name}}</h5>
               </div>
             </div>
           </div>

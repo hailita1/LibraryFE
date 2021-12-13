@@ -9,7 +9,7 @@ import {AuthenticationService} from '../../service/auth/authentication.service';
 import {QuickviewComponent} from '../homepage/quickview/quickview.component';
 import {DocumentService} from 'src/app/service/document/document.service';
 import {environment} from 'src/environments/environment';
-import {TopicService} from "../../service/topic/topic.service";
+import {TopicService} from '../../service/topic/topic.service';
 
 declare var $: any;
 declare var Swal: any;
@@ -40,6 +40,7 @@ export class ShopComponent implements OnInit {
   pageSize = 9;
   isSelected = true;
   checkSerch = false;
+  fileUrl = environment.apiUrl;
 
   constructor(private categoryService: CategoryService,
               private activatedRoute: ActivatedRoute,
@@ -49,13 +50,10 @@ export class ShopComponent implements OnInit {
               private router: Router) {
     this.sub = this.activatedRoute.queryParams.subscribe(params => {
       this.query = params.name;
-      console.log(this.query);
-      
       if (this.query !== null && this.query !== undefined && this.query !== '') {
         this.searchForm.value.name = this.query;
         this.documentService.getAllDocumentByName(this.query).subscribe(res => {
           this.listDocument = res;
-          //this.router.navigate(['/document'], {queryParams: {name: name}});
         });
       } else {
         this.getAllDocument();
@@ -67,10 +65,9 @@ export class ShopComponent implements OnInit {
   }
 
   viewDetail(id: any) {
-    this.router.navigateByUrl("/document/" + id);
+    this.router.navigateByUrl('/document/' + id);
   }
 
-  fileUrl = environment.apiUrl;
 
   getAllDocument() {
     this.documentService.getAll().subscribe(res => {
@@ -79,8 +76,8 @@ export class ShopComponent implements OnInit {
   }
 
   ngOnInit() {
-this.getAllTopic();
-    $(document).ready(function () {
+    this.getAllTopic();
+    $(document).ready(function() {
       $('.latest-product__slider').owlCarousel({
         loop: true,
         margin: 0,
@@ -92,7 +89,7 @@ this.getAllTopic();
         autoHeight: false,
         autoplay: true
       });
-      $('.hero__categories__all').on('click', function () {
+      $('.hero__categories__all').on('click', function() {
         $('.hero__categories ul').slideToggle(400);
       });
       var rangeSlider = $('.price-range'),
@@ -105,7 +102,7 @@ this.getAllTopic();
         min: minPrice,
         max: maxPrice,
         values: [minPrice, maxPrice],
-        slide: function (event, ui) {
+        slide: function(event, ui) {
           minamount.val('$' + ui.values[0]);
           maxamount.val('$' + ui.values[1]);
         }
@@ -136,27 +133,4 @@ this.getAllTopic();
       }
     }
   }
-
-  // changeStatus(event: any) {
-  //   // tslint:disable-next-line: radix
-  //   switch (parseInt(event)) {
-  //     case -1:
-  //       this.houseService.getAllHouseStatusTrue().subscribe(listHouse => {
-  //         this.listHouse = listHouse;
-  //       });
-  //       break;
-  //     case 1:
-  //       this.houseService.getAllHousePriceAsc().subscribe(listHouse => {
-  //         this.listHouse = listHouse;
-  //       });
-  //       break;
-  //     case 0:
-  //       this.houseService.getAllHousePriceDesc().subscribe(listHouse => {
-  //         this.listHouse = listHouse;
-  //       });
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
 }

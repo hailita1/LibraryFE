@@ -10,6 +10,7 @@ import {User} from '../../model/user';
 import {NotificationUser} from '../../model/notificationUser';
 import {UserItemComponent} from './user-item/user-item.component';
 import {ChagepasswordComponent} from './chagepassword/chagepassword.component';
+import {environment} from '../../../environments/environment';
 
 declare var $: any;
 
@@ -32,6 +33,7 @@ export class HeaderComponent implements OnInit {
   items: Item[] = [];
   favoriteProduct: Item[] = [];
   listNotification: NotificationUser[] = [];
+  fileUrl = environment.apiUrl;
 
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,
@@ -52,6 +54,7 @@ export class HeaderComponent implements OnInit {
       }
     }
     this.loadFavorite();
+    console.log(this.favoriteProduct);
   }
 
   ngOnInit() {

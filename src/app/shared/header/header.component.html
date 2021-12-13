@@ -62,16 +62,6 @@
               <a href="#"><i class="fab fa-linkedin"></i></a>
               <a href="#"><i class="fab fa-pinterest-p"></i></a>
             </div>
-            <div class="header__top__right__language">
-              <div>Theo dõi đơn đặt</div>
-              <ul *ngIf="currentUser">
-                <li><a [routerLink]="['/order', { status:true }]" style="font-size: 12px">Đã đặt</a></li>
-                <li><a [routerLink]="['/order', { status:false }]" style="font-size: 12px">Đơn đã hủy</a></li>
-              </ul>
-              <ul *ngIf="!currentUser">
-                <li><a [routerLink]="['/login']" style="font-size: 12px">Đăng nhập</a></li>
-              </ul>
-            </div>
             <div class="dropdown header__top__right__auth">
               <a class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                  aria-haspopup="false" aria-expanded="false">
@@ -100,12 +90,6 @@
                   <p>Chưa có thông báo</p>
                   <p></p>
                 </div>
-                <!--                <div class="dropdown-item"-->
-                <!--                     *ngFor="let notification of listNotification">-->
-                <!--                  <div *ngIf="notification.status == true" (click)="updateStatus(notification.id)">-->
-                <!--                    {{notification.content}}-->
-                <!--                  </div>-->
-                <!--                </div>-->
               </div>
             </div>
             <div class="header__top__right__auth" *ngIf="!currentUser">
@@ -165,7 +149,6 @@
       </div>
       <div class="col-lg-1">
         <div class="header__cart">
-          <!--          <div><a routerLink="/favorite"></div>-->
           <div class="header__top__right__language">
             <div [routerLink]="['/favorite']">
               <i style="font-size: 20px; color: red;" class="fa fa-heart"></i>
@@ -173,12 +156,15 @@
             </div>
             <ul>
               <li class="row" style="width: 100% !important;" *ngFor="let item of favoriteProduct">
-                <div class="col-md-3" style="padding-right: 0px; margin-right: 0px"><img
-                  style="width: 50px; height: 50px; margin-bottom: 10px; margin-right: 0px; margin-left: 5px"
-                  [src]="item.product.images[0].link" [routerLink]="['/house',item.product.id]"></div>
+                <div class="col-md-3" style="padding-right: 0px; margin-right: 0px">
+                  <img
+                    style="width: 50px; height: 50px; margin-bottom: 10px; margin-right: 0px; margin-left: 5px"
+                    [src]="+fileUrl + '/files/' + item.product.image" [routerLink]="['/document',item.product.id]">
+                </div>
                 <div class="col-md-6" style="padding-right: 0px; margin-right: 0px;">
-                  <div><span [routerLink]="['/house',item.product.id]">{{item.product.name}}</span></div>
-                  <div><span [routerLink]="['/house',item.product.id]">{{item.product.price| currency: 'VND'}}</span>
+                  <div><span [routerLink]="['/document',item.product.id]">{{item.product.name}}</span></div>
+                  <div><span
+                    [routerLink]="['/document',item.product.id]">Tác giả: {{item.product.mainAuthor}}</span>
                   </div>
                 </div>
                 <div class="col-md-2">
@@ -186,7 +172,7 @@
                 </div>
               </li>
               <li *ngIf="favoriteProduct.length ==0">
-                <span>Bạn đang không thích HomeStay nào !!!</span>
+                <span>Bạn đang không thích tài liệu nào !!!</span>
               </li>
             </ul>
             <ul *ngIf="!currentUser">

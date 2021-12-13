@@ -123,12 +123,11 @@ export class ProductDetailComponent implements OnInit {
   getAllTopic() {
     this.topicService.getAllTopic().subscribe(listTopic => {
       this.listTopic = listTopic;
-      console.log(listTopic);
     });
   }
 
   search() {
-    const address = this.searchForm.value.name;
-    this.router.navigate(['../houses'], {queryParams: {address}});
+    const name = this.searchForm.value.name;
+    this.router.navigate(['../document'], {queryParams: {name}});
   }
 }

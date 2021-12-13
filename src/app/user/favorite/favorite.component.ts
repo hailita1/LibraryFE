@@ -7,6 +7,7 @@ import {Item} from '../../model/item';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {UserToken} from '../../model/user-token';
 import {TopicService} from '../../service/topic/topic.service';
+import {DocumentService} from '../../service/document/document.service';
 
 declare var $: any;
 
@@ -26,6 +27,7 @@ export class FavoriteComponent implements OnInit {
   constructor(private categoryService: CategoryService,
               private activatedRoute: ActivatedRoute,
               private authenticationService: AuthenticationService,
+              private documentService: DocumentService,
               private topicService: TopicService,
               private router: Router) {
     this.authenticationService.currentUser.subscribe(value => {
@@ -35,12 +37,12 @@ export class FavoriteComponent implements OnInit {
 
   ngOnInit() {
     this.getAllTopic();
-    $(document).ready(function () {
-      $('.hero__categories__all').on('click', function () {
+    $(document).ready(function() {
+      $('.hero__categories__all').on('click', function() {
         $('.hero__categories ul').slideToggle(400);
       });
       var proQty = $('.pro-qty');
-      proQty.on('click', '.qtybtn', function () {
+      proQty.on('click', '.qtybtn', function() {
         var $button = $(this);
         var oldValue = $button.parent().find('input').val();
         if ($button.hasClass('inc')) {
@@ -58,25 +60,25 @@ export class FavoriteComponent implements OnInit {
     });
 
     this.loadFavorite();
-    // this.activatedRoute.params.subscribe(async params => {
-    //   var id = params['id'];
-    //   if (id) {
-    //     const house = await this.getHouse(id);
-    //     var item: Item = {
-    //       product: house
-    //     };
-    //     if (localStorage.getItem('heart-' + this.currentUser.id) == null) {
-    //       let heart: any = [];
-    //       heart.push(JSON.stringify(item));
-    //       localStorage.setItem('heart-' + this.currentUser.id, JSON.stringify(heart));
-    //     } else {
-    //       this.addProductToFavorite(id, item);
-    //     }
-    //     this.loadFavorite();
-    //   } else {
-    //     this.loadFavorite();
-    //   }
-    // });
+    this.activatedRoute.params.subscribe(async params => {
+      var id = params['id'];
+      if (id) {
+        const house = await this.getHouse(id);
+        var item: Item = {
+          product: house
+        };
+        if (localStorage.getItem('heart-' + this.currentUser.id) == null) {
+          let heart: any = [];
+          heart.push(JSON.stringify(item));
+          localStorage.setItem('heart-' + this.currentUser.id, JSON.stringify(heart));
+        } else {
+          this.addProductToFavorite(id, item);
+        }
+        this.loadFavorite();
+      } else {
+        this.loadFavorite();
+      }
+    });
   }
 
   getAllTopic() {
@@ -131,7 +133,11 @@ export class FavoriteComponent implements OnInit {
   }
 
   search() {
-    const address = this.searchForm.value.name;
-    this.router.navigate(['../houses'], {queryParams: {address: address}});
+    const name = this.searchForm.value.name;
+    this.router.navigate(['../document'], {queryParams: {name: name}});
+  }
+
+  getHouse(id: number) {
+    return this.documentService.get(id).toPromise();
   }
 }

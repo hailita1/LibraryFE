@@ -6,33 +6,32 @@ import {
   OnInit,
   Output,
   ViewChild,
-} from "@angular/core";
-import { ModalDirective } from "ngx-bootstrap/modal";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { CategoryService } from "../../../service/category/category.service";
-import { Category } from "../../../model/category";
-import { AuthenticationService } from "../../../service/auth/authentication.service";
-import { UserToken } from "../../../model/user-token";
-import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { DocumentService } from "src/app/service/document/document.service";
-import { PublishingCompanyService } from "src/app/service/publishing-company/publishing-company.service";
-import { AuthorService } from "src/app/service/author/author.service";
-import { UploadService } from "src/app/service/upload/upload.service";
-import { environment } from "src/environments/environment";
-import { Author } from "../../../model/author";
+} from '@angular/core';
+import {ModalDirective} from 'ngx-bootstrap/modal';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CategoryService} from '../../../service/category/category.service';
+import {AuthenticationService} from '../../../service/auth/authentication.service';
+import {UserToken} from '../../../model/user-token';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {DocumentService} from 'src/app/service/document/document.service';
+import {PublishingCompanyService} from 'src/app/service/publishing-company/publishing-company.service';
+import {AuthorService} from 'src/app/service/author/author.service';
+import {UploadService} from 'src/app/service/upload/upload.service';
+import {environment} from 'src/environments/environment';
+import {Author} from '../../../model/author';
 
 declare const myTest: any;
 declare var $: any;
 declare var Swal: any;
 
 @Component({
-  selector: "app-item-product",
-  templateUrl: "./item-product.component.html",
-  styleUrls: ["./item-product.component.scss"],
+  selector: 'app-item-product',
+  templateUrl: './item-product.component.html',
+  styleUrls: ['./item-product.component.scss'],
 })
 export class ItemProductComponent implements OnInit {
-  @ViewChild("content", { static: false }) public childModal!: ModalDirective;
+  @ViewChild('content', {static: false}) public childModal!: ModalDirective;
   @Input() listHouse: Array<any>;
   @Output() eventEmit: EventEmitter<any> = new EventEmitter<any>();
   closeResult: string;
@@ -41,7 +40,7 @@ export class ItemProductComponent implements OnInit {
   isAdd = false;
   isEdit = false;
   isInfo = false;
-  title = "";
+  title = '';
   type: any;
   status;
   listCategory: any[];
@@ -49,7 +48,7 @@ export class ItemProductComponent implements OnInit {
   listAuthor: any[];
   listMainAuthor: any[];
   listAuthorOrigin: any[];
-  fileName = "";
+  fileName = '';
   listUtilitieAddToHouse: Author[] = [];
   myItems: File[] = [];
   arrayPicture: any[] = [];
@@ -60,7 +59,7 @@ export class ItemProductComponent implements OnInit {
   submitted = false;
   arrCheck = [];
   formGroup: FormGroup;
-  formName = "tài liệu";
+  formName = 'tài liệu';
   imageObject: Array<object> = [];
 
   currentUser: UserToken;
@@ -79,21 +78,21 @@ export class ItemProductComponent implements OnInit {
   public Editor = ClassicEditor;
   config = {
     toolbar: [
-      "heading",
-      "|",
-      "bold",
-      "italic",
-      "Alignment",
-      "Autoformat",
-      "BlockQuote",
-      "CKFinder",
-      "CKFinderUploadAdapter",
-      "Image",
-      "Link",
-      "Table",
-      "TableToolbar",
-      "TextTransformation",
-      "MediaEmbed",
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      'Alignment',
+      'Autoformat',
+      'BlockQuote',
+      'CKFinder',
+      'CKFinderUploadAdapter',
+      'Image',
+      'Link',
+      'Table',
+      'TableToolbar',
+      'TextTransformation',
+      'MediaEmbed',
     ],
   };
 
@@ -114,10 +113,10 @@ export class ItemProductComponent implements OnInit {
     if (this.currentUser) {
       const roleList = this.currentUser.roles;
       for (const role of roleList) {
-        if (role.authority === "ROLE_USER") {
+        if (role.authority === 'ROLE_USER') {
           this.hasRoleUser = true;
         }
-        if (role.authority === "ROLE_ADMIN") {
+        if (role.authority === 'ROLE_ADMIN') {
           this.hasRoleAdmin = true;
         }
       }
@@ -126,19 +125,19 @@ export class ItemProductComponent implements OnInit {
 
   updateFormType(type: any) {
     switch (type) {
-      case "add":
+      case 'add':
         this.isInfo = false;
         this.isEdit = false;
         this.isAdd = true;
         this.title = `Thêm mới thông tin ${this.formName}`;
         break;
-      case "show":
+      case 'show':
         this.isInfo = true;
         this.isEdit = false;
         this.isAdd = false;
         this.title = `Xem chi tiết thông tin ${this.formName}`;
         break;
-      case "edit":
+      case 'edit':
         this.isInfo = false;
         this.isEdit = true;
         this.isAdd = false;
@@ -154,7 +153,7 @@ export class ItemProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.submitted = false;
-    this.idUser = JSON.parse(localStorage.getItem("user") || "{id}").id;
+    this.idUser = JSON.parse(localStorage.getItem('user') || '{id}').id;
     this.fetchListAuthor();
     this.fetchListCategory();
     this.fetchListPublishing();
@@ -179,11 +178,13 @@ export class ItemProductComponent implements OnInit {
       this.listMainAuthor = [...this.listAuthorOrigin];
     });
   }
+
   getDocumentById(id: any) {
     this.documentService.get(id).subscribe((res) => {
       this.model = res;
     });
   }
+
   view(model: any, type = null): void {
     this.resetData();
     this.open(this.childModal);
@@ -194,29 +195,29 @@ export class ItemProductComponent implements OnInit {
     if (model.id === null || model.id === undefined) {
       this.grid.rowData = [];
       this.formGroup = this.fb.group({
-        name: [{ value: null, disabled: this.isInfo }, [Validators.required]],
+        name: [{value: null, disabled: this.isInfo}, [Validators.required]],
         category: [
-          { value: null, disabled: this.isInfo },
+          {value: null, disabled: this.isInfo},
           [Validators.required],
         ],
         company: [
-          { value: null, disabled: this.isInfo },
+          {value: null, disabled: this.isInfo},
           [Validators.required],
         ],
         publishingYear: [
-          { value: null, disabled: this.isInfo },
+          {value: null, disabled: this.isInfo},
           [Validators.required],
         ],
         pageNumber: [
-          { value: null, disabled: this.isInfo },
+          {value: null, disabled: this.isInfo},
           [Validators.required],
         ],
         mainAuthor: [
-          { value: null, disabled: this.isInfo },
+          {value: null, disabled: this.isInfo},
           [Validators.required],
         ],
-        author: [{ value: null, disabled: this.isInfo }, [Validators.required]],
-        status: [{ value: false, disabled: true }],
+        author: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        status: [{value: false, disabled: true}],
       });
     } else {
       this.imageObject = [];
@@ -227,34 +228,34 @@ export class ItemProductComponent implements OnInit {
       this.listUtilitieAddToHouse = this.model.author;
       this.formGroup = this.fb.group({
         name: [
-          { value: this.model.name, disabled: this.isInfo },
+          {value: this.model.name, disabled: this.isInfo},
           [Validators.required],
         ],
         category: [
-          { value: this.model.category.id, disabled: this.isInfo },
+          {value: this.model.category.id, disabled: this.isInfo},
           [Validators.required],
         ],
         company: [
-          { value: this.model.publishingCompany.id, disabled: this.isInfo },
+          {value: this.model.publishingCompany.id, disabled: this.isInfo},
           [Validators.required],
         ],
         publishingYear: [
-          { value: this.model.publishingYear, disabled: this.isInfo },
+          {value: this.model.publishingYear, disabled: this.isInfo},
           [Validators.required],
         ],
         mainAuthor: [
-          { value: this.model.mainAuthor, disabled: this.isInfo },
+          {value: this.model.mainAuthor, disabled: this.isInfo},
           [Validators.required],
         ],
         pageNumber: [
-          { value: this.model.pageNumber, disabled: this.isInfo },
+          {value: this.model.pageNumber, disabled: this.isInfo},
           [Validators.required],
         ],
         author: [
           { value:this.listUtilitieAddToHouse.length > 0 ? this.listUtilitieAddToHouse[0].id:null, disabled: this.isInfo },
           [Validators.required],
         ],
-        status: [{ value: this.model.status, disabled: false }],
+        status: [{value: this.model.status, disabled: false}],
       });
     }
   }
@@ -266,7 +267,7 @@ export class ItemProductComponent implements OnInit {
 
   basicUpload(files: File[], type: any) {
     var formData = new FormData();
-    Array.from(files).forEach((f) => formData.append("file", f));
+    Array.from(files).forEach((f) => formData.append('file', f));
     this.uploadSevice.uploadBasic(formData).subscribe((event) => {
       switch (type) {
         case 0:
@@ -279,16 +280,18 @@ export class ItemProductComponent implements OnInit {
       }
     });
   }
+
   resetData() {
-    this.fileName = "";
+    this.fileName = '';
     this.urlPicture = [];
   }
+
   // tslint:disable-next-line:typedef
   open(content: any) {
     this.modalReference = this.modalService.open(content, {
-      ariaLabelledBy: "modal-basic-title",
+      ariaLabelledBy: 'modal-basic-title',
       centered: true,
-      size: "xl",
+      size: 'xl',
     });
     this.modalReference.result.then(
       (result: any) => {
@@ -304,17 +307,17 @@ export class ItemProductComponent implements OnInit {
     let document: any;
     this.submitted = true;
     if (this.formGroup.invalid && this.validCategoryMeta() === false) {
-      $(function () {
+      $(function() {
         const Toast = Swal.mixin({
           toast: true,
-          position: "top-end",
+          position: 'top-end',
           showConfirmButton: false,
           timer: 3000,
         });
 
         Toast.fire({
-          type: "error",
-          title: "Kiểm tra thông tin các trường đã nhập",
+          type: 'error',
+          title: 'Kiểm tra thông tin các trường đã nhập',
         });
       });
       return;
@@ -322,19 +325,19 @@ export class ItemProductComponent implements OnInit {
     if (
       this.fileName === null ||
       this.fileName == undefined ||
-      this.fileName === ""
+      this.fileName === ''
     ) {
-      $(function () {
+      $(function() {
         const Toast = Swal.mixin({
           toast: true,
-          position: "top-end",
+          position: 'top-end',
           showConfirmButton: false,
           timer: 3000,
         });
 
         Toast.fire({
-          type: "error",
-          title: "File đính kèm không được để trống",
+          type: 'error',
+          title: 'File đính kèm không được để trống',
         });
       });
       return;
@@ -344,17 +347,17 @@ export class ItemProductComponent implements OnInit {
       this.urlPicture == undefined ||
       this.urlPicture.length === 0
     ) {
-      $(function () {
+      $(function() {
         const Toast = Swal.mixin({
           toast: true,
-          position: "top-end",
+          position: 'top-end',
           showConfirmButton: false,
           timer: 3000,
         });
 
         Toast.fire({
-          type: "error",
-          title: "Ảnh không được để trống",
+          type: 'error',
+          title: 'Ảnh không được để trống',
         });
       });
       return;
@@ -362,34 +365,34 @@ export class ItemProductComponent implements OnInit {
     if (this.isEdit) {
       document = {
         id: this.model.id,
-        name: this.formGroup.get("name").value,
-        mainAuthor: this.formGroup.get("mainAuthor").value,
+        name: this.formGroup.get('name').value,
+        mainAuthor: this.formGroup.get('mainAuthor').value,
         category: {
-          id: this.formGroup.get("category").value,
+          id: this.formGroup.get('category').value,
         },
         publishingCompany: {
-          id: this.formGroup.get("company").value,
+          id: this.formGroup.get('company').value,
         },
         author: this.listUtilitieAddToHouse,
         image: this.urlPicture[0],
         fileName: this.fileName,
-        publishingYear: this.formGroup.get("publishingYear").value,
-        pageNumber: this.formGroup.get("pageNumber").value,
+        publishingYear: this.formGroup.get('publishingYear').value,
+        pageNumber: this.formGroup.get('pageNumber').value,
       };
     } else {
       document = {
-        name: this.formGroup.get("name").value,
+        name: this.formGroup.get('name').value,
         category: {
-          id: this.formGroup.get("category").value,
+          id: this.formGroup.get('category').value,
         },
         publishingCompany: {
-          id: this.formGroup.get("company").value,
+          id: this.formGroup.get('company').value,
         },
-        publishingYear: this.formGroup.get("publishingYear").value,
-        pageNumber: this.formGroup.get("pageNumber").value,
+        publishingYear: this.formGroup.get('publishingYear').value,
+        pageNumber: this.formGroup.get('pageNumber').value,
         fileName: this.fileName,
         image: this.urlPicture[0],
-        mainAuthor: this.formGroup.get("mainAuthor").value,
+        mainAuthor: this.formGroup.get('mainAuthor').value,
         author: this.listUtilitieAddToHouse,
       };
     }
@@ -397,34 +400,34 @@ export class ItemProductComponent implements OnInit {
       this.documentService.create(document).subscribe(
         (res) => {
           this.closeModalReloadData();
-          $(function () {
+          $(function() {
             const Toast = Swal.mixin({
               toast: true,
-              position: "top-end",
+              position: 'top-end',
               showConfirmButton: false,
               timer: 3000,
             });
 
             Toast.fire({
-              type: "success",
-              title: "Thêm mới thành công",
+              type: 'success',
+              title: 'Thêm mới thành công',
             });
           });
           // this.grid.rowData = [];
           this.modalReference.dismiss();
         },
         (err) => {
-          $(function () {
+          $(function() {
             const Toast = Swal.mixin({
               toast: true,
-              position: "top-end",
+              position: 'top-end',
               showConfirmButton: false,
               timer: 3000,
             });
 
             Toast.fire({
-              type: "error",
-              title: "Thêm mới thất bại",
+              type: 'error',
+              title: 'Thêm mới thất bại',
             });
           });
         }
@@ -434,34 +437,34 @@ export class ItemProductComponent implements OnInit {
       this.documentService.update(document.id, document).subscribe(
         (res) => {
           this.closeModalReloadData();
-          $(function () {
+          $(function() {
             const Toast = Swal.mixin({
               toast: true,
-              position: "top-end",
+              position: 'top-end',
               showConfirmButton: false,
               timer: 3000,
             });
 
             Toast.fire({
-              type: "success",
-              title: "Cập nhật thành công",
+              type: 'success',
+              title: 'Cập nhật thành công',
             });
           });
           this.modalReference.dismiss();
           this.imageObject = [];
         },
         (err) => {
-          $(function () {
+          $(function() {
             const Toast = Swal.mixin({
               toast: true,
-              position: "top-end",
+              position: 'top-end',
               showConfirmButton: false,
               timer: 3000,
             });
 
             Toast.fire({
-              type: "error",
-              title: "Cập nhật thất bại",
+              type: 'error',
+              title: 'Cập nhật thất bại',
             });
           });
         }
@@ -471,11 +474,11 @@ export class ItemProductComponent implements OnInit {
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
+      return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       this.listUtilitieAddToHouse = [];
       this.urlPicture = [];
-      return "by clicking on a backdrop";
+      return 'by clicking on a backdrop';
     } else {
       this.listUtilitieAddToHouse = [];
       this.urlPicture = [];
@@ -485,9 +488,9 @@ export class ItemProductComponent implements OnInit {
 
   public closeModalReloadData(): void {
     this.submitted = false;
-    this.fileName = "";
+    this.fileName = '';
     this.urlPicture = [];
-    this.eventEmit.emit("success");
+    this.eventEmit.emit('success');
   }
 
   // getAllCategory() {
@@ -502,14 +505,15 @@ export class ItemProductComponent implements OnInit {
     );
     this.listAuthor.unshift({});
   }
+
   addUtilitieToHouse(id) {
     var utilitie2 = [];
-    if (id !== null && typeof  id !== 'undefined' && id !== '') {
+    if (id !== null && typeof id !== 'undefined' && id !== '') {
       const utilitie1 = this.listAuthor.filter((utilitie) => utilitie.id == id);
 
       if (utilitie1.length > 0) {
         utilitie2 = this.listUtilitieAddToHouse.filter(
-          (utilitie) => utilitie1[0].id == utilitie.id      );
+          (utilitie) => utilitie1[0].id == utilitie.id);
       }
       if (utilitie2 !== null) {
         if (utilitie2.length == 0) {
@@ -537,8 +541,8 @@ export class ItemProductComponent implements OnInit {
 
   addMeta(event: any) {
     const model = {
-      name: "",
-      price: "",
+      name: '',
+      price: '',
       status: true,
       validName: false,
       validPrice: false,
@@ -554,7 +558,7 @@ export class ItemProductComponent implements OnInit {
   validCategoryMeta() {
     let flag = false;
     this.grid.rowData.forEach((item) => {
-      if (item.name === "" || item.name === null || item.name === undefined) {
+      if (item.name === '' || item.name === null || item.name === undefined) {
         item.validName = true;
         flag = true;
       } else {
@@ -563,7 +567,7 @@ export class ItemProductComponent implements OnInit {
       }
 
       if (
-        item.price === "" ||
+        item.price === '' ||
         item.price === null ||
         item.price === undefined
       ) {

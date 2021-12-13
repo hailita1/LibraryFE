@@ -8,7 +8,8 @@ import {UserToken} from '../../model/user-token';
 import {House} from '../../model/house';
 import {QuickviewComponent} from './quickview/quickview.component';
 import {TopicService} from 'src/app/service/topic/topic.service';
-import {DocumentService} from "../../service/document/document.service";
+import {DocumentService} from '../../service/document/document.service';
+import {environment} from '../../../environments/environment';
 
 declare var $: any;
 
@@ -32,6 +33,7 @@ export class HomepageComponent implements OnInit {
   searchKeyWord: any;
   conditsion: boolean;
   isCheck = true;
+  fileUrl = environment.apiUrl;
 
   constructor(private categoryService: CategoryService,
               private documentService: DocumentService,
@@ -48,7 +50,7 @@ export class HomepageComponent implements OnInit {
     this.getAllDocument();
     this.getAllDocumentVisitNumber();
     // tslint:disable-next-line:only-arrow-functions
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('.latest-product__slider').owlCarousel({
         loop: true,
         margin: 0,
@@ -61,7 +63,7 @@ export class HomepageComponent implements OnInit {
         autoplay: true
       });
       // tslint:disable-next-line:only-arrow-functions
-      $('.hero__categories__all').on('click', function () {
+      $('.hero__categories__all').on('click', function() {
         $('.hero__categories ul').slideToggle(400);
       });
       $('.categories__slider').owlCarousel({
@@ -114,43 +116,33 @@ export class HomepageComponent implements OnInit {
   }
 
   searchHN() {
-    const address = 'Hà Nội';
-    this.router.navigate(['../document'], {queryParams: {address}});
+    const name = 'Hà Nội';
+    this.router.navigate(['../document'], {queryParams: {name}});
   }
 
   searchDN() {
-    const address = 'Đà Nẵng';
-    this.router.navigate(['../document'], {queryParams: {address}});
+    const name = 'Đà Nẵng';
+    this.router.navigate(['../document'], {queryParams: {name}});
   }
 
   searchHCM() {
-    const address = 'Hồ Chí Minh';
-    this.router.navigate(['../document'], {queryParams: {address}});
+    const name = 'Hồ Chí Minh';
+    this.router.navigate(['../document'], {queryParams: {name}});
   }
 
   searchQN() {
-    const address = 'Quảng Ninh';
-    this.router.navigate(['../document'], {queryParams: {address}});
+    const name = 'Quảng Ninh';
+    this.router.navigate(['../document'], {queryParams: {name}});
   }
 
   searchVT() {
-    const address = 'Vũng Tàu';
-    this.router.navigate(['../document'], {queryParams: {address}});
+    const name = 'Vũng Tàu';
+    this.router.navigate(['../document'], {queryParams: {name}});
   }
 
   searchDL() {
-    const address = 'Đà Lạt';
-    this.router.navigate(['../document'], {queryParams: {address}});
-  }
-
-  searchHA() {
-    const address = 'Hội An';
-    this.router.navigate(['../document'], {queryParams: {address}});
-  }
-
-  searchNT() {
-    const address = 'Nha Trang';
-    this.router.navigate(['../document'], {queryParams: {address}});
+    const name = 'Đà Lạt';
+    this.router.navigate(['../document'], {queryParams: {name}});
   }
 
   filterKeyWord() {
@@ -163,8 +155,8 @@ export class HomepageComponent implements OnInit {
       this.listFilterResult = this.listHouseFilter;
       var keyWord = this.searchKeyWord.toLowerCase();
       this.listFilterResult.map(item => {
-        var address = item.address.toLowerCase();
-        if (address.includes(keyWord)) {
+        var name = item.name.toLowerCase();
+        if (name.includes(keyWord)) {
           filterResult.push(item);
         }
       });
@@ -180,11 +172,9 @@ export class HomepageComponent implements OnInit {
   onActivate(event) {
     let scrollToTop = window.setInterval(() => {
       let pos = window.pageYOffset;
-      console.log(pos);
       if (pos > 0) {
         window.scrollTo(0, pos - 1000);
       } else {
-        console.log('oke');
         window.clearInterval(scrollToTop);
       }
     }, 16);
@@ -192,14 +182,26 @@ export class HomepageComponent implements OnInit {
 
   getAllDocument() {
     this.documentService.getAll().subscribe(list => {
-      this.listDocumentLatest = list;
+      this.listHouseFilter = list;
+      if (list.length > 6) {
+        for (let i = 0; i < 6; i++) {
+          this.listDocumentLatest.push(list[i]);
+        }
+      } else {
+        this.listDocumentLatest = list;
+      }
     });
   }
 
   getAllDocumentVisitNumber() {
     this.documentService.getAllByVisitNumber().subscribe(list => {
-      this.listDocumentVisitNumber = list;
+      if (list.length > 6) {
+        for (let i = 0; i < 6; i++) {
+          this.listDocumentVisitNumber.push(list[i]);
+        }
+      } else {
+        this.listDocumentVisitNumber = list;
+      }
     });
   }
-
 }
