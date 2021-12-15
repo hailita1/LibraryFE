@@ -39,6 +39,7 @@
           </th>
           <th style="width: 10px">#</th>
           <th style="text-align: center">Thể loại</th>
+          <th style="text-align: center">Khoa</th>
           <th style="text-align: center">Ảnh</th>
           <th style="width: 200px; text-align: center" *ngIf="hasRoleAdmin">Thao tác</th>
         </tr>
@@ -57,9 +58,12 @@
           <td style="text-align: center">
             <p>{{category.name}}</p>
           </td>
-          <td>
+          <td style="text-align: center">
+            <p>{{category.topic.name}}</p>
+          </td>
+          <td style="text-align: center">
             <div class="form-group">
-              <img width="100%" height="200px" [src]="apiFileUrl+category.image" alt="Image">
+              <img width="150px" height="150px" [src]="apiFileUrl+category.image" alt="Image">
             </div>
           </td>
           <td>

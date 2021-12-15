@@ -38,7 +38,7 @@
           <th style="text-align: center">Tên tài liệu</th>
           <th style="text-align: center">Ảnh</th>
           <th style="text-align: center">Tác giả chính</th>
-          <!--          <th style="text-align: center">Trạng thái</th>-->
+          <th style="text-align: center">Nhà xuất bản</th>
           <th style="width: 200px; text-align: center">Thao tác</th>
         </tr>
         </thead>
@@ -56,18 +56,9 @@
           <td style="text-align: center">
             <p>{{document.mainAuthor}}</p>
           </td>
-          <!--          <td style="text-align: center">-->
-          <!--            <label class="status"-->
-          <!--                   style="background-color: green; color: #fff;text-align: center;  padding-left: 10px;-->
-          <!--  padding-right: 10px;-->
-          <!--  border-radius: 5px;vertical-align: middle;"-->
-          <!--                   *ngIf="document.status === true">Đã xác nhận</label>-->
-          <!--            <label class="status"-->
-          <!--                   style="background-color: red;color:#fff; ;text-align: center; padding-left: 10px;-->
-          <!--  padding-right: 10px;-->
-          <!--  border-radius: 5px;vertical-align: middle;"-->
-          <!--                   *ngIf="document.status === false">Chờ xác nhận</label>-->
-          <!--          </td>-->
+          <td style="text-align: center">
+            <p>{{document.publishingCompany.name}}</p>
+          </td>
           <td>
             <div class="row">
               <div class="col-4" *ngIf="hasRoleAdmin" style="margin-left: auto; margin-right: auto">

@@ -67,7 +67,8 @@
     </div>
     <div class="row">
       <div class="col-5">
-        <img [src]="fileUrl + '/files/' + documentDetail.image" *ngIf="documentDetail.image != null" alt="">
+        <img [src]="fileUrl + '/files/' + documentDetail.image" *ngIf="documentDetail.image != null" alt=""
+             style="width: 80%; height: 300px">
       </div>
       <div class="col-4">
         <h4><b>Thể loại :</b> {{documentDetail.category.name}}</h4>
