@@ -31,7 +31,7 @@ export class UserService {
   }
 
   updateUser(user: any): Observable<any> {
-    return this.http.put<any>(API_URL + `/accounts`, user);
+    return this.http.post<any>(API_URL + `/updateUser`, user);
   }
 
   updatePassword(user: any): Observable<any> {

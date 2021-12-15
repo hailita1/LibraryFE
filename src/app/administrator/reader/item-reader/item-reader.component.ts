@@ -43,6 +43,7 @@ export class ItemReaderComponent implements OnInit {
   formGroup: FormGroup;
   formName = 'độc giả';
   listTopic: any[] = [];
+  checkCatalog = false;
 
   updateFormType(type: any) {
     switch (type) {
@@ -78,23 +79,37 @@ export class ItemReaderComponent implements OnInit {
 
 
   view(model: any, type = null): void {
+    if (model.catalog === 'Sinh viên') {
+      this.checkCatalog = true;
+    } else {
+      this.checkCatalog = false;
+    }
     this.arrCheck = this.listReaders;
     this.open(this.childModal);
     this.type = type;
     this.model = model;
+    this.imageName = this.model.avt;
     this.submitted = false;
     this.updateFormType(type);
     if (model.id === null || model.id === undefined) {
       this.formGroup = this.fb.group({
-        name: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        status: [{value: false, disabled: this.isInfo}],
-        topicId: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        fullName: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        catalog: [{value: false, disabled: this.isInfo}],
+        email: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        phone: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        address: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        gender: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        studentCode: [{value: null, disabled: this.isInfo}, [Validators.required]],
       });
     } else {
       this.formGroup = this.fb.group({
-        name: [{value: this.model.name, disabled: this.isInfo}, [Validators.required]],
-        status: [{value: this.model.status, disabled: this.isInfo}],
-        topicId: [{value: this.model.topic?this.model.topic.id:null, disabled: this.isInfo}, [Validators.required]],
+        fullName: [{value: this.model.fullName, disabled: this.isInfo}, [Validators.required]],
+        catalog: [{value: this.model.catalog, disabled: this.isInfo}, [Validators.required]],
+        email: [{value: this.model.email, disabled: this.isInfo}, [Validators.required]],
+        phone: [{value: this.model.phone, disabled: this.isInfo}, [Validators.required]],
+        address: [{value: this.model.address, disabled: this.isInfo}, [Validators.required]],
+        gender: [{value: this.model.gender, disabled: this.isInfo}, [Validators.required]],
+        studentCode: [{value: this.model.studentCode, disabled: this.isInfo}, [Validators.required]],
       });
     }
   }
@@ -118,7 +133,7 @@ export class ItemReaderComponent implements OnInit {
     this.modalReference = this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
       centered: true,
-      size: 'sl',
+      size: 'xl',
     });
     this.modalReference.result.then(
       (result: any) => {
@@ -133,6 +148,9 @@ export class ItemReaderComponent implements OnInit {
   save() {
     let reader: any;
     this.submitted = true;
+    if (this.model.catalog !== 'Sinh viên') {
+      this.formGroup.controls.studentCode.setValue('abc');
+    }
     if (this.formGroup.invalid) {
       // tslint:disable-next-line:only-arrow-functions
       $(function() {
@@ -152,18 +170,26 @@ export class ItemReaderComponent implements OnInit {
     }
     if (this.isEdit) {
       reader = {
-        name: this.formGroup.get('name').value,
-        status: this.formGroup.get('status').value,
-        topic: this.listTopic.filter(x => x.id == this.formGroup.get('topicId').value)[0],
+        fullName: this.formGroup.get('fullName').value,
+        catalog: this.formGroup.get('catalog').value,
+        email: this.formGroup.get('email').value,
+        phone: this.formGroup.get('phone').value,
+        address: this.formGroup.get('address').value,
+        gender: this.formGroup.get('gender').value,
+        studentCode: this.formGroup.get('studentCode').value,
         id: this.model.id,
-        image: this.imageName
+        avt: this.imageName
       };
     } else {
       reader = {
-        name: this.formGroup.get('name').value,
-        status: this.formGroup.get('status').value,
-        topic: this.listTopic.filter(x => x.id == this.formGroup.get('topicId').value)[0],
-        image: this.imageName
+        fullName: this.formGroup.get('fullName').value,
+        catalog: this.formGroup.get('catalog').value,
+        email: this.formGroup.get('email').value,
+        phone: this.formGroup.get('phone').value,
+        address: this.formGroup.get('address').value,
+        gender: this.formGroup.get('gender').value,
+        studentCode: this.formGroup.get('studentCode').value,
+        avt: this.imageName
       };
     }
     if (this.isAdd) {
@@ -253,5 +279,13 @@ export class ItemReaderComponent implements OnInit {
   public closeModalReloadData(): void {
     this.submitted = false;
     this.eventEmit.emit('success');
+  }
+
+  selectCatalog(item) {
+    if (item === 'Sinh viên') {
+      this.checkCatalog = true;
+    } else {
+      this.checkCatalog = false;
+    }
   }
 }

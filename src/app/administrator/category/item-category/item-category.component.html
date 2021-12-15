@@ -50,7 +50,7 @@
         </div>
         <div class="form-group col-6">
           <label for="exampleFormControlFile1">Ảnh</label>
-          <input type="file" class="form-control-file" (change)="upload($event.target.files)">
+          <input [disabled]="isInfo" type="file" class="form-control-file" (change)="upload($event.target.files)">
         </div>
       </div>
       <div class="form-group">

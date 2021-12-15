@@ -94,6 +94,7 @@ export class ItemCategoryComponent implements OnInit {
     this.open(this.childModal);
     this.type = type;
     this.model = model;
+    this.imageName = this.model.image;
     this.submitted = false;
     this.updateFormType(type);
 
@@ -148,7 +149,7 @@ export class ItemCategoryComponent implements OnInit {
     this.submitted = true;
     if (this.formGroup.invalid) {
       // tslint:disable-next-line:only-arrow-functions
-      $(function () {
+      $(function() {
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -183,7 +184,7 @@ export class ItemCategoryComponent implements OnInit {
       this.categoryService.createCategory(category).subscribe(res => {
           this.closeModalReloadData();
           // tslint:disable-next-line:only-arrow-functions
-          $(function () {
+          $(function() {
             const Toast = Swal.mixin({
               toast: true,
               position: 'top-end',
@@ -200,7 +201,7 @@ export class ItemCategoryComponent implements OnInit {
         },
         err => {
           // tslint:disable-next-line:only-arrow-functions
-          $(function () {
+          $(function() {
             const Toast = Swal.mixin({
               toast: true,
               position: 'top-end',
@@ -219,7 +220,7 @@ export class ItemCategoryComponent implements OnInit {
       this.categoryService.updateCategory(category.id, category).subscribe(res => {
           this.closeModalReloadData();
           // tslint:disable-next-line:only-arrow-functions
-          $(function () {
+          $(function() {
             const Toast = Swal.mixin({
               toast: true,
               position: 'top-end',
@@ -236,7 +237,7 @@ export class ItemCategoryComponent implements OnInit {
         },
         err => {
           // tslint:disable-next-line:only-arrow-functions
-          $(function () {
+          $(function() {
             const Toast = Swal.mixin({
               toast: true,
               position: 'top-end',
