@@ -148,8 +148,8 @@ export class ItemReaderComponent implements OnInit {
   save() {
     let reader: any;
     this.submitted = true;
-    if (this.model.catalog !== 'Sinh viên') {
-      this.formGroup.controls.studentCode.setValue('abc');
+    if (this.formGroup.get('catalog').value !== 'Sinh viên') {
+      this.formGroup.controls.studentCode.setValue(Math.random());
     }
     if (this.formGroup.invalid) {
       // tslint:disable-next-line:only-arrow-functions
