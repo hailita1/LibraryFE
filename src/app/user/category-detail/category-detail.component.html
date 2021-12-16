@@ -6,7 +6,7 @@
         <div class="hero__categories">
           <div class="hero__categories__all">
             <i class="fa fa-bars"></i>
-            <span>Danh sách khoa</span>
+            <span>Danh sách chủ đề</span>
           </div>
           <ul>
             <li *ngFor="let topic of listTopic"><a
@@ -58,52 +58,6 @@
 <section class="product spad">
   <div class="container">
     <div class="row">
-      <!-- <div class="col-lg-3 col-md-5" style="height: 100%">
-        <div class="sidebar">
-          <div class="sidebar__item">
-            <h4>Thể loại HomeStay</h4>
-            <ul *ngFor="let category of listCategory">
-              <li><a [routerLink]="['../../category',category.id]">{{category.name}}</a></li>
-            </ul>
-          </div>
-
-          <div class="sidebar__item">
-            <div class="latest-product__text">
-              <h4>HomeStay mới</h4>
-              <div class="latest-product__slider owl-carousel">
-                <div class="latest-prdouct__slider__item">
-                  <a [routerLink]="['../house',house.id]" class="latest-product__item"
-                     *ngFor="let house of listHouseLatest">
-                    <div class="latest-product__item__pic">
-                      <img [src]="house.images[0].link" *ngIf="house.images != null"
-                           style="width: 110px; height: 110px; border-radius: 5px" alt="">
-                    </div>
-                    <div class="latest-product__item__text">
-                      <h6>{{house.name}}</h6>
-                      <span>{{house.price | currency: 'VND'}}</span>
-                      <span *ngIf="house.discount!=0">Giảm: {{house.discount}}%</span>
-                    </div>
-                  </a>
-                </div>
-                <div class="latest-prdouct__slider__item">
-                  <a [routerLink]="['../house',house.id]" class="latest-product__item"
-                     *ngFor="let house of listHouseLatest">
-                    <div class="latest-product__item__pic">
-                      <img [src]="house.images[0].link" *ngIf="house.images != null"
-                           style="width: 110px; height: 110px; border-radius: 5px" alt="">
-                    </div>
-                    <div class="latest-product__item__text">
-                      <h6>{{house.name}}</h6>
-                      <span>{{house.price | currency: 'VND'}}</span>
-                      <span *ngIf="house.discount!=0">Giảm: {{house.discount}} %</span>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
       <div class="col-lg-12 col-md-12">
         <div class="product__discount">
           <div class="section-title product__discount__title" style="padding-top: 50px">
@@ -113,15 +67,8 @@
           <div class="row" *ngIf="this.listCategory.length > 0">
             <div class="col-lg-4 col-md-4">
               <div class="filter__found">
-                <h6><span>{{listCategory.length}}</span> thể loại</h6>
               </div>
             </div>
-            <!-- <div class="col-lg-4 col-md-3">
-              <div class="filter__option">
-                <span class="icon_grid-2x2"></span>
-                <span class="icon_ul"></span>
-              </div>
-            </div> -->
           </div>
           <div class="row">
             <div style="cursor: pointer;" class="col-lg-3 col-md-3 col-sm-3"
@@ -150,7 +97,7 @@
             <h2>Danh sách tài liệu</h2>
           </div>
           <div class="row">
-            <div style="cursor: pointer;" class="col-lg-4 col-md-6 col-sm-6"
+            <div style="cursor: pointer;" class="col-lg-3 col-md-3 col-sm-3"
                  *ngFor="let house of listHouseSaleOff  | slice: (pageDocument-1) * pageSizeDocument : ( pageDocument -1) * pageSizeDocument + pageSizeDocument;"
                  (click)="viewDetail(house.id)">
               <div class="product__discount__item">

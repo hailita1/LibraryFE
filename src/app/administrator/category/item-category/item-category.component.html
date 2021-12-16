@@ -32,7 +32,7 @@
       </div>
       <div class="row">
         <div class="form-group col-6">
-          <label>Khoa</label>
+          <label>Chủ đề</label>
           <br>
           <select formControlName="topicId" class="custom-select" style="margin-left: 0px">
             <option *ngFor="let item of listTopic" [value]="item.id">
@@ -44,7 +44,7 @@
               *ngIf="formGroup.controls['topicId'].errors?.required"
               style="color: red"
             >
-              * Khoa không được để trống
+              * Chủ đề không được để trống
             </div>
           </div>
         </div>

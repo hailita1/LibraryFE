@@ -154,7 +154,7 @@
               <i style="font-size: 20px; color: red;" class="fa fa-heart"></i>
               <span>{{favoriteProduct.length}}</span>
             </div>
-            <ul>
+            <ul *ngIf="currentUser">
               <li class="row" style="width: 100% !important;" *ngFor="let item of favoriteProduct">
                 <div class="col-md-3" style="padding-right: 0px; margin-right: 0px">
                   <img
@@ -171,12 +171,13 @@
                   <i class="far fa-trash-alt" style="float: right" (click)="remove(item.product.id)"></i>
                 </div>
               </li>
-              <li *ngIf="favoriteProduct.length ==0">
+              <li *ngIf="favoriteProduct.length ==0" style="margin-left: 35px">
                 <span>Bạn đang không thích tài liệu nào !!!</span>
               </li>
             </ul>
             <ul *ngIf="!currentUser">
-              <li><a [routerLink]="['/login']" style="font-size: 12px; text-align: center">Đăng nhập</a></li>
+              <li><span [routerLink]="['/login']" style="font-size: 12px; text-align: center; margin-left: 120px">Đăng nhập</span>
+              </li>
             </ul>
           </div>
         </div>

@@ -34,7 +34,7 @@ export class ItemReaderComponent implements OnInit {
   title = '';
   type: any;
   status;
-  imageName = '';
+  imageName = 'defaul.jpg';
   apiUrl = environment.apiUrl;
   apiFileUrl = environment.apiUploadUrl;
   model: any;
@@ -79,6 +79,7 @@ export class ItemReaderComponent implements OnInit {
 
 
   view(model: any, type = null): void {
+    console.log(model);
     if (model.catalog === 'Sinh viên') {
       this.checkCatalog = true;
     } else {

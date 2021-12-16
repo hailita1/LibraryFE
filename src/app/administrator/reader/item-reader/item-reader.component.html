@@ -162,10 +162,10 @@
             </div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4" [hidden]="isInfo">
           <div class="form-group">
             <label for="exampleFormControlFile1">Ảnh</label>
-            <input [disabled]="isInfo" type="file" class="form-control-file" (change)="upload($event.target.files)">
+            <input type="file" class="form-control-file" (change)="upload($event.target.files)">
           </div>
         </div>
       </div>

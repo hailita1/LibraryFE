@@ -13,7 +13,7 @@
   <div class="modal-body">
     <form [formGroup]="formGroup" (ngSubmit)="save()">
       <div class="form-group">
-        <label>Tên khoa</label>
+        <label>Tên chủ đề</label>
         <input
           type="text"
           name=""
@@ -26,7 +26,7 @@
             *ngIf="formGroup.controls['name'].errors?.required"
             style="color: red"
           >
-            * Tên khoa không được để trống
+            * Tên chủ đề không được để trống
           </div>
         </div>
       </div>
